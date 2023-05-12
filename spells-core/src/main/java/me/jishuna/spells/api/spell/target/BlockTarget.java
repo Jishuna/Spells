@@ -1,56 +1,36 @@
 package me.jishuna.spells.api.spell.target;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 
-import com.google.common.collect.ImmutableList;
+public class BlockTarget extends SpellTarget {
+    private final Block originBlock;
 
-public class BlockTarget implements SpellTarget {
-    private final List<Block> blocks;
-    private final Location origin;
-
-    private BlockTarget(List<Block> blocks, Location origin) {
-        this.blocks = blocks;
-        this.origin = origin;
+    private BlockTarget(Block block, double radius) {
+        super(block.getLocation(), radius);
+        this.originBlock = block;
     }
 
-    public List<Block> getBlocks() {
+    @Override
+    public Collection<Block> getTargetBlocks() {
+        Set<Block> blocks = new HashSet<>(super.getTargetBlocks());
+        blocks.add(this.originBlock);
+
         return blocks;
     }
 
-    public Location getOrigin() {
-        return origin;
+    public Block getOriginBlock() {
+        return originBlock;
     }
 
-    public static BlockTarget single(Block block, Location origin) {
-        return new BlockTarget(Arrays.asList(block), origin);
+    public static BlockTarget create(Block block) {
+        return new BlockTarget(block, 0);
     }
 
-    public static class Builder {
-        private final ImmutableList.Builder<Block> listBuilder = new ImmutableList.Builder<>();
-        private Location origin;
-
-        public Builder add(Block block) {
-            listBuilder.add(block);
-            return this;
-        }
-
-        public Builder addAll(Collection<Block> block) {
-            listBuilder.addAll(block);
-            return this;
-        }
-
-        public Builder origin(Location origin) {
-            this.origin = origin;
-            return this;
-        }
-
-        public BlockTarget build() {
-            return new BlockTarget(listBuilder.build(), this.origin);
-        }
+    public static BlockTarget create(Block block, double radius) {
+        return new BlockTarget(block, radius);
     }
 }

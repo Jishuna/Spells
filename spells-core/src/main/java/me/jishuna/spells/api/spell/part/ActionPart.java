@@ -2,7 +2,7 @@ package me.jishuna.spells.api.spell.part;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Entity;
 
 import me.jishuna.spells.api.spell.ModifierData;
 import me.jishuna.spells.api.spell.SpellContext;
@@ -19,19 +19,19 @@ public class ActionPart extends SpellPart {
 
     public void process(SpellTarget target, SpellCaster caster, SpellContext context, ModifierData data) {
         if (target instanceof EntityTarget entityTarget) {
-            entityTarget.getEntities().forEach(entity -> processEntity(entity, caster, context, data));
+            entityTarget.getTargetEntities().forEach(entity -> processEntity(entity, caster, context, data));
         }
 
         if (target instanceof BlockTarget blockTarget) {
-            blockTarget.getBlocks().forEach(block -> processBlock(block, caster, context, data));
+            blockTarget.getTargetBlocks().forEach(block -> processBlock(block, caster, context, data));
         }
     }
 
-    public void processEntity(LivingEntity target, SpellCaster caster, SpellContext context, ModifierData data) {
+    protected void processEntity(Entity target, SpellCaster caster, SpellContext context, ModifierData data) {
         // NO-OP
     }
 
-    public void processBlock(Block target, SpellCaster caster, SpellContext context, ModifierData data) {
+    protected void processBlock(Block target, SpellCaster caster, SpellContext context, ModifierData data) {
         // NO-OP
     }
 }

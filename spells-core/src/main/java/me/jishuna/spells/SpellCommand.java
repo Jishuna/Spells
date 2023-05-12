@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.FluidCollisionMode;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.LivingEntity;
@@ -55,7 +56,15 @@ public class SpellCommand extends SimpleCommandHandler {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        return StringUtil.copyPartialMatches(args[args.length - 1], plugin.getSpellPartRegistry().getStringKeys(),
-                new ArrayList<>());
+        List<String> options = new ArrayList<>();
+        String arg = args[args.length - 1];
+
+        for (NamespacedKey key : this.plugin.getSpellPartRegistry().getKeys()) {
+            if (StringUtil.startsWithIgnoreCase(key.toString(), arg)
+                    || StringUtil.startsWithIgnoreCase(key.getKey(), arg)) {
+                options.add(key.toString());
+            }
+        }
+        return options;
     }
 }

@@ -8,7 +8,7 @@ public class ProlongModifier extends ModifierPart {
     public static final ProlongModifier INSTANCE = new ProlongModifier();
 
     private ProlongModifier() {
-        super(NamespacedKey.fromString("spells:modifier_prolong"));
+        super(NamespacedKey.fromString("modifier:prolong"));
     }
 
 }

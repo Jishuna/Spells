@@ -1,56 +1,36 @@
 package me.jishuna.spells.api.spell.target;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import org.bukkit.Location;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Entity;
 
-import com.google.common.collect.ImmutableList;
+public class EntityTarget extends SpellTarget {
+    private final Entity originEntity;
 
-public class EntityTarget implements SpellTarget {
-    private final List<LivingEntity> entities;
-    private final Location origin;
-
-    private EntityTarget(List<LivingEntity> entities, Location origin) {
-        this.entities = entities;
-        this.origin = origin;
+    private EntityTarget(Entity entity, double radius) {
+        super(entity.getLocation(), radius);
+        this.originEntity = entity;
     }
 
-    public List<LivingEntity> getEntities() {
+    @Override
+    public Collection<Entity> getTargetEntities() {
+        Set<Entity> entities = new HashSet<>(super.getTargetEntities());
+        entities.add(this.originEntity);
+
         return entities;
     }
 
-    public Location getOrigin() {
-        return origin;
+    public Entity getOriginEntity() {
+        return originEntity;
     }
 
-    public static EntityTarget single(LivingEntity entity, Location origin) {
-        return new EntityTarget(Arrays.asList(entity), origin);
+    public static EntityTarget create(Entity entity) {
+        return new EntityTarget(entity, 0);
     }
 
-    public static class Builder {
-        private final ImmutableList.Builder<LivingEntity> listBuilder = new ImmutableList.Builder<>();
-        private Location origin;
-
-        public Builder add(LivingEntity entity) {
-            listBuilder.add(entity);
-            return this;
-        }
-
-        public Builder addAll(Collection<LivingEntity> entities) {
-            listBuilder.addAll(entities);
-            return this;
-        }
-
-        public Builder origin(Location origin) {
-            this.origin = origin;
-            return this;
-        }
-
-        public EntityTarget build() {
-            return new EntityTarget(listBuilder.build(), this.origin);
-        }
+    public static EntityTarget create(Entity entity, double radius) {
+        return new EntityTarget(entity, radius);
     }
 }

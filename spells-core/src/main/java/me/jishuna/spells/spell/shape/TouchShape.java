@@ -17,7 +17,7 @@ public class TouchShape extends ShapePart {
     public static final TouchShape INSTANCE = new TouchShape();
 
     private TouchShape() {
-        super(NamespacedKey.fromString("spells:shape_touch"));
+        super(NamespacedKey.fromString("shape:touch"));
     }
 
     @Override
@@ -27,12 +27,12 @@ public class TouchShape extends ShapePart {
     @Override
     public void castOnEntity(LivingEntity entity, World world, SpellCaster caster, SpellContext context,
             ModifierData data, SpellExecutor resolver) {
-        resolver.resolve(EntityTarget.single(entity, entity.getLocation()));
+        resolver.resolve(EntityTarget.create(entity));
     }
 
     @Override
     public void castOnBlock(Block block, World world, SpellCaster caster, SpellContext context, ModifierData data,
             SpellExecutor resolver) {
-        resolver.resolve(BlockTarget.single(block, block.getLocation()));
+        resolver.resolve(BlockTarget.create(block));
     }
 }

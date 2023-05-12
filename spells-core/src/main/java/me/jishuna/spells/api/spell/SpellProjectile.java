@@ -5,7 +5,6 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BoundingBox;
@@ -33,17 +32,19 @@ public class SpellProjectile extends BukkitRunnable {
     public void run() {
         for (Entity entity : location.getWorld().getNearbyEntities(BoundingBox.of(location,
                 ProjectileShape.PROJECTILE_SIZE, ProjectileShape.PROJECTILE_SIZE, ProjectileShape.PROJECTILE_SIZE))) {
-            if (!(entity instanceof LivingEntity living) || entity == caster.getEntity()) {
+            if (entity == caster.getEntity()) {
                 continue;
             }
 
-            resolver.resolve(EntityTarget.single(living, location));
+            resolver.resolve(EntityTarget.create(entity));
             this.cancel();
+            return;
         }
 
         if (!location.getBlock().isPassable()) {
-            resolver.resolve(BlockTarget.single(location.getBlock(), location));
+            resolver.resolve(BlockTarget.create(location.getBlock()));
             this.cancel();
+            return;
         }
 
         this.location.add(this.velocity);

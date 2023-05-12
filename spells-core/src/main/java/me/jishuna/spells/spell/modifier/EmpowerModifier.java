@@ -8,7 +8,7 @@ public class EmpowerModifier extends ModifierPart {
     public static final EmpowerModifier INSTANCE = new EmpowerModifier();
 
     private EmpowerModifier() {
-        super(NamespacedKey.fromString("spells:modifier_empower"));
+        super(NamespacedKey.fromString("modifier:empower"));
     }
 
 }

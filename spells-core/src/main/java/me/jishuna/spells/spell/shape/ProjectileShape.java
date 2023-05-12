@@ -21,7 +21,7 @@ public class ProjectileShape extends ShapePart {
     public static double PROJECTILE_SIZE = 0.1;
 
     private ProjectileShape() {
-        super(NamespacedKey.fromString("spells:shape_projectile"));
+        super(NamespacedKey.fromString("shape:projectile"));
     }
 
     @Override

@@ -11,6 +11,7 @@ import org.bukkit.NamespacedKey;
 import com.google.common.collect.ImmutableSet;
 
 import me.jishuna.spells.spell.action.BurnAction;
+import me.jishuna.spells.spell.action.CollectAction;
 import me.jishuna.spells.spell.modifier.EmpowerModifier;
 import me.jishuna.spells.spell.modifier.ProlongModifier;
 import me.jishuna.spells.spell.shape.ProjectileShape;
@@ -68,5 +69,6 @@ public class SpellPartRegistry {
 
         // Actions
         register(BurnAction.INSTANCE);
+        register(CollectAction.INSTANCE);
     }
 }

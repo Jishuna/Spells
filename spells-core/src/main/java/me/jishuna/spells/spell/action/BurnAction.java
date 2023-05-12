@@ -5,7 +5,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Entity;
 
 import me.jishuna.jishlib.config.ConfigEntry;
 import me.jishuna.spells.api.spell.ModifierData;
@@ -23,11 +23,11 @@ public class BurnAction extends ActionPart {
     public static int BONUS_DURATION = 40;
 
     private BurnAction() {
-        super(NamespacedKey.fromString("spells:action_burn"));
+        super(NamespacedKey.fromString("action:burn"));
     }
 
     @Override
-    public void processEntity(LivingEntity target, SpellCaster caster, SpellContext context, ModifierData data) {
+    public void processEntity(Entity target, SpellCaster caster, SpellContext context, ModifierData data) {
         int duration = BASE_DURATION + (BONUS_DURATION * data.getProlongAmount());
         target.setFireTicks(duration);
     }

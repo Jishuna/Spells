@@ -16,12 +16,12 @@ public class SelfShape extends ShapePart {
     public static final SelfShape INSTANCE = new SelfShape();
 
     private SelfShape() {
-        super(NamespacedKey.fromString("spells:shape_self"));
+        super(NamespacedKey.fromString("shape:self"));
     }
 
     @Override
     public void cast(SpellCaster caster, World world, SpellContext context, ModifierData data, SpellExecutor resolver) {
-        resolver.resolve(EntityTarget.single(caster.getEntity(), caster.getLocation()));
+        resolver.resolve(EntityTarget.create(caster.getEntity()));
     }
 
     @Override
