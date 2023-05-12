@@ -1,0 +1,7 @@
+rootProject.name = 'spells'
+gradle.rootProject {
+    it.version = '1.0.0'
+}
+
+include 'spells-core'
+include 'spells-v1_19_R3'

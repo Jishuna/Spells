@@ -1,0 +1,26 @@
+plugins {
+    id 'eclipse'
+	id 'java'
+	id "com.github.johnrengelman.shadow" version "7.1.0"
+}
+
+// shadowJar takes care of this
+jar.enabled = false
+
+repositories {
+	mavenLocal()
+}
+
+dependencies {
+	 implementation project(":spells-core")
+	 implementation project(path: ':spells-v1_19_R3', configuration: 'reobf')
+}
+
+shadowJar {
+   archiveClassifier.set('')
+   archiveVersion.set('')
+}
+
+build {
+    dependsOn shadowJar
+}
