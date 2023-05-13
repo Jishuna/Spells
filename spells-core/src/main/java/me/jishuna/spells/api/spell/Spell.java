@@ -3,8 +3,6 @@ package me.jishuna.spells.api.spell;
 import java.util.Collections;
 import java.util.List;
 
-import org.bukkit.Bukkit;
-
 import com.google.common.collect.ImmutableList;
 
 import me.jishuna.spells.api.spell.part.ShapePart;
@@ -13,8 +11,8 @@ import me.jishuna.spells.api.spell.part.SpellPart;
 public class Spell {
     private final List<SpellPart> parts;
 
-    private Spell(List<SpellPart> parts) {
-        this.parts = parts;
+    public Spell(List<SpellPart> parts) {
+        this.parts = ImmutableList.copyOf(parts);
     }
 
     public Spell getRemaining(int start) {
@@ -55,7 +53,6 @@ public class Spell {
 
         public Builder part(SpellPart part) {
             listBuilder.add(part);
-            Bukkit.broadcastMessage(part.getKey().toString());
             return this;
         }
 

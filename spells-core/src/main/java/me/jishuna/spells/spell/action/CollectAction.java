@@ -4,6 +4,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Item;
+import org.bukkit.util.Vector;
 
 import me.jishuna.spells.api.spell.ModifierData;
 import me.jishuna.spells.api.spell.SpellContext;
@@ -23,6 +24,7 @@ public class CollectAction extends ActionPart {
         for (Entity entity : target.getTargetEntities()) {
             if (entity instanceof Item || entity instanceof ExperienceOrb) {
                 entity.teleport(caster.getLocation());
+                entity.setVelocity(new Vector());
             }
         }
     }

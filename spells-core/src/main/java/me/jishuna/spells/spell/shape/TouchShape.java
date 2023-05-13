@@ -3,7 +3,7 @@ package me.jishuna.spells.spell.shape;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Entity;
 
 import me.jishuna.spells.api.spell.ModifierData;
 import me.jishuna.spells.api.spell.SpellContext;
@@ -25,7 +25,7 @@ public class TouchShape extends ShapePart {
     }
 
     @Override
-    public void castOnEntity(LivingEntity entity, World world, SpellCaster caster, SpellContext context,
+    public void castOnEntity(Entity entity, World world, SpellCaster caster, SpellContext context,
             ModifierData data, SpellExecutor resolver) {
         resolver.resolve(EntityTarget.create(entity));
     }

@@ -22,15 +22,17 @@ public class AreaSubshape extends SubshapePart {
     public EntityTarget castOnEntity(EntityTarget target, World world, SpellCaster caster, SpellContext context,
             ModifierData data, SpellExecutor resolver) {
         int radius = 1 + data.getEmpowerAmount();
+        int height = 1;
 
-        return EntityTarget.create(target.getOriginEntity(), radius);
+        return EntityTarget.create(target.getOriginEntity(), radius, height / 2d);
     }
 
     @Override
     public BlockTarget castOnBlock(BlockTarget target, World world, SpellCaster caster, SpellContext context,
             ModifierData data, SpellExecutor resolver) {
         int radius = 1 + data.getEmpowerAmount();
+        int height = 1;
 
-        return BlockTarget.create(target.getOriginBlock(), radius);
+        return BlockTarget.create(target.getOriginBlock(), radius, height / 2d);
     }
 }

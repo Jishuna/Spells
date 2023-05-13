@@ -5,6 +5,9 @@ import java.util.Objects;
 import org.bukkit.NamespacedKey;
 
 public abstract class SpellPart {
+    public static final SpellPart EMPTY = new SpellPart(NamespacedKey.fromString("part:empty")) {
+    };
+
     private final NamespacedKey key;
 
     protected SpellPart(NamespacedKey key) {

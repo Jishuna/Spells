@@ -9,8 +9,8 @@ import org.bukkit.entity.Entity;
 public class EntityTarget extends SpellTarget {
     private final Entity originEntity;
 
-    private EntityTarget(Entity entity, double radius) {
-        super(entity.getLocation(), radius);
+    private EntityTarget(Entity entity, double radius, double height) {
+        super(entity.getLocation().add(0, 0.5, 0), radius, height);
         this.originEntity = entity;
     }
 
@@ -27,10 +27,10 @@ public class EntityTarget extends SpellTarget {
     }
 
     public static EntityTarget create(Entity entity) {
-        return new EntityTarget(entity, 0);
+        return new EntityTarget(entity, 0, 0);
     }
 
-    public static EntityTarget create(Entity entity, double radius) {
-        return new EntityTarget(entity, radius);
+    public static EntityTarget create(Entity entity, double radius, double height) {
+        return new EntityTarget(entity, radius, height);
     }
 }

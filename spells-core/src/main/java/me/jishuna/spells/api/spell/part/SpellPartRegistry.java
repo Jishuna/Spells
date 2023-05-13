@@ -10,10 +10,13 @@ import org.bukkit.NamespacedKey;
 
 import com.google.common.collect.ImmutableSet;
 
+import me.jishuna.spells.spell.action.BreakAction;
 import me.jishuna.spells.spell.action.BurnAction;
 import me.jishuna.spells.spell.action.CollectAction;
+import me.jishuna.spells.spell.action.ExplodeAction;
 import me.jishuna.spells.spell.modifier.EmpowerModifier;
 import me.jishuna.spells.spell.modifier.ProlongModifier;
+import me.jishuna.spells.spell.shape.BeamShape;
 import me.jishuna.spells.spell.shape.ProjectileShape;
 import me.jishuna.spells.spell.shape.SelfShape;
 import me.jishuna.spells.spell.shape.TouchShape;
@@ -38,11 +41,11 @@ public class SpellPartRegistry {
         return this.registryMap.get(key);
     }
 
-    public Optional<SpellPart> getIfPresent(String key) {
-        return getIfPresent(NamespacedKey.fromString(key));
+    public Optional<SpellPart> find(String key) {
+        return find(NamespacedKey.fromString(key));
     }
 
-    public Optional<SpellPart> getIfPresent(NamespacedKey key) {
+    public Optional<SpellPart> find(NamespacedKey key) {
         return Optional.ofNullable(this.registryMap.get(key));
     }
 
@@ -54,11 +57,18 @@ public class SpellPartRegistry {
         return getKeys().stream().map(NamespacedKey::toString).collect(Collectors.toSet());
     }
 
+    public Collection<SpellPart> getAllParts() {
+        return ImmutableSet.copyOf(this.registryMap.values());
+    }
+
     private void addDefaults() {
+        register(SpellPart.EMPTY);
+
         // Shapes
         register(SelfShape.INSTANCE);
         register(TouchShape.INSTANCE);
         register(ProjectileShape.INSTANCE);
+        register(BeamShape.INSTANCE);
 
         // Subshapes
         register(AreaSubshape.INSTANCE);
@@ -70,5 +80,7 @@ public class SpellPartRegistry {
         // Actions
         register(BurnAction.INSTANCE);
         register(CollectAction.INSTANCE);
+        register(BreakAction.INSTANCE);
+        register(ExplodeAction.INSTANCE);
     }
 }

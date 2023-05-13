@@ -32,7 +32,7 @@ public class SpellCommand extends SimpleCommandHandler {
         Spell.Builder builder = new Spell.Builder();
 
         for (String key : args) {
-            plugin.getSpellPartRegistry().getIfPresent(key).ifPresent(builder::part);
+            plugin.getSpellPartRegistry().find(key).ifPresent(builder::part);
         }
 
         RayTraceResult result = player.getWorld().rayTrace(player.getEyeLocation(),

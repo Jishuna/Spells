@@ -17,10 +17,10 @@ public abstract class SpellTarget {
     private Collection<Entity> entityCache;
     private Collection<Block> blockCache;
 
-    protected SpellTarget(Location origin, double radius) {
+    protected SpellTarget(Location origin, double radius, double height) {
         this.origin = origin;
-        if (radius > 0) {
-            this.bounds = BoundingBox.of(origin, radius, radius, radius);
+        if (radius > 0 || height > 0) {
+            this.bounds = BoundingBox.of(origin, radius, height, radius);
         } else {
             this.bounds = null;
         }
@@ -57,9 +57,9 @@ public abstract class SpellTarget {
     private Collection<Block> getBlocks() {
         Set<Block> blocks = new HashSet<>();
 
-        for (int x = bounds.getMin().getBlockX(); x <= bounds.getMax().getBlockX(); x++) {
-            for (int y = bounds.getMin().getBlockY(); y <= bounds.getMax().getBlockY(); y++) {
-                for (int z = bounds.getMin().getBlockZ(); z <= bounds.getMax().getBlockZ(); z++) {
+        for (int x = bounds.getMin().getBlockX(); x < bounds.getMax().getBlockX(); x++) {
+            for (int y = bounds.getMin().getBlockY(); y < bounds.getMax().getBlockY(); y++) {
+                for (int z = bounds.getMin().getBlockZ(); z < bounds.getMax().getBlockZ(); z++) {
                     blocks.add(this.origin.getWorld().getBlockAt(x, y, z));
                 }
             }

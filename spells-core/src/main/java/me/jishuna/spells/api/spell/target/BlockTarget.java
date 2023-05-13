@@ -9,8 +9,8 @@ import org.bukkit.block.Block;
 public class BlockTarget extends SpellTarget {
     private final Block originBlock;
 
-    private BlockTarget(Block block, double radius) {
-        super(block.getLocation(), radius);
+    private BlockTarget(Block block, double radius, double height) {
+        super(block.getLocation().add(0.5, 0.5, 0.5), radius, height);
         this.originBlock = block;
     }
 
@@ -27,10 +27,10 @@ public class BlockTarget extends SpellTarget {
     }
 
     public static BlockTarget create(Block block) {
-        return new BlockTarget(block, 0);
+        return new BlockTarget(block, 0, 0);
     }
 
-    public static BlockTarget create(Block block, double radius) {
-        return new BlockTarget(block, radius);
+    public static BlockTarget create(Block block, double radius, double height) {
+        return new BlockTarget(block, radius, height);
     }
 }

@@ -2,7 +2,7 @@ package me.jishuna.spells.api.spell;
 
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Entity;
 
 import me.jishuna.spells.Spells;
 import me.jishuna.spells.api.spell.caster.SpellCaster;
@@ -42,7 +42,7 @@ public class SpellExecutor {
         }
     }
 
-    public void handleEntityCast(LivingEntity entity) {
+    public void handleEntityCast(Entity entity) {
         Spell subspell = context.getNextSubspell();
         ModifierData data = ModifierData.fromSpell(subspell);
 

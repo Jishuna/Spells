@@ -48,7 +48,7 @@ public class SpellProjectile extends BukkitRunnable {
         }
 
         this.location.add(this.velocity);
-        this.location.getWorld().spawnParticle(Particle.REDSTONE, location, 1, 0, 0, 0,
+        this.location.getWorld().spawnParticle(Particle.REDSTONE, location, 3, 0.05, 0.05, 0.05,
                 new DustOptions(Color.ORANGE, 1));
     }
 

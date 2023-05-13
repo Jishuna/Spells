@@ -3,7 +3,7 @@ package me.jishuna.spells.api.spell.part;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Entity;
 
 import me.jishuna.spells.api.spell.ModifierData;
 import me.jishuna.spells.api.spell.SpellContext;
@@ -19,7 +19,7 @@ public abstract class ShapePart extends SpellPart {
     public abstract void cast(SpellCaster caster, World world, SpellContext context, ModifierData data,
             SpellExecutor resolver);
 
-    public abstract void castOnEntity(LivingEntity entity, World world, SpellCaster caster, SpellContext context,
+    public abstract void castOnEntity(Entity entity, World world, SpellCaster caster, SpellContext context,
             ModifierData data, SpellExecutor resolver);
 
     public abstract void castOnBlock(Block block, World world, SpellCaster caster, SpellContext context,
