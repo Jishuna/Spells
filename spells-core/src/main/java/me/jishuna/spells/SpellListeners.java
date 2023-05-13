@@ -49,7 +49,7 @@ public class SpellListeners implements Listener {
             if (event.getClickedBlock() == null) {
                 executor.handleCast(player.getWorld());
             } else {
-                executor.handleBlockCast(event.getClickedBlock());
+                executor.handleBlockCast(event.getClickedBlock(), event.getBlockFace());
             }
             event.setCancelled(true);
         }

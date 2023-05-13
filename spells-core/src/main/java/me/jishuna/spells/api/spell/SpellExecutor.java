@@ -2,6 +2,7 @@ package me.jishuna.spells.api.spell;
 
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 
 import me.jishuna.spells.Spells;
@@ -33,12 +34,12 @@ public class SpellExecutor {
         }
     }
 
-    public void handleBlockCast(Block block) {
+    public void handleBlockCast(Block block, BlockFace face) {
         Spell subspell = context.getNextSubspell();
         ModifierData data = ModifierData.fromSpell(subspell);
 
         if (subspell.isValid() && subspell.getParts().get(0) instanceof ShapePart shape) {
-            shape.castOnBlock(block, block.getWorld(), caster, context, data, this);
+            shape.castOnBlock(block, face, block.getWorld(), caster, context, data, this);
         }
     }
 

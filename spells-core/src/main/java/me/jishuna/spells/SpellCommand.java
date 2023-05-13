@@ -47,7 +47,7 @@ public class SpellCommand extends SimpleCommandHandler {
         if (result.getHitEntity() instanceof LivingEntity entity) {
             resolver.handleEntityCast(entity);
         } else if (result.getHitBlock() != null) {
-            resolver.handleBlockCast(result.getHitBlock());
+            resolver.handleBlockCast(result.getHitBlock(), result.getHitBlockFace());
         } else {
             resolver.handleCast(player.getWorld());
         }

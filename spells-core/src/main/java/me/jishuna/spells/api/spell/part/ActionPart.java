@@ -2,6 +2,7 @@ package me.jishuna.spells.api.spell.part;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 
 import me.jishuna.spells.api.spell.ModifierData;
@@ -23,7 +24,7 @@ public class ActionPart extends SpellPart {
         }
 
         if (target instanceof BlockTarget blockTarget) {
-            blockTarget.getTargetBlocks().forEach(block -> processBlock(block, caster, context, data));
+            blockTarget.getTargetBlocks().forEach(block -> processBlock(block, blockTarget.getHitFace(), caster, context, data));
         }
     }
 
@@ -31,7 +32,7 @@ public class ActionPart extends SpellPart {
         // NO-OP
     }
 
-    protected void processBlock(Block target, SpellCaster caster, SpellContext context, ModifierData data) {
+    protected void processBlock(Block target, BlockFace targetFace, SpellCaster caster, SpellContext context, ModifierData data) {
         // NO-OP
     }
 }

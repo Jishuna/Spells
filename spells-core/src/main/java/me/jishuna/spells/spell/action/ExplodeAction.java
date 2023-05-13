@@ -1,7 +1,9 @@
 package me.jishuna.spells.spell.action;
 
+import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 
 import me.jishuna.spells.api.spell.ModifierData;
@@ -18,15 +20,19 @@ public class ExplodeAction extends ActionPart {
 
     @Override
     public void processEntity(Entity target, SpellCaster caster, SpellContext context, ModifierData data) {
-        float power = 0.5f + (0.5f * data.getEmpowerAmount());
-
-        target.getWorld().createExplosion(target.getLocation(), power, false, true, caster.getEntity());
+        explode(target.getLocation(), caster, data);
     }
 
     @Override
-    public void processBlock(Block target, SpellCaster caster, SpellContext context, ModifierData data) {
-        float power = 0.5f + (0.5f * data.getEmpowerAmount());
+    public void processBlock(Block target, BlockFace targetFace, SpellCaster caster, SpellContext context,
+            ModifierData data) {
+        explode(target.getLocation().add(targetFace.getModX() + 0.5, targetFace.getModY() + 0.5,
+                targetFace.getModZ() + 0.5), caster, data);
+    }
 
-        target.getWorld().createExplosion(target.getLocation(), power, false, true, caster.getEntity());
+    private void explode(Location location, SpellCaster caster, ModifierData data) {
+        float power = 1f + (0.5f * data.getEmpowerAmount());
+
+        location.getWorld().createExplosion(location, power, false, true, caster.getEntity());
     }
 }

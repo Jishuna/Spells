@@ -1,13 +1,15 @@
 package me.jishuna.spells.api.spell;
 
 import org.bukkit.Color;
+import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.BoundingBox;
+import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import me.jishuna.spells.api.spell.caster.SpellCaster;
@@ -30,21 +32,17 @@ public class SpellProjectile extends BukkitRunnable {
 
     @Override
     public void run() {
-        for (Entity entity : location.getWorld().getNearbyEntities(BoundingBox.of(location,
-                ProjectileShape.PROJECTILE_SIZE, ProjectileShape.PROJECTILE_SIZE, ProjectileShape.PROJECTILE_SIZE))) {
-            if (entity == caster.getEntity()) {
-                continue;
+        RayTraceResult result = location.getWorld().rayTrace(location, velocity, 1, FluidCollisionMode.NEVER, true,
+                ProjectileShape.PROJECTILE_SIZE, e -> e != caster.getEntity());
+
+        if (result != null) {
+            Entity entity = result.getHitEntity();
+            Block block = result.getHitBlock();
+            if (entity != null) {
+                resolver.resolve(EntityTarget.create(entity));
+            } else if (block != null) {
+                resolver.resolve(BlockTarget.create(block, result.getHitBlockFace()));
             }
-
-            resolver.resolve(EntityTarget.create(entity));
-            this.cancel();
-            return;
-        }
-
-        if (!location.getBlock().isPassable()) {
-            resolver.resolve(BlockTarget.create(location.getBlock()));
-            this.cancel();
-            return;
         }
 
         this.location.add(this.velocity);

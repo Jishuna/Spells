@@ -33,6 +33,6 @@ public class AreaSubshape extends SubshapePart {
         int radius = 1 + data.getEmpowerAmount();
         int height = 1;
 
-        return BlockTarget.create(target.getOriginBlock(), radius, height / 2d);
+        return BlockTarget.create(target.getOriginBlock(), target.getHitFace(), radius, height / 2d);
     }
 }

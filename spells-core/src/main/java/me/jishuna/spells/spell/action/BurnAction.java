@@ -33,7 +33,8 @@ public class BurnAction extends ActionPart {
     }
 
     @Override
-    public void processBlock(Block target, SpellCaster caster, SpellContext context, ModifierData data) {
+    public void processBlock(Block target, BlockFace targetFace, SpellCaster caster, SpellContext context,
+            ModifierData data) {
         target = target.getRelative(BlockFace.UP);
         if (target.getType().isAir() && target.canPlace(FIRE)) {
             target.setType(Material.FIRE);

@@ -1,14 +1,16 @@
 package me.jishuna.spells.spell.shape;
 
 import org.bukkit.Color;
+import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
-import org.bukkit.util.BoundingBox;
+import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import me.jishuna.jishlib.config.ConfigEntry;
@@ -33,27 +35,25 @@ public class BeamShape extends ShapePart {
     @Override
     public void cast(SpellCaster caster, World world, SpellContext context, ModifierData data, SpellExecutor resolver) {
         Location location = caster.getEntity().getEyeLocation();
-        Vector velocity = location.getDirection().normalize().multiply(0.5);
+        Vector velocity = location.getDirection().normalize();
 
-        for (int i = 0; i < 10; i++) {
-            for (Entity entity : world.getNearbyEntities(BoundingBox.of(location, BEAM_SIZE, BEAM_SIZE, BEAM_SIZE))) {
-                if (entity == caster.getEntity()) {
-                    continue;
-                }
+        RayTraceResult result = location.getWorld().rayTrace(location, velocity, 5, FluidCollisionMode.NEVER, true,
+                BEAM_SIZE, e -> e != caster.getEntity());
 
+        if (result != null) {
+            Entity entity = result.getHitEntity();
+            Block block = result.getHitBlock();
+            if (entity != null) {
                 resolver.resolve(EntityTarget.create(entity));
-                return;
+            } else if (block != null) {
+                resolver.resolve(BlockTarget.create(block, result.getHitBlockFace()));
             }
+        }
 
-            if (!location.getBlock().isPassable()) {
-                resolver.resolve(BlockTarget.create(location.getBlock()));
-                return;
-            }
-
+        for (int i = 0; i < 5; i++) {
             location.add(velocity);
             world.spawnParticle(Particle.REDSTONE, location, 3, 0.05, 0.05, 0.05, new DustOptions(Color.ORANGE, 1));
         }
-
     }
 
     @Override
@@ -63,7 +63,7 @@ public class BeamShape extends ShapePart {
     }
 
     @Override
-    public void castOnBlock(Block block, World world, SpellCaster caster, SpellContext context, ModifierData data,
+    public void castOnBlock(Block block, BlockFace face, World world, SpellCaster caster, SpellContext context, ModifierData data,
             SpellExecutor resolver) {
         cast(caster, world, context, data, resolver);
     }
