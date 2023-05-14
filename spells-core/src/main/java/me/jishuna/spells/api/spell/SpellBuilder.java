@@ -38,9 +38,13 @@ public class SpellBuilder {
 
     public SpellPart getPart(int index) {
         if (index >= parts.length) {
-            return null;
+            return SpellPart.EMPTY;
         }
         return parts[index];
+    }
+
+    public int getSize() {
+        return parts.length;
     }
 
     public Spell toSpell() {

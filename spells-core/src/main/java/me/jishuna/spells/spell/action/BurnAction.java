@@ -7,7 +7,8 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 
-import me.jishuna.jishlib.config.ConfigEntry;
+import me.jishuna.jishlib.config.annotation.Comment;
+import me.jishuna.jishlib.config.annotation.ConfigEntry;
 import me.jishuna.spells.api.spell.ModifierData;
 import me.jishuna.spells.api.spell.SpellContext;
 import me.jishuna.spells.api.spell.caster.SpellCaster;
@@ -17,8 +18,11 @@ public class BurnAction extends ActionPart {
     public static final BurnAction INSTANCE = new BurnAction();
     private static final BlockData FIRE = Material.FIRE.createBlockData();
 
+    @Comment("The base duration in ticks to burn entities for.")
     @ConfigEntry("actions.burn.base-duration")
     public static int BASE_DURATION = 60;
+
+    @Comment("The additional duration in ticks to burn entities per empower modifier.")
     @ConfigEntry("actions.burn.bonus-duration")
     public static int BONUS_DURATION = 40;
 

@@ -13,7 +13,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
-import me.jishuna.jishlib.config.ConfigEntry;
+import me.jishuna.jishlib.config.annotation.Comment;
+import me.jishuna.jishlib.config.annotation.ConfigEntry;
 import me.jishuna.spells.api.spell.ModifierData;
 import me.jishuna.spells.api.spell.SpellContext;
 import me.jishuna.spells.api.spell.SpellExecutor;
@@ -25,8 +26,13 @@ import me.jishuna.spells.api.spell.target.EntityTarget;
 public class BeamShape extends ShapePart {
     public static final BeamShape INSTANCE = new BeamShape();
 
+    @Comment("The size of the beam, higher numbers make the beam more lenient when checking for collision.")
     @ConfigEntry("shapes.beam.size")
     public static double BEAM_SIZE = 0.1;
+
+    @Comment("The bonus length of the beam per empower modifier.")
+    @ConfigEntry("shapes.beam.bonus-length")
+    public static int BONUS_LENGTH = 3;
 
     private BeamShape() {
         super(NamespacedKey.fromString("shape:beam"));
@@ -37,7 +43,9 @@ public class BeamShape extends ShapePart {
         Location location = caster.getEntity().getEyeLocation();
         Vector velocity = location.getDirection().normalize();
 
-        RayTraceResult result = location.getWorld().rayTrace(location, velocity, 5, FluidCollisionMode.NEVER, true,
+        int length = 5 + (BONUS_LENGTH * data.getEmpowerAmount());
+
+        RayTraceResult result = location.getWorld().rayTrace(location, velocity, length, FluidCollisionMode.NEVER, true,
                 BEAM_SIZE, e -> e != caster.getEntity());
 
         if (result != null) {
@@ -50,7 +58,7 @@ public class BeamShape extends ShapePart {
             }
         }
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < length; i++) {
             location.add(velocity);
             world.spawnParticle(Particle.REDSTONE, location, 3, 0.05, 0.05, 0.05, new DustOptions(Color.ORANGE, 1));
         }
@@ -63,8 +71,8 @@ public class BeamShape extends ShapePart {
     }
 
     @Override
-    public void castOnBlock(Block block, BlockFace face, World world, SpellCaster caster, SpellContext context, ModifierData data,
-            SpellExecutor resolver) {
+    public void castOnBlock(Block block, BlockFace face, World world, SpellCaster caster, SpellContext context,
+            ModifierData data, SpellExecutor resolver) {
         cast(caster, world, context, data, resolver);
     }
 }

@@ -1,15 +1,20 @@
 package me.jishuna.spells.api.spell.part;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.bukkit.NamespacedKey;
 
 import com.google.common.collect.ImmutableSet;
 
+import me.jishuna.jishlib.config.ReloadableClass;
+import me.jishuna.spells.Spells;
 import me.jishuna.spells.spell.action.BreakAction;
 import me.jishuna.spells.spell.action.BurnAction;
 import me.jishuna.spells.spell.action.CollectAction;
@@ -25,13 +30,28 @@ import me.jishuna.spells.spell.subshape.AreaSubshape;
 
 public class SpellPartRegistry {
     private final Map<NamespacedKey, SpellPart> registryMap = new HashMap<>();
+    private final Set<ReloadableClass<? extends SpellPart>> reloadables = new HashSet<>();
 
-    public SpellPartRegistry() {
+    private final Spells plugin;
+    private final File configFile;
+
+    public SpellPartRegistry(Spells plugin) {
+        this.plugin = plugin;
+        this.configFile = new File(plugin.getDataFolder(), "config.yml");
+
         addDefaults();
     }
 
     public void register(SpellPart part) {
-        this.registryMap.put(part.getKey(), part);
+        if (!registryMap.containsKey(part.getKey())) {
+            this.registryMap.put(part.getKey(), part);
+
+            ReloadableClass<? extends SpellPart> reloadable = plugin.getConfigurationManager()
+                    .createStaticReloadable(this.configFile, part.getClass());
+            reloadable.saveDefaults().load();
+
+            reloadables.add(reloadable);
+        }
     }
 
     public SpellPart get(String key) {

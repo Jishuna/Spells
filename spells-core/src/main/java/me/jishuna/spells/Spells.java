@@ -3,6 +3,7 @@ package me.jishuna.spells;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.jishuna.jishlib.config.ConfigurationManager;
 import me.jishuna.jishlib.inventory.CustomInventoryListener;
 import me.jishuna.jishlib.inventory.CustomInventoryManager;
 import me.jishuna.spells.api.spell.part.SpellPartRegistry;
@@ -15,17 +16,18 @@ public class Spells extends JavaPlugin {
 
     private SpellPartRegistry spellPartRegistry;
     private CustomInventoryManager inventoryManager;
+    private ConfigurationManager configurationManager;
 
     @Override
     public void onEnable() {
-        this.spellPartRegistry = new SpellPartRegistry();
+        this.configurationManager = new ConfigurationManager(this);
+        this.spellPartRegistry = new SpellPartRegistry(this);
         this.inventoryManager = new CustomInventoryManager();
 
         Bukkit.getPluginManager().registerEvents(new CustomInventoryListener(this.inventoryManager), this);
         Bukkit.getPluginManager().registerEvents(new SpellListeners(this), this);
 
         getCommand("cast").setExecutor(new SpellCommand(this));
-        getCommand("build").setExecutor(new BuildCommand(this));
 
         spellPartType = new SpellPartType(this.spellPartRegistry);
     }
@@ -36,5 +38,9 @@ public class Spells extends JavaPlugin {
 
     public CustomInventoryManager getInventoryManager() {
         return inventoryManager;
+    }
+
+    public ConfigurationManager getConfigurationManager() {
+        return configurationManager;
     }
 }

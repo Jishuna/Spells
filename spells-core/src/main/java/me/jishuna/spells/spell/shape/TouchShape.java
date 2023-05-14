@@ -23,17 +23,18 @@ public class TouchShape extends ShapePart {
 
     @Override
     public void cast(SpellCaster caster, World world, SpellContext context, ModifierData data, SpellExecutor resolver) {
+        // No target
     }
 
     @Override
-    public void castOnEntity(Entity entity, World world, SpellCaster caster, SpellContext context,
-            ModifierData data, SpellExecutor resolver) {
+    public void castOnEntity(Entity entity, World world, SpellCaster caster, SpellContext context, ModifierData data,
+            SpellExecutor resolver) {
         resolver.resolve(EntityTarget.create(entity));
     }
 
     @Override
-    public void castOnBlock(Block block, BlockFace face, World world, SpellCaster caster, SpellContext context, ModifierData data,
-            SpellExecutor resolver) {
+    public void castOnBlock(Block block, BlockFace face, World world, SpellCaster caster, SpellContext context,
+            ModifierData data, SpellExecutor resolver) {
         resolver.resolve(BlockTarget.create(block, face));
     }
 }

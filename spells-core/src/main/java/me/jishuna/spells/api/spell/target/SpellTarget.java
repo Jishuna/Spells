@@ -1,5 +1,6 @@
 package me.jishuna.spells.api.spell.target;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -17,12 +18,31 @@ public abstract class SpellTarget {
     private Collection<Entity> entityCache;
     private Collection<Block> blockCache;
 
-    protected SpellTarget(Location origin, double radius, double height) {
+    private SpellTarget(Location origin, double radius, double height) {
         this.origin = origin;
+        this.bounds = BoundingBox.of(origin, radius, height, radius);
+
         if (radius > 0 || height > 0) {
-            this.bounds = BoundingBox.of(origin, radius, height, radius);
-        } else {
-            this.bounds = null;
+            this.blockCache = getBlocks();
+            this.entityCache = origin.getWorld().getNearbyEntities(this.bounds);
+        }
+    }
+
+    protected SpellTarget(Block block, double radius, double height) {
+        this(block.getLocation().add(0.5, 0.5, 0.5), radius, height);
+
+        if (radius <= 0 && height <= 0) {
+            this.blockCache = Arrays.asList(block);
+            this.entityCache = Collections.emptySet();
+        }
+    }
+
+    protected SpellTarget(Entity entity, double radius, double height) {
+        this(entity.getLocation(), radius, height);
+
+        if (radius <= 0 && height <= 0) {
+            this.entityCache = Arrays.asList(entity);
+            this.blockCache = Collections.emptySet();
         }
     }
 
@@ -31,26 +51,10 @@ public abstract class SpellTarget {
     }
 
     public Collection<Entity> getTargetEntities() {
-        if (bounds == null) {
-            return Collections.emptySet();
-        }
-
-        if (this.entityCache == null) {
-            this.entityCache = origin.getWorld().getNearbyEntities(this.bounds);
-        }
-
         return this.entityCache;
     }
 
     public Collection<Block> getTargetBlocks() {
-        if (bounds == null) {
-            return Collections.emptySet();
-        }
-
-        if (this.blockCache == null) {
-            this.blockCache = getBlocks();
-        }
-
         return this.blockCache;
     }
 

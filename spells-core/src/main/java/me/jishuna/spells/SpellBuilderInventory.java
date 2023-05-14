@@ -11,6 +11,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import me.jishuna.jishlib.Utils;
 import me.jishuna.jishlib.inventory.CustomInventory;
 import me.jishuna.jishlib.items.ItemBuilder;
 import me.jishuna.spells.api.spell.SpellBuilder;
@@ -23,20 +24,29 @@ public class SpellBuilderInventory extends CustomInventory {
     private final SpellBuilder builder;
     private final List<SpellPart> allParts;
 
+    private int spellStart;
+
     public SpellBuilderInventory(ItemStack item, SpellPartRegistry registry, SpellBuilder builder) {
         super(Bukkit.createInventory(null, 54, "Test"));
         this.targetItem = item;
         this.allParts = new ArrayList<>(registry.getAllParts());
+        this.allParts.removeIf(SpellPart.EMPTY::equals); // Don't show the dummy empty part
         this.builder = builder;
 
         addClickConsumer(event -> event.setCancelled(true));
         addCloseConsumer(this::finalizeSpell);
-        
+
+        populate();
         refreshOptions();
         refreshSpell();
     }
 
-    public void refreshOptions() {
+    private void populate() {
+        addButton(45, ItemBuilder.create(Material.ARROW).name("Back").build(), e -> changeSpellIndex(-1));
+        addButton(53, ItemBuilder.create(Material.ARROW).name("Next").build(), e -> changeSpellIndex(1));
+    }
+
+    private void refreshOptions() {
         int start = 0;
 
         for (int i = 0; i < 27; i++) {
@@ -53,18 +63,17 @@ public class SpellBuilderInventory extends CustomInventory {
         }
     }
 
-    public void refreshSpell() {
-        int start = 0;
-
+    private void refreshSpell() {
         for (int i = 0; i < 9; i++) {
-            int index = start + i;
+            int index = this.spellStart + i;
+
             SpellPart part = builder.getPart(index);
             if (part == SpellPart.EMPTY) {
                 setItem(i + 36, null);
                 removeButton(i + 36);
             } else {
-                addButton(i + 36, ItemBuilder.create(Material.PAPER).name(part.getKey().toString()).build(),
-                        this::removePart);
+                addButton(i + 36, ItemBuilder.create(Material.PAPER).name(part.getKey().toString())
+                        .lore("Index: " + index).build(), this::removePart);
             }
         }
     }
@@ -79,10 +88,13 @@ public class SpellBuilderInventory extends CustomInventory {
         refreshSpell();
     }
 
-    private void removePart(InventoryClickEvent event) {
-        int start = 0;
+    private void changeSpellIndex(int amount) {
+        this.spellStart = Utils.clamp(this.spellStart + amount, 0, this.builder.getSize() - 9);
+        refreshSpell();
+    }
 
-        this.builder.clearPart(start + (event.getSlot() - 36));
+    private void removePart(InventoryClickEvent event) {
+        this.builder.clearPart(this.spellStart + (event.getSlot() - 36));
         refreshSpell();
     }
 

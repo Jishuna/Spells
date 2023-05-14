@@ -7,7 +7,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 
-import me.jishuna.jishlib.config.ConfigEntry;
+import me.jishuna.jishlib.config.annotation.Comment;
+import me.jishuna.jishlib.config.annotation.ConfigEntry;
 import me.jishuna.spells.api.spell.ModifierData;
 import me.jishuna.spells.api.spell.SpellContext;
 import me.jishuna.spells.api.spell.SpellExecutor;
@@ -18,6 +19,7 @@ import me.jishuna.spells.api.spell.part.ShapePart;
 public class ProjectileShape extends ShapePart {
     public static final ProjectileShape INSTANCE = new ProjectileShape();
 
+    @Comment("The size of the projectile, higher numbers make the projectile more lenient when checking for collision.")
     @ConfigEntry("shapes.projectile.size")
     public static double PROJECTILE_SIZE = 0.1;
 
