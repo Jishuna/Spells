@@ -21,6 +21,7 @@ import me.jishuna.spells.spell.action.CollectAction;
 import me.jishuna.spells.spell.action.ExplodeAction;
 import me.jishuna.spells.spell.action.HarmAction;
 import me.jishuna.spells.spell.action.HealAction;
+import me.jishuna.spells.spell.action.LaunchAction;
 import me.jishuna.spells.spell.action.LightAction;
 import me.jishuna.spells.spell.action.RecallAction;
 import me.jishuna.spells.spell.action.WarpAction;
@@ -112,5 +113,6 @@ public class SpellPartRegistry {
         register(HealAction.INSTANCE);
         register(WarpAction.INSTANCE);
         register(RecallAction.INSTANCE);
+        register(LaunchAction.INSTANCE);
     }
 }
