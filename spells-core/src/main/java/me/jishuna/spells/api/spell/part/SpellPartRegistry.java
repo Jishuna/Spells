@@ -19,6 +19,8 @@ import me.jishuna.spells.spell.action.BreakAction;
 import me.jishuna.spells.spell.action.BurnAction;
 import me.jishuna.spells.spell.action.CollectAction;
 import me.jishuna.spells.spell.action.ExplodeAction;
+import me.jishuna.spells.spell.action.HarmAction;
+import me.jishuna.spells.spell.action.HealAction;
 import me.jishuna.spells.spell.action.LightAction;
 import me.jishuna.spells.spell.modifier.EmpowerModifier;
 import me.jishuna.spells.spell.modifier.ProlongModifier;
@@ -104,5 +106,7 @@ public class SpellPartRegistry {
         register(BreakAction.INSTANCE);
         register(ExplodeAction.INSTANCE);
         register(LightAction.INSTANCE);
+        register(HarmAction.INSTANCE);
+        register(HealAction.INSTANCE);
     }
 }

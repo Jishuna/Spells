@@ -22,7 +22,7 @@ public class BurnAction extends ActionPart {
     @ConfigEntry("actions.burn.base-duration")
     public static int BASE_DURATION = 60;
 
-    @Comment("The additional duration in ticks to burn entities per empower modifier.")
+    @Comment("The additional duration in ticks to burn entities per prolong modifier.")
     @ConfigEntry("actions.burn.bonus-duration")
     public static int BONUS_DURATION = 40;
 

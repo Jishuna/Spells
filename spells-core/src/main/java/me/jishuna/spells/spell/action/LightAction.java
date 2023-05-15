@@ -24,7 +24,7 @@ public class LightAction extends ActionPart {
     @ConfigEntry("actions.light.base-duration")
     public static int BASE_DURATION = 100;
 
-    @Comment("The additional duration in ticks to make entities glow for per empower modifier.")
+    @Comment("The additional duration in ticks to make entities glow for per prolong modifier.")
     @ConfigEntry("actions.light.bonus-duration")
     public static int BONUS_DURATION = 40;
 
