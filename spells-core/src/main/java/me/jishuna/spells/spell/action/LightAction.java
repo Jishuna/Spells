@@ -36,7 +36,7 @@ public class LightAction extends ActionPart {
     public void processEntity(Entity target, SpellCaster caster, SpellContext context, ModifierData data) {
         if (target instanceof LivingEntity entity) {
             int duration = BASE_DURATION + (BONUS_DURATION * data.getProlongAmount());
-            entity.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, duration, 0));
+            entity.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, duration, 0, true));
         }
     }
 

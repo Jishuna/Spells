@@ -36,7 +36,7 @@ public class HealAction extends ActionPart {
                 int duration = BASE_DURATION + (BONUS_DURATION * (data.getProlongAmount() - 1));
                 int level = data.getEmpowerAmount();
 
-                entity.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, duration, level));
+                entity.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, duration, level, true));
             } else {
                 int health = 4 + (4 * data.getEmpowerAmount());
 

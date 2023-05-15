@@ -35,7 +35,7 @@ public class HarmAction extends ActionPart {
                 int duration = BASE_DURATION + (BONUS_DURATION * (data.getProlongAmount() - 1));
                 int level = data.getEmpowerAmount();
 
-                entity.addPotionEffect(new PotionEffect(PotionEffectType.POISON, duration, level));
+                entity.addPotionEffect(new PotionEffect(PotionEffectType.POISON, duration, level, true));
             } else {
                 int damage = 4 + (4 * data.getEmpowerAmount());
                 entity.damage(damage);

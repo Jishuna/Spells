@@ -22,6 +22,7 @@ public class SpellProjectile extends BukkitRunnable {
     private Location location;
     private final Vector velocity;
     private final SpellExecutor resolver;
+    private volatile boolean running = false;
 
     public SpellProjectile(SpellCaster caster, Location location, Vector velocity, SpellExecutor resolver) {
         this.caster = caster;
@@ -43,6 +44,7 @@ public class SpellProjectile extends BukkitRunnable {
             } else if (block != null) {
                 resolver.resolve(BlockTarget.create(block, result.getHitBlockFace()));
             }
+            this.cancel();
         }
 
         this.location.add(this.velocity);
@@ -50,7 +52,15 @@ public class SpellProjectile extends BukkitRunnable {
                 new DustOptions(Color.ORANGE, 1));
     }
 
-    public void shoot(Plugin plugin) {
-        runTaskTimer(plugin, 0, 1);
+    @Override
+    public synchronized void cancel() {
+        if (running) {
+            super.cancel();
+        }
+    }
+
+    public void runTask(Plugin plugin, int delay, int period) {
+        runTaskTimer(plugin, delay, period);
+        running = true;
     }
 }

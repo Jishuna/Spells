@@ -32,7 +32,7 @@ public class ProjectileShape extends ShapePart {
         Location location = caster.getEntity().getEyeLocation();
         SpellProjectile spellProjectile = new SpellProjectile(caster, location, location.getDirection().normalize(),
                 resolver);
-        spellProjectile.shoot(resolver.getPlugin());
+        spellProjectile.runTask(resolver.getPlugin(), 0, 1);
     }
 
     @Override
