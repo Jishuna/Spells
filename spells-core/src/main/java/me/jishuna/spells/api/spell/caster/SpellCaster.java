@@ -11,5 +11,9 @@ public interface SpellCaster {
         return getEntity().getLocation();
     }
     
-    public int getMana();
+    public double getMana();
+
+    public boolean hasMana(double amount);
+
+    public void removeMana(double amount);
 }

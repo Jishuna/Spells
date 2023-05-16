@@ -16,6 +16,7 @@ import me.jishuna.jishlib.commands.SimpleCommandHandler;
 import me.jishuna.spells.api.spell.Spell;
 import me.jishuna.spells.api.spell.SpellExecutor;
 import me.jishuna.spells.api.spell.caster.PlayerSpellCaster;
+import me.jishuna.spells.playerdata.PlayerSpellData;
 
 public class SpellCommand extends SimpleCommandHandler {
     private final Spells plugin;
@@ -28,7 +29,13 @@ public class SpellCommand extends SimpleCommandHandler {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player player = (Player) sender;
-        PlayerSpellCaster caster = new PlayerSpellCaster(player);
+        PlayerSpellData data = plugin.getPlayerManager().getData(player.getUniqueId());
+        
+        if (data == null) {
+            return true;
+        }
+        
+        PlayerSpellCaster caster = new PlayerSpellCaster(data);
         Spell.Builder builder = new Spell.Builder();
 
         for (String key : args) {

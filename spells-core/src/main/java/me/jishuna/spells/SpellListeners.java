@@ -1,7 +1,6 @@
 package me.jishuna.spells;
 
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,7 +13,7 @@ import me.jishuna.spells.api.spell.Spell;
 import me.jishuna.spells.api.spell.SpellBuilder;
 import me.jishuna.spells.api.spell.SpellExecutor;
 import me.jishuna.spells.api.spell.caster.PlayerSpellCaster;
-import me.jishuna.spells.api.spell.caster.SpellCaster;
+import me.jishuna.spells.playerdata.PlayerSpellData;
 
 public class SpellListeners implements Listener {
     private final Spells plugin;
@@ -30,8 +29,14 @@ public class SpellListeners implements Listener {
         }
 
         Player player = event.getPlayer();
+        PlayerSpellData data = plugin.getPlayerManager().getData(player.getUniqueId());
+        if (data == null) {
+            return;
+        }
+
+        PlayerSpellCaster caster = new PlayerSpellCaster(data);
         ItemStack item = event.getItem();
-        Spell spell = getSpell(item);
+        Spell spell = Utils.getSpell(item);
 
         if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
             SpellBuilderInventory inventory = new SpellBuilderInventory(item, this.plugin.getSpellPartRegistry(),
@@ -43,7 +48,6 @@ public class SpellListeners implements Listener {
                 return;
             }
 
-            SpellCaster caster = new PlayerSpellCaster(player);
             SpellExecutor executor = new SpellExecutor(this.plugin, caster, spell);
 
             if (event.getClickedBlock() == null) {
@@ -58,26 +62,21 @@ public class SpellListeners implements Listener {
     @EventHandler
     public void onInteractEntity(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
-        ItemStack item = player.getEquipment().getItem(event.getHand());
-        Spell spell = getSpell(item);
+        PlayerSpellData data = plugin.getPlayerManager().getData(player.getUniqueId());
+        if (data == null) {
+            return;
+        }
 
+        PlayerSpellCaster caster = new PlayerSpellCaster(data);
+        ItemStack item = player.getEquipment().getItem(event.getHand());
+        Spell spell = Utils.getSpell(item);
         if (spell == null) {
             return;
         }
 
-        SpellCaster caster = new PlayerSpellCaster(player);
         SpellExecutor executor = new SpellExecutor(this.plugin, caster, spell);
         executor.handleEntityCast(event.getRightClicked());
 
         event.setCancelled(true);
-    }
-
-    private Spell getSpell(ItemStack item) {
-        if (item == null || !item.hasItemMeta()) {
-            return null;
-        }
-
-        return item.getItemMeta().getPersistentDataContainer().get(NamespacedKey.fromString("spells:spell"),
-                Spells.SPELL_TYPE);
     }
 }

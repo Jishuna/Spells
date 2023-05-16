@@ -1,9 +1,13 @@
 package me.jishuna.spells;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.World;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
+
+import me.jishuna.spells.api.spell.Spell;
 
 public class Utils {
     public static Vector negate(Vector vector) {
@@ -37,5 +41,18 @@ public class Utils {
                 world.spawnParticle(Particle.VILLAGER_HAPPY, position.toLocation(world), 1);
             }
         }
+    }
+
+    public static Spell getSpell(ItemStack item) {
+        if (item == null || !item.hasItemMeta()) {
+            return null;
+        }
+
+        return item.getItemMeta().getPersistentDataContainer().get(NamespacedKey.fromString("spells:spell"),
+                Spells.SPELL_TYPE);
+    }
+    
+    public static boolean hasSpell(ItemStack item) {
+        return getSpell(item) != null;
     }
 }

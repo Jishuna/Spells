@@ -35,30 +35,49 @@ public class SpellExecutor {
         this.target = target;
     }
 
+    private boolean canCast() {
+        return this.caster.hasMana(10);
+    }
+
     public void handleCast(World world) {
+        if (!canCast()) {
+            return;
+        }
+
         Spell subspell = context.getNextSubspell();
         ModifierData data = ModifierData.fromSpell(subspell);
 
         if (subspell.isValid() && subspell.getParts().get(0) instanceof ShapePart shape) {
             shape.cast(caster, world, context, data, this);
+            caster.removeMana(10);
         }
     }
 
     public void handleBlockCast(Block block, BlockFace face) {
+        if (!canCast()) {
+            return;
+        }
+
         Spell subspell = context.getNextSubspell();
         ModifierData data = ModifierData.fromSpell(subspell);
 
         if (subspell.isValid() && subspell.getParts().get(0) instanceof ShapePart shape) {
             shape.castOnBlock(block, face, block.getWorld(), caster, context, data, this);
+            caster.removeMana(10);
         }
     }
 
     public void handleEntityCast(Entity entity) {
+        if (!canCast()) {
+            return;
+        }
+
         Spell subspell = context.getNextSubspell();
         ModifierData data = ModifierData.fromSpell(subspell);
 
         if (subspell.isValid() && subspell.getParts().get(0) instanceof ShapePart shape) {
             shape.castOnEntity(entity, entity.getWorld(), caster, context, data, this);
+            caster.removeMana(10);
         }
     }
 
@@ -73,13 +92,9 @@ public class SpellExecutor {
 
     public void execute() {
         while (context.hasPartsLeft()) {
-            if (this.cancelled) {
-                break;
-            }
-
             Spell spell = context.getNextSubspell();
-            if (!spell.isValid()) {
-                continue;
+            if (this.cancelled || !spell.isValid()) {
+                break;
             }
 
             SpellPart firstPart = spell.getParts().get(0);

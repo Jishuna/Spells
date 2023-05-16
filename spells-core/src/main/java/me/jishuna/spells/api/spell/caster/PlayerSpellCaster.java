@@ -1,23 +1,34 @@
 package me.jishuna.spells.api.spell.caster;
 
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+
+import me.jishuna.spells.playerdata.PlayerSpellData;
 
 public class PlayerSpellCaster implements SpellCaster {
-    private final Player player;
+    private final PlayerSpellData data;
 
-    public PlayerSpellCaster(Player player) {
-        this.player = player;
+    public PlayerSpellCaster(PlayerSpellData data) {
+        this.data = data;
     }
 
     @Override
     public LivingEntity getEntity() {
-        return this.player;
+        return this.data.getPlayer();
     }
 
     @Override
-    public int getMana() {
-        return 100;
+    public double getMana() {
+        return this.data.getMana();
+    }
+    
+    @Override
+    public boolean hasMana(double amount) {
+        return this.data.hasMana(amount);
+    }
+    
+    @Override
+    public void removeMana(double amount) {
+        this.data.removeMana(amount);
     }
 
 }
