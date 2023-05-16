@@ -6,6 +6,7 @@ import org.bukkit.entity.LivingEntity;
 
 import me.jishuna.spells.api.spell.ModifierData;
 import me.jishuna.spells.api.spell.SpellContext;
+import me.jishuna.spells.api.spell.SpellExecutor;
 import me.jishuna.spells.api.spell.caster.SpellCaster;
 import me.jishuna.spells.api.spell.part.ActionPart;
 import me.jishuna.spells.api.spell.target.BlockTarget;
@@ -19,11 +20,11 @@ public class WarpAction extends ActionPart {
     }
 
     @Override
-    public void process(SpellTarget target, SpellCaster caster, SpellContext context, ModifierData data) {
+    public void process(SpellTarget target, SpellCaster caster, SpellContext context, ModifierData data, SpellExecutor executor) {
         Location warpLocatiom;
         LivingEntity entity = caster.getEntity();
         if (target instanceof BlockTarget blockTarget) {
-            warpLocatiom = blockTarget.getOriginBlock().getRelative(blockTarget.getHitFace()).getLocation();
+            warpLocatiom = blockTarget.getOrigin().getBlock().getRelative(blockTarget.getFace()).getLocation();
         } else {
             warpLocatiom = target.getOrigin();
         }

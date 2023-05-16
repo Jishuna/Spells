@@ -1,24 +1,42 @@
 package me.jishuna.spells.api.spell.target;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.util.BoundingBox;
+
+import me.jishuna.spells.Utils;
 
 public class EntityTarget extends SpellTarget {
-    private final Entity originEntity;
-
-    private EntityTarget(Entity entity, double radius, double height) {
-        super(entity, radius, height);
-        this.originEntity = entity;
+    private EntityTarget(Location location, Collection<Entity> entities, Collection<Block> blocks) {
+        super(location, entities, blocks);
     }
 
-    public Entity getOriginEntity() {
-        return originEntity;
+    @Override
+    public EntityTarget filter(Predicate<Entity> entityFilter, Predicate<Block> blockFilter) {
+        Set<Entity> entities = this.entities.stream().filter(entityFilter).collect(Collectors.toSet());
+        Set<Block> blocks = this.blocks.stream().filter(blockFilter).collect(Collectors.toSet());
+
+        return new EntityTarget(getOrigin(), entities, blocks);
     }
 
     public static EntityTarget create(Entity entity) {
-        return new EntityTarget(entity, 0, 0);
+        return create(entity.getLocation(), Set.of(entity), 0, 0);
     }
 
-    public static EntityTarget create(Entity entity, double radius, double height) {
-        return new EntityTarget(entity, radius, height);
+    public static EntityTarget create(Location location, Collection<Entity> current, double radius, double height) {
+        Set<Entity> entities = new HashSet<>(current);
+        BoundingBox bounds = BoundingBox.of(location, radius, height / 2, radius);
+        Utils.outlineBoundingBox(location.getWorld(), bounds);
+
+        entities.addAll(location.getWorld().getNearbyEntities(bounds));
+
+        return new EntityTarget(location, entities, SpellTarget.getBlocks(location.getWorld(), bounds));
     }
 }

@@ -20,20 +20,20 @@ public abstract class SubshapePart extends SpellPart {
     public SpellTarget cast(SpellTarget target, SpellCaster caster, World world, SpellContext context,
             ModifierData data, SpellExecutor resolver) {
         if (target instanceof EntityTarget entityTarget) {
-            return castOnEntity(entityTarget, world, caster, context, data, resolver);
+            return castOnEntity(entityTarget, caster, world, context, data, resolver);
         }
 
         if (target instanceof BlockTarget blockTarget) {
-            return castOnBlock(blockTarget, world, caster, context, data, resolver);
+            return castOnBlock(blockTarget, caster, world, context, data, resolver);
         }
 
         return target;
     }
 
-    public abstract EntityTarget castOnEntity(EntityTarget target, World world, SpellCaster caster,
-            SpellContext context, ModifierData data, SpellExecutor resolver);
+    public abstract SpellTarget castOnEntity(EntityTarget target, SpellCaster caster, World world, SpellContext context,
+            ModifierData data, SpellExecutor resolver);
 
-    public abstract BlockTarget castOnBlock(BlockTarget target, World world, SpellCaster caster, SpellContext context,
+    public abstract SpellTarget castOnBlock(BlockTarget target, SpellCaster caster, World world, SpellContext context,
             ModifierData data, SpellExecutor resolver);
 
 }

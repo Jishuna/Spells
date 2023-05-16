@@ -40,9 +40,9 @@ public class SpellProjectile extends BukkitRunnable {
             Entity entity = result.getHitEntity();
             Block block = result.getHitBlock();
             if (entity != null) {
-                resolver.resolve(EntityTarget.create(entity));
+                resolver.execute(EntityTarget.create(entity));
             } else if (block != null) {
-                resolver.resolve(BlockTarget.create(block, result.getHitBlockFace()));
+                resolver.execute(BlockTarget.create(block, result.getHitBlockFace()));
             }
             this.cancel();
         }

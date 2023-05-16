@@ -22,7 +22,7 @@ public class SelfShape extends ShapePart {
 
     @Override
     public void cast(SpellCaster caster, World world, SpellContext context, ModifierData data, SpellExecutor resolver) {
-        resolver.resolve(EntityTarget.create(caster.getEntity()));
+        resolver.execute(EntityTarget.create(caster.getEntity()));
     }
 
     @Override

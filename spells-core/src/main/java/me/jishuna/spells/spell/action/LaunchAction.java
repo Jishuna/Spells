@@ -10,6 +10,7 @@ import org.bukkit.util.Vector;
 
 import me.jishuna.spells.api.spell.ModifierData;
 import me.jishuna.spells.api.spell.SpellContext;
+import me.jishuna.spells.api.spell.SpellExecutor;
 import me.jishuna.spells.api.spell.caster.SpellCaster;
 import me.jishuna.spells.api.spell.part.ActionPart;
 
@@ -21,14 +22,14 @@ public class LaunchAction extends ActionPart {
     }
 
     @Override
-    public void processEntity(Entity target, SpellCaster caster, SpellContext context, ModifierData data) {
+    public void processEntity(Entity target, SpellCaster caster, SpellContext context, ModifierData data, SpellExecutor executor) {
         double power = 0.8 + (0.2 * data.getEmpowerAmount());
         target.setVelocity(new Vector(0, power, 0));
     }
 
     @Override
     public void processBlock(Block target, BlockFace targetFace, SpellCaster caster, SpellContext context,
-            ModifierData data) {
+            ModifierData data, SpellExecutor executor) {
         Block targetBlock = target.getRelative(targetFace);
 
         if (!targetBlock.isPassable()) {

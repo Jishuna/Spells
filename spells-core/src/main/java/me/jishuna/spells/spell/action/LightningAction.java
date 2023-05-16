@@ -12,27 +12,25 @@ import me.jishuna.spells.api.spell.SpellExecutor;
 import me.jishuna.spells.api.spell.caster.SpellCaster;
 import me.jishuna.spells.api.spell.part.ActionPart;
 
-public class ExplodeAction extends ActionPart {
-    public static final ExplodeAction INSTANCE = new ExplodeAction();
+public class LightningAction extends ActionPart {
+    public static final LightningAction INSTANCE = new LightningAction();
 
-    private ExplodeAction() {
-        super(NamespacedKey.fromString("action:explode"));
+    private LightningAction() {
+        super(NamespacedKey.fromString("action:lightning"));
     }
 
     @Override
     public void processEntity(Entity target, SpellCaster caster, SpellContext context, ModifierData data, SpellExecutor executor) {
-        explode(target.getLocation(), caster, data);
+        lightning(target.getLocation());
     }
 
     @Override
     public void processBlock(Block target, BlockFace targetFace, SpellCaster caster, SpellContext context,
             ModifierData data, SpellExecutor executor) {
-        explode(target.getRelative(targetFace).getLocation().add(0.5, 0, 0.5), caster, data);
+        lightning(target.getRelative(targetFace).getLocation().add(0.5, 0, 0.5));
     }
 
-    private void explode(Location location, SpellCaster caster, ModifierData data) {
-        float power = 1f + (0.5f * data.getEmpowerAmount());
-
-        location.getWorld().createExplosion(location, power, false, true, caster.getEntity());
+    private void lightning(Location location) {
+        location.getWorld().strikeLightning(location);
     }
 }

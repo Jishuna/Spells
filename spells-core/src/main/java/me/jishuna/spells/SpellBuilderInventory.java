@@ -24,14 +24,18 @@ public class SpellBuilderInventory extends CustomInventory {
     private final SpellBuilder builder;
     private final List<SpellPart> allParts;
 
+    private final int maxPartPage;
+
     private int spellStart;
+    private int partStart;
 
     public SpellBuilderInventory(ItemStack item, SpellPartRegistry registry, SpellBuilder builder) {
-        super(Bukkit.createInventory(null, 54, "Test"));
+        super(Bukkit.createInventory(null, 54, "Spell Builder"));
         this.targetItem = item;
         this.allParts = new ArrayList<>(registry.getAllParts());
         this.allParts.removeIf(SpellPart.EMPTY::equals); // Don't show the dummy empty part
         this.builder = builder;
+        this.maxPartPage = this.allParts.size() / 27;
 
         addClickConsumer(event -> event.setCancelled(true));
         addCloseConsumer(this::finalizeSpell);
@@ -42,15 +46,18 @@ public class SpellBuilderInventory extends CustomInventory {
     }
 
     private void populate() {
+        addButton(27, ItemBuilder.create(Material.ARROW).name("Back").build(), e -> changePartIndex(-1));
+        addButton(35, ItemBuilder.create(Material.ARROW).name("Next").build(), e -> changePartIndex(1));
+
         addButton(45, ItemBuilder.create(Material.ARROW).name("Back").build(), e -> changeSpellIndex(-1));
         addButton(53, ItemBuilder.create(Material.ARROW).name("Next").build(), e -> changeSpellIndex(1));
+
+        addButton(48, ItemBuilder.create(Material.ARROW).name("Clear").build(), this::clearParts);
     }
 
     private void refreshOptions() {
-        int start = 0;
-
         for (int i = 0; i < 27; i++) {
-            int index = start + i;
+            int index = this.partStart + i;
             if (index >= allParts.size()) {
                 setItem(i, null);
                 removeButton(i);
@@ -93,8 +100,18 @@ public class SpellBuilderInventory extends CustomInventory {
         refreshSpell();
     }
 
+    private void changePartIndex(int amount) {
+        this.partStart = Utils.clamp((this.partStart / 27) + amount, 0, this.maxPartPage) * 27;
+        refreshOptions();
+    }
+
     private void removePart(InventoryClickEvent event) {
         this.builder.clearPart(this.spellStart + (event.getSlot() - 36));
+        refreshSpell();
+    }
+
+    private void clearParts(InventoryClickEvent event) {
+        this.builder.clearParts();
         refreshSpell();
     }
 

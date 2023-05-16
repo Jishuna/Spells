@@ -11,6 +11,7 @@ import me.jishuna.jishlib.config.annotation.Comment;
 import me.jishuna.jishlib.config.annotation.ConfigEntry;
 import me.jishuna.spells.api.spell.ModifierData;
 import me.jishuna.spells.api.spell.SpellContext;
+import me.jishuna.spells.api.spell.SpellExecutor;
 import me.jishuna.spells.api.spell.caster.SpellCaster;
 import me.jishuna.spells.api.spell.part.ActionPart;
 
@@ -30,7 +31,7 @@ public class HealAction extends ActionPart {
     }
 
     @Override
-    public void processEntity(Entity target, SpellCaster caster, SpellContext context, ModifierData data) {
+    public void processEntity(Entity target, SpellCaster caster, SpellContext context, ModifierData data, SpellExecutor executor) {
         if (target instanceof LivingEntity entity) {
             if (data.getProlongAmount() > 0) {
                 int duration = BASE_DURATION + (BONUS_DURATION * (data.getProlongAmount() - 1));

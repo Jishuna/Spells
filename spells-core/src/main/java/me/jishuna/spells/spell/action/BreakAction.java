@@ -6,6 +6,7 @@ import org.bukkit.block.BlockFace;
 
 import me.jishuna.spells.api.spell.ModifierData;
 import me.jishuna.spells.api.spell.SpellContext;
+import me.jishuna.spells.api.spell.SpellExecutor;
 import me.jishuna.spells.api.spell.caster.SpellCaster;
 import me.jishuna.spells.api.spell.part.ActionPart;
 
@@ -18,7 +19,7 @@ public class BreakAction extends ActionPart {
 
     @Override
     public void processBlock(Block target, BlockFace targetFace, SpellCaster caster, SpellContext context,
-            ModifierData data) {
+            ModifierData data, SpellExecutor executor) {
         target.breakNaturally();
     }
 }

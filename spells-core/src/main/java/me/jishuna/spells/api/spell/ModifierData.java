@@ -6,6 +6,7 @@ import java.util.Map;
 
 import me.jishuna.spells.api.spell.part.ModifierPart;
 import me.jishuna.spells.spell.modifier.EmpowerModifier;
+import me.jishuna.spells.spell.modifier.PierceModifier;
 import me.jishuna.spells.spell.modifier.ProlongModifier;
 
 public class ModifierData {
@@ -27,6 +28,10 @@ public class ModifierData {
 
     public int getProlongAmount() {
         return getCount(ProlongModifier.INSTANCE);
+    }
+
+    public int getPierceAmount() {
+        return getCount(PierceModifier.INSTANCE);
     }
 
     public static ModifierData fromSpell(Spell spell) {

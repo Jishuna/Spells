@@ -1,6 +1,5 @@
 package me.jishuna.spells.api.spell;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
@@ -13,15 +12,6 @@ public class Spell {
 
     public Spell(List<SpellPart> parts) {
         this.parts = ImmutableList.copyOf(parts);
-    }
-
-    public Spell getRemaining(int start) {
-        List<SpellPart> subParts = Collections.emptyList();
-        if (start < this.parts.size()) {
-            subParts = this.parts.subList(start, this.parts.size());
-        }
-
-        return new Spell(subParts);
     }
 
     public ShapePart getShape() {

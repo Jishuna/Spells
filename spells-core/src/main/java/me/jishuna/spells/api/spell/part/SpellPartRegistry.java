@@ -2,8 +2,8 @@ package me.jishuna.spells.api.spell.part;
 
 import java.io.File;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -18,14 +18,27 @@ import me.jishuna.spells.Spells;
 import me.jishuna.spells.spell.action.BreakAction;
 import me.jishuna.spells.spell.action.BurnAction;
 import me.jishuna.spells.spell.action.CollectAction;
+import me.jishuna.spells.spell.action.DelayAction;
 import me.jishuna.spells.spell.action.ExplodeAction;
 import me.jishuna.spells.spell.action.HarmAction;
 import me.jishuna.spells.spell.action.HealAction;
 import me.jishuna.spells.spell.action.LaunchAction;
 import me.jishuna.spells.spell.action.LightAction;
+import me.jishuna.spells.spell.action.LightningAction;
 import me.jishuna.spells.spell.action.RecallAction;
+import me.jishuna.spells.spell.action.SlowfallAction;
+import me.jishuna.spells.spell.action.SmeltAction;
 import me.jishuna.spells.spell.action.WarpAction;
+import me.jishuna.spells.spell.filter.block.BlockFilter;
+import me.jishuna.spells.spell.filter.block.LogFilter;
+import me.jishuna.spells.spell.filter.entity.AnimalFilter;
+import me.jishuna.spells.spell.filter.entity.EntityFilter;
+import me.jishuna.spells.spell.filter.entity.MonsterFilter;
+import me.jishuna.spells.spell.filter.entity.PlayerFilter;
+import me.jishuna.spells.spell.filter.entity.VillagerFilter;
+import me.jishuna.spells.spell.modifier.AltModifier;
 import me.jishuna.spells.spell.modifier.EmpowerModifier;
+import me.jishuna.spells.spell.modifier.PierceModifier;
 import me.jishuna.spells.spell.modifier.ProlongModifier;
 import me.jishuna.spells.spell.shape.BeamShape;
 import me.jishuna.spells.spell.shape.ProjectileShape;
@@ -34,7 +47,7 @@ import me.jishuna.spells.spell.shape.TouchShape;
 import me.jishuna.spells.spell.subshape.AreaSubshape;
 
 public class SpellPartRegistry {
-    private final Map<NamespacedKey, SpellPart> registryMap = new HashMap<>();
+    private final Map<NamespacedKey, SpellPart> registryMap = new LinkedHashMap<>();
     private final Set<ReloadableClass<? extends SpellPart>> reloadables = new HashSet<>();
 
     private final Spells plugin;
@@ -102,6 +115,19 @@ public class SpellPartRegistry {
         // Modifiers
         register(EmpowerModifier.INSTANCE);
         register(ProlongModifier.INSTANCE);
+        register(AltModifier.INSTANCE);
+        register(PierceModifier.INSTANCE);
+
+        // Block Filters
+        register(BlockFilter.INSTANCE);
+        register(LogFilter.INSTANCE);
+
+        // Entity Filters
+        register(EntityFilter.INSTANCE);
+        register(PlayerFilter.INSTANCE);
+        register(VillagerFilter.INSTANCE);
+        register(MonsterFilter.INSTANCE);
+        register(AnimalFilter.INSTANCE);
 
         // Actions
         register(BurnAction.INSTANCE);
@@ -114,5 +140,9 @@ public class SpellPartRegistry {
         register(WarpAction.INSTANCE);
         register(RecallAction.INSTANCE);
         register(LaunchAction.INSTANCE);
+        register(LightningAction.INSTANCE);
+        register(SmeltAction.INSTANCE);
+        register(DelayAction.INSTANCE);
+        register(SlowfallAction.INSTANCE);
     }
 }

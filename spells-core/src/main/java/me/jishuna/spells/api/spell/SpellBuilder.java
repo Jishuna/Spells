@@ -36,6 +36,10 @@ public class SpellBuilder {
         parts[index] = SpellPart.EMPTY;
     }
 
+    public void clearParts() {
+        Arrays.fill(this.parts, SpellPart.EMPTY);
+    }
+
     public SpellPart getPart(int index) {
         if (index >= parts.length) {
             return SpellPart.EMPTY;

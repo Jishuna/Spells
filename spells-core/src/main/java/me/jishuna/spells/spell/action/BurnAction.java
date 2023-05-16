@@ -11,6 +11,7 @@ import me.jishuna.jishlib.config.annotation.Comment;
 import me.jishuna.jishlib.config.annotation.ConfigEntry;
 import me.jishuna.spells.api.spell.ModifierData;
 import me.jishuna.spells.api.spell.SpellContext;
+import me.jishuna.spells.api.spell.SpellExecutor;
 import me.jishuna.spells.api.spell.caster.SpellCaster;
 import me.jishuna.spells.api.spell.part.ActionPart;
 
@@ -31,14 +32,14 @@ public class BurnAction extends ActionPart {
     }
 
     @Override
-    public void processEntity(Entity target, SpellCaster caster, SpellContext context, ModifierData data) {
+    public void processEntity(Entity target, SpellCaster caster, SpellContext context, ModifierData data, SpellExecutor executor) {
         int duration = BASE_DURATION + (BONUS_DURATION * data.getProlongAmount());
         target.setFireTicks(duration);
     }
 
     @Override
     public void processBlock(Block target, BlockFace targetFace, SpellCaster caster, SpellContext context,
-            ModifierData data) {
+            ModifierData data, SpellExecutor executor) {
         target = target.getRelative(BlockFace.UP);
         if (target.getType().isAir() && target.canPlace(FIRE)) {
             target.setType(Material.FIRE);

@@ -14,6 +14,7 @@ import me.jishuna.jishlib.config.annotation.Comment;
 import me.jishuna.jishlib.config.annotation.ConfigEntry;
 import me.jishuna.spells.api.spell.ModifierData;
 import me.jishuna.spells.api.spell.SpellContext;
+import me.jishuna.spells.api.spell.SpellExecutor;
 import me.jishuna.spells.api.spell.caster.SpellCaster;
 import me.jishuna.spells.api.spell.part.ActionPart;
 
@@ -33,7 +34,7 @@ public class LightAction extends ActionPart {
     }
 
     @Override
-    public void processEntity(Entity target, SpellCaster caster, SpellContext context, ModifierData data) {
+    public void processEntity(Entity target, SpellCaster caster, SpellContext context, ModifierData data, SpellExecutor executor) {
         if (target instanceof LivingEntity entity) {
             int duration = BASE_DURATION + (BONUS_DURATION * data.getProlongAmount());
             entity.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, duration, 0, true));
@@ -42,7 +43,7 @@ public class LightAction extends ActionPart {
 
     @Override
     public void processBlock(Block target, BlockFace targetFace, SpellCaster caster, SpellContext context,
-            ModifierData data) {
+            ModifierData data, SpellExecutor executor) {
         Block targetBlock = target.getRelative(targetFace);
 
         if (!targetBlock.getType().isAir()) {

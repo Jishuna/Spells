@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import me.jishuna.jishlib.LocationUtils;
 import me.jishuna.spells.api.spell.ModifierData;
 import me.jishuna.spells.api.spell.SpellContext;
+import me.jishuna.spells.api.spell.SpellExecutor;
 import me.jishuna.spells.api.spell.caster.SpellCaster;
 import me.jishuna.spells.api.spell.part.ActionPart;
 import me.jishuna.spells.api.spell.target.SpellTarget;
@@ -19,7 +20,7 @@ public class RecallAction extends ActionPart {
     }
 
     @Override
-    public void process(SpellTarget target, SpellCaster caster, SpellContext context, ModifierData data) {
+    public void process(SpellTarget target, SpellCaster caster, SpellContext context, ModifierData data, SpellExecutor executor) {
         if (caster.getEntity() instanceof Player player) {
             Location targetLocation = player.getBedSpawnLocation();
 
