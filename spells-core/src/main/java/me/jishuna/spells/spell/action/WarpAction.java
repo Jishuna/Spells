@@ -11,12 +11,16 @@ import me.jishuna.spells.api.spell.caster.SpellCaster;
 import me.jishuna.spells.api.spell.part.ActionPart;
 import me.jishuna.spells.api.spell.target.BlockTarget;
 import me.jishuna.spells.api.spell.target.SpellTarget;
+import net.md_5.bungee.api.ChatColor;
 
 public class WarpAction extends ActionPart {
     public static final WarpAction INSTANCE = new WarpAction();
 
     private WarpAction() {
-        super(NamespacedKey.fromString("action:warp"));
+        super(NamespacedKey.fromString("action:warp"), 15);
+        
+        setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Warp");
+        setDefaultLore("Teleports the caster to the target location.");
     }
 
     @Override

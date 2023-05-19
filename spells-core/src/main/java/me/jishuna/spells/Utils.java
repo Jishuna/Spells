@@ -48,10 +48,9 @@ public class Utils {
             return null;
         }
 
-        return item.getItemMeta().getPersistentDataContainer().get(NamespacedKey.fromString("spells:spell"),
-                Spells.SPELL_TYPE);
+        return item.getItemMeta().getPersistentDataContainer().get(NamespacedKey.fromString("spells:spell"), Spells.SPELL_TYPE);
     }
-    
+
     public static boolean hasSpell(ItemStack item) {
         return getSpell(item) != null;
     }

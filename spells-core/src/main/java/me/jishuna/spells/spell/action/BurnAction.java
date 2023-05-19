@@ -14,21 +14,28 @@ import me.jishuna.spells.api.spell.SpellContext;
 import me.jishuna.spells.api.spell.SpellExecutor;
 import me.jishuna.spells.api.spell.caster.SpellCaster;
 import me.jishuna.spells.api.spell.part.ActionPart;
+import me.jishuna.spells.spell.modifier.ProlongModifier;
+import net.md_5.bungee.api.ChatColor;
 
 public class BurnAction extends ActionPart {
     public static final BurnAction INSTANCE = new BurnAction();
     private static final BlockData FIRE = Material.FIRE.createBlockData();
 
+    @ConfigEntry("bonus-duration")
+    @Comment("The additional duration in ticks to burn entities per prolong modifier.")
+    public static int BONUS_DURATION = 40;
+    
+    @ConfigEntry("base-duration")
     @Comment("The base duration in ticks to burn entities for.")
-    @ConfigEntry("actions.burn.base-duration")
     public static int BASE_DURATION = 60;
 
-    @Comment("The additional duration in ticks to burn entities per prolong modifier.")
-    @ConfigEntry("actions.burn.bonus-duration")
-    public static int BONUS_DURATION = 40;
-
     private BurnAction() {
-        super(NamespacedKey.fromString("action:burn"));
+        super(NamespacedKey.fromString("action:burn"), 15);
+
+        setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Burn");
+        setDefaultLore("Lights the target block or entity on fire. Prolong will increase the duration entities are set on fire.");
+
+        addAllowedModifiers(ProlongModifier.INSTANCE);
     }
 
     @Override
@@ -38,8 +45,7 @@ public class BurnAction extends ActionPart {
     }
 
     @Override
-    public void processBlock(Block target, BlockFace targetFace, SpellCaster caster, SpellContext context,
-            ModifierData data, SpellExecutor executor) {
+    public void processBlock(Block target, BlockFace targetFace, SpellCaster caster, SpellContext context, ModifierData data, SpellExecutor executor) {
         target = target.getRelative(BlockFace.UP);
         if (target.getType().isAir() && target.canPlace(FIRE)) {
             target.setType(Material.FIRE);

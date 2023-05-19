@@ -19,6 +19,7 @@ public class SpellExecutor {
     private final Spells plugin;
     private final SpellCaster caster;
     private final SpellContext context;
+    private final int cost;
     private SpellTarget target;
     private boolean cancelled;
 
@@ -26,17 +27,16 @@ public class SpellExecutor {
         this.plugin = plugin;
         this.caster = caster;
         this.context = new SpellContext(spell);
+        this.cost = spell.getTotalManaCost();
     }
 
     private SpellExecutor(Spells plugin, SpellCaster caster, Spell spell, SpellTarget target) {
-        this.plugin = plugin;
-        this.caster = caster;
-        this.context = new SpellContext(spell);
+        this(plugin, caster, spell);
         this.target = target;
     }
 
     private boolean canCast() {
-        return this.caster.hasMana(10);
+        return this.caster.hasMana(this.cost);
     }
 
     public void handleCast(World world) {
@@ -49,7 +49,7 @@ public class SpellExecutor {
 
         if (subspell.isValid() && subspell.getParts().get(0) instanceof ShapePart shape) {
             shape.cast(caster, world, context, data, this);
-            caster.removeMana(10);
+            caster.removeMana(this.cost);
         }
     }
 
@@ -63,7 +63,7 @@ public class SpellExecutor {
 
         if (subspell.isValid() && subspell.getParts().get(0) instanceof ShapePart shape) {
             shape.castOnBlock(block, face, block.getWorld(), caster, context, data, this);
-            caster.removeMana(10);
+            caster.removeMana(this.cost);
         }
     }
 
@@ -77,7 +77,7 @@ public class SpellExecutor {
 
         if (subspell.isValid() && subspell.getParts().get(0) instanceof ShapePart shape) {
             shape.castOnEntity(entity, entity.getWorld(), caster, context, data, this);
-            caster.removeMana(10);
+            caster.removeMana(this.cost);
         }
     }
 
@@ -102,8 +102,7 @@ public class SpellExecutor {
             if (firstPart instanceof ActionPart actionPart) {
                 actionPart.process(this.target, caster, context, data, this);
             } else if (firstPart instanceof SubshapePart subShapePart) {
-                this.target = subShapePart.cast(this.target, this.caster, this.caster.getEntity().getWorld(), context,
-                        data, this);
+                this.target = subShapePart.cast(this.target, this.caster, this.caster.getEntity().getWorld(), context, data, this);
             } else if (firstPart instanceof FilterPart filterPart) {
                 filterPart.process(this.target, caster, context, data, this);
             }

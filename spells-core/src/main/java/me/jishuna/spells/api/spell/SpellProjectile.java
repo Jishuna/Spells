@@ -15,26 +15,32 @@ import org.bukkit.util.Vector;
 import me.jishuna.spells.api.spell.caster.SpellCaster;
 import me.jishuna.spells.api.spell.target.BlockTarget;
 import me.jishuna.spells.api.spell.target.EntityTarget;
-import me.jishuna.spells.spell.shape.ProjectileShape;
 
 public class SpellProjectile extends BukkitRunnable {
     private final SpellCaster caster;
     private Location location;
     private final Vector velocity;
     private final SpellExecutor resolver;
+    private final double size;
+    private int length;
     private volatile boolean running = false;
 
-    public SpellProjectile(SpellCaster caster, Location location, Vector velocity, SpellExecutor resolver) {
+    public SpellProjectile(SpellCaster caster, Location location, Vector velocity, SpellExecutor resolver, double size, int length) {
         this.caster = caster;
         this.location = location;
         this.velocity = velocity;
         this.resolver = resolver;
+        this.size = size;
+        this.length = length;
     }
 
     @Override
     public void run() {
-        RayTraceResult result = location.getWorld().rayTrace(location, velocity, 1, FluidCollisionMode.NEVER, true,
-                ProjectileShape.PROJECTILE_SIZE, e -> e != caster.getEntity());
+        if (length-- <= 0) {
+            this.cancel();
+        }
+
+        RayTraceResult result = location.getWorld().rayTrace(location, velocity, 1, FluidCollisionMode.NEVER, true, this.size, e -> e != caster.getEntity());
 
         if (result != null) {
             Entity entity = result.getHitEntity();
@@ -48,8 +54,7 @@ public class SpellProjectile extends BukkitRunnable {
         }
 
         this.location.add(this.velocity);
-        this.location.getWorld().spawnParticle(Particle.REDSTONE, location, 3, 0.05, 0.05, 0.05,
-                new DustOptions(Color.ORANGE, 1));
+        this.location.getWorld().spawnParticle(Particle.REDSTONE, location, 3, 0.05, 0.05, 0.05, new DustOptions(Color.ORANGE, 1));
     }
 
     @Override

@@ -11,12 +11,16 @@ import me.jishuna.spells.api.spell.SpellContext;
 import me.jishuna.spells.api.spell.SpellExecutor;
 import me.jishuna.spells.api.spell.caster.SpellCaster;
 import me.jishuna.spells.api.spell.part.ActionPart;
+import net.md_5.bungee.api.ChatColor;
 
 public class LightningAction extends ActionPart {
     public static final LightningAction INSTANCE = new LightningAction();
 
     private LightningAction() {
-        super(NamespacedKey.fromString("action:lightning"));
+        super(NamespacedKey.fromString("action:lightning"), 15);
+        
+        setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Lightning");
+        setDefaultLore("Strikes the target with lightning.");
     }
 
     @Override
@@ -25,8 +29,7 @@ public class LightningAction extends ActionPart {
     }
 
     @Override
-    public void processBlock(Block target, BlockFace targetFace, SpellCaster caster, SpellContext context,
-            ModifierData data, SpellExecutor executor) {
+    public void processBlock(Block target, BlockFace targetFace, SpellCaster caster, SpellContext context, ModifierData data, SpellExecutor executor) {
         lightning(target.getRelative(targetFace).getLocation().add(0.5, 0, 0.5));
     }
 

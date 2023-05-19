@@ -11,12 +11,19 @@ import me.jishuna.spells.api.spell.SpellContext;
 import me.jishuna.spells.api.spell.SpellExecutor;
 import me.jishuna.spells.api.spell.caster.SpellCaster;
 import me.jishuna.spells.api.spell.part.ActionPart;
+import me.jishuna.spells.spell.modifier.EmpowerModifier;
+import net.md_5.bungee.api.ChatColor;
 
 public class ExplodeAction extends ActionPart {
     public static final ExplodeAction INSTANCE = new ExplodeAction();
 
     private ExplodeAction() {
-        super(NamespacedKey.fromString("action:explode"));
+        super(NamespacedKey.fromString("action:explode"), 15);
+        
+        setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Explode");
+        setDefaultLore("Causes an explosion at the target. Empower will increase the size of the explosion.");
+        
+        addAllowedModifiers(EmpowerModifier.INSTANCE);
     }
 
     @Override
@@ -25,8 +32,7 @@ public class ExplodeAction extends ActionPart {
     }
 
     @Override
-    public void processBlock(Block target, BlockFace targetFace, SpellCaster caster, SpellContext context,
-            ModifierData data, SpellExecutor executor) {
+    public void processBlock(Block target, BlockFace targetFace, SpellCaster caster, SpellContext context, ModifierData data, SpellExecutor executor) {
         explode(target.getRelative(targetFace).getLocation().add(0.5, 0, 0.5), caster, data);
     }
 

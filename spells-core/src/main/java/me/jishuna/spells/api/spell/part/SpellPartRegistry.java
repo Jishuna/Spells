@@ -13,7 +13,7 @@ import org.bukkit.NamespacedKey;
 
 import com.google.common.collect.ImmutableSet;
 
-import me.jishuna.jishlib.config.ReloadableClass;
+import me.jishuna.jishlib.config.ReloadableObject;
 import me.jishuna.spells.Spells;
 import me.jishuna.spells.spell.action.BreakAction;
 import me.jishuna.spells.spell.action.BurnAction;
@@ -48,24 +48,28 @@ import me.jishuna.spells.spell.subshape.AreaSubshape;
 
 public class SpellPartRegistry {
     private final Map<NamespacedKey, SpellPart> registryMap = new LinkedHashMap<>();
-    private final Set<ReloadableClass<? extends SpellPart>> reloadables = new HashSet<>();
+    private final Set<ReloadableObject<? extends SpellPart>> reloadables = new HashSet<>();
 
     private final Spells plugin;
-    private final File configFile;
 
     public SpellPartRegistry(Spells plugin) {
         this.plugin = plugin;
-        this.configFile = new File(plugin.getDataFolder(), "config.yml");
+    }
 
+    public void initialize() {
         addDefaults();
     }
 
     public void register(SpellPart part) {
         if (!registryMap.containsKey(part.getKey())) {
             this.registryMap.put(part.getKey(), part);
+            if (part == SpellPart.EMPTY) {
+                return;
+            }
 
-            ReloadableClass<? extends SpellPart> reloadable = plugin.getConfigurationManager()
-                    .createStaticReloadable(this.configFile, part.getClass());
+            File configFile = new File(plugin.getDataFolder(), part.getConfigFolder() + part.getKey().getKey() + ".yml");
+
+            ReloadableObject<? extends SpellPart> reloadable = plugin.getConfigurationManager().createReloadable(configFile, part);
             reloadable.saveDefaults().load();
 
             reloadables.add(reloadable);
@@ -118,17 +122,6 @@ public class SpellPartRegistry {
         register(AltModifier.INSTANCE);
         register(PierceModifier.INSTANCE);
 
-        // Block Filters
-        register(BlockFilter.INSTANCE);
-        register(LogFilter.INSTANCE);
-
-        // Entity Filters
-        register(EntityFilter.INSTANCE);
-        register(PlayerFilter.INSTANCE);
-        register(VillagerFilter.INSTANCE);
-        register(MonsterFilter.INSTANCE);
-        register(AnimalFilter.INSTANCE);
-
         // Actions
         register(BurnAction.INSTANCE);
         register(CollectAction.INSTANCE);
@@ -144,5 +137,16 @@ public class SpellPartRegistry {
         register(SmeltAction.INSTANCE);
         register(DelayAction.INSTANCE);
         register(SlowfallAction.INSTANCE);
+        
+        // Block Filters
+        register(BlockFilter.INSTANCE);
+        register(LogFilter.INSTANCE);
+
+        // Entity Filters
+        register(EntityFilter.INSTANCE);
+        register(PlayerFilter.INSTANCE);
+        register(VillagerFilter.INSTANCE);
+        register(MonsterFilter.INSTANCE);
+        register(AnimalFilter.INSTANCE);
     }
 }

@@ -12,12 +12,16 @@ import me.jishuna.spells.api.spell.SpellExecutor;
 import me.jishuna.spells.api.spell.caster.SpellCaster;
 import me.jishuna.spells.api.spell.part.ShapePart;
 import me.jishuna.spells.api.spell.target.EntityTarget;
+import net.md_5.bungee.api.ChatColor;
 
 public class SelfShape extends ShapePart {
     public static final SelfShape INSTANCE = new SelfShape();
 
     private SelfShape() {
-        super(NamespacedKey.fromString("shape:self"));
+        super(NamespacedKey.fromString("shape:self"), 15);
+
+        setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Self");
+        setDefaultLore("Targets the entity casting the spell.");
     }
 
     @Override
@@ -26,15 +30,12 @@ public class SelfShape extends ShapePart {
     }
 
     @Override
-    public void castOnEntity(Entity entity, World world, SpellCaster caster, SpellContext context, ModifierData data,
-            SpellExecutor resolver) {
+    public void castOnEntity(Entity entity, World world, SpellCaster caster, SpellContext context, ModifierData data, SpellExecutor resolver) {
         cast(caster, world, context, data, resolver);
     }
 
     @Override
-    public void castOnBlock(Block block, BlockFace face, World world, SpellCaster caster, SpellContext context,
-            ModifierData data, SpellExecutor resolver) {
+    public void castOnBlock(Block block, BlockFace face, World world, SpellCaster caster, SpellContext context, ModifierData data, SpellExecutor resolver) {
         cast(caster, world, context, data, resolver);
     }
-
 }

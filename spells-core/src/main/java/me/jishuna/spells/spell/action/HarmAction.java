@@ -13,20 +13,28 @@ import me.jishuna.spells.api.spell.SpellContext;
 import me.jishuna.spells.api.spell.SpellExecutor;
 import me.jishuna.spells.api.spell.caster.SpellCaster;
 import me.jishuna.spells.api.spell.part.ActionPart;
+import me.jishuna.spells.spell.modifier.EmpowerModifier;
+import me.jishuna.spells.spell.modifier.ProlongModifier;
+import net.md_5.bungee.api.ChatColor;
 
 public class HarmAction extends ActionPart {
     public static final HarmAction INSTANCE = new HarmAction();
 
+    @Comment("The additional duration in ticks for the poison effect per prolong modifier.")
+    @ConfigEntry("bonus-duration")
+    public static int BONUS_DURATION = 40;
+    
     @Comment("The base duration in ticks for the poison effect.")
-    @ConfigEntry("actions.harm.base-duration")
+    @ConfigEntry("base-duration")
     public static int BASE_DURATION = 100;
 
-    @Comment("The additional duration in ticks for the poison effect per prolong modifier.")
-    @ConfigEntry("actions.harm.bonus-duration")
-    public static int BONUS_DURATION = 40;
-
     private HarmAction() {
-        super(NamespacedKey.fromString("action:harm"));
+        super(NamespacedKey.fromString("action:harm"), 15);
+
+        setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Harm");
+        setDefaultLore("Deals damage to the target. Prolong will replace the instant damage with a poison effect, with additional prolong modifiers increasing the duration of the poison. Empower will increase the damage dealt or the level of poison.");
+   
+        addAllowedModifiers(EmpowerModifier.INSTANCE, ProlongModifier.INSTANCE);
     }
 
     @Override

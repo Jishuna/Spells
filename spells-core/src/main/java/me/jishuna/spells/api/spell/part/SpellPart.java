@@ -1,21 +1,95 @@
 package me.jishuna.spells.api.spell.part;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.ChatPaginator;
+
+import me.jishuna.jishlib.config.annotation.Comment;
+import me.jishuna.jishlib.config.annotation.ConfigEntry;
+import me.jishuna.jishlib.config.annotation.PostLoad;
+import me.jishuna.jishlib.items.ItemBuilder;
+import me.jishuna.spells.Spells;
+import net.md_5.bungee.api.ChatColor;
 
 public abstract class SpellPart {
-    public static final SpellPart EMPTY = new SpellPart(NamespacedKey.fromString("part:empty")) {
+    public static final SpellPart EMPTY = new SpellPart(NamespacedKey.fromString("part:empty"), 0) {
     };
 
     private final NamespacedKey key;
+    private ItemStack displayItem;
 
-    protected SpellPart(NamespacedKey key) {
+    @ConfigEntry("lore")
+    private List<String> lore = new ArrayList<>();
+
+    @ConfigEntry("display-name")
+    private String displayName = "unknown";
+
+    @ConfigEntry("mana-cost")
+    @Comment("The mana cost of this spell part")
+    private int manaCost;
+
+    @ConfigEntry("enabled")
+    @Comment("Enable/disable this spell part. Disabled parts cannot be used in spells.")
+    private boolean enabled = true;
+
+    protected SpellPart(NamespacedKey key, int cost) {
         this.key = key;
+        this.manaCost = cost;
+    }
+
+    public boolean isAllowedModifier(ModifierPart modifier) {
+        return true;
     }
 
     public NamespacedKey getKey() {
         return key;
+    }
+
+    public int getManaCost() {
+        return manaCost;
+    }
+
+    public void setManaCost(int manaCost) {
+        this.manaCost = manaCost;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getConfigFolder() {
+        return "";
+    }
+
+    public ItemStack getDisplayItem() {
+        return displayItem.clone();
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public void setLore(List<String> lore) {
+        this.lore = lore;
+    }
+
+    @PostLoad
+    private void onLoad() {
+        this.displayItem = ItemBuilder.create(Material.PLAYER_HEAD)
+                .name(displayName)
+                .lore(lore)
+                .skullTexture("92228765df0e2ebd6c3a3fde070ddc8c551ceb4a43b959e1c44d349ce516560")
+                .persistentData(NamespacedKey.fromString("spells:part"), Spells.spellPartType, this)
+                .build();
     }
 
     @Override
@@ -29,5 +103,28 @@ public abstract class SpellPart {
             return Objects.equals(this.key, part.key);
         }
         return false;
+    }
+
+    protected void setDefaultLore(String lore) {
+        List<String> defaultLore = new ArrayList<>();
+
+        if (this instanceof ShapePart) {
+            defaultLore.add(ChatColor.DARK_GRAY + "Shape");
+        } else if (this instanceof SubshapePart) {
+            defaultLore.add(ChatColor.DARK_GRAY + "Subshape");
+        } else if (this instanceof ModifierPart) {
+            defaultLore.add(ChatColor.DARK_GRAY + "Modifier");
+        } else if (this instanceof FilterPart) {
+            defaultLore.add(ChatColor.DARK_GRAY + "Filter");
+        } else if (this instanceof ActionPart) {
+            defaultLore.add(ChatColor.DARK_GRAY + "Action");
+        }
+
+        defaultLore.add("");
+        for (String line : ChatPaginator.wordWrap(lore, 50)) {
+            defaultLore.add(ChatColor.WHITE + line);
+        }
+
+        this.lore = defaultLore;
     }
 }

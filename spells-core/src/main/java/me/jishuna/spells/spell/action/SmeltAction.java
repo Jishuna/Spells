@@ -22,13 +22,17 @@ import me.jishuna.spells.api.spell.SpellContext;
 import me.jishuna.spells.api.spell.SpellExecutor;
 import me.jishuna.spells.api.spell.caster.SpellCaster;
 import me.jishuna.spells.api.spell.part.ActionPart;
+import net.md_5.bungee.api.ChatColor;
 
 public class SmeltAction extends ActionPart {
     public static final SmeltAction INSTANCE = new SmeltAction();
     private static Map<Material, Material> smeltMap;
 
     private SmeltAction() {
-        super(NamespacedKey.fromString("action:smelt"));
+        super(NamespacedKey.fromString("action:smelt"), 15);
+        
+        setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Smelt");
+        setDefaultLore("Smelts target blocks or items as if they were placed in a furnace.");
     }
 
     @Override
@@ -53,8 +57,7 @@ public class SmeltAction extends ActionPart {
     }
 
     @Override
-    public void processBlock(Block target, BlockFace targetFace, SpellCaster caster, SpellContext context,
-            ModifierData data, SpellExecutor executor) {
+    public void processBlock(Block target, BlockFace targetFace, SpellCaster caster, SpellContext context, ModifierData data, SpellExecutor executor) {
         if (smeltMap == null) {
             cacheSmeltingRecipes();
         }

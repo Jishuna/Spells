@@ -17,20 +17,28 @@ import me.jishuna.spells.api.spell.SpellContext;
 import me.jishuna.spells.api.spell.SpellExecutor;
 import me.jishuna.spells.api.spell.caster.SpellCaster;
 import me.jishuna.spells.api.spell.part.ActionPart;
+import me.jishuna.spells.spell.modifier.EmpowerModifier;
+import me.jishuna.spells.spell.modifier.ProlongModifier;
+import net.md_5.bungee.api.ChatColor;
 
 public class LightAction extends ActionPart {
     public static final LightAction INSTANCE = new LightAction();
 
+    @Comment("The additional duration in ticks to make entities glow for per prolong modifier.")
+    @ConfigEntry("bonus-duration")
+    public static int BONUS_DURATION = 40;
+    
     @Comment("The base duration in ticks to make entities glow for.")
-    @ConfigEntry("actions.light.base-duration")
+    @ConfigEntry("base-duration")
     public static int BASE_DURATION = 100;
 
-    @Comment("The additional duration in ticks to make entities glow for per prolong modifier.")
-    @ConfigEntry("actions.light.bonus-duration")
-    public static int BONUS_DURATION = 40;
-
     private LightAction() {
-        super(NamespacedKey.fromString("action:light"));
+        super(NamespacedKey.fromString("action:light"), 15);
+
+        setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Light");
+        setDefaultLore("Creates an invisible light at the target block or makes the target entity glow. Empower increases the light level of the light, Prolong increases the duration of the glowing effect.");
+   
+        addAllowedModifiers(EmpowerModifier.INSTANCE, ProlongModifier.INSTANCE);
     }
 
     @Override
@@ -42,8 +50,7 @@ public class LightAction extends ActionPart {
     }
 
     @Override
-    public void processBlock(Block target, BlockFace targetFace, SpellCaster caster, SpellContext context,
-            ModifierData data, SpellExecutor executor) {
+    public void processBlock(Block target, BlockFace targetFace, SpellCaster caster, SpellContext context, ModifierData data, SpellExecutor executor) {
         Block targetBlock = target.getRelative(targetFace);
 
         if (!targetBlock.getType().isAir()) {

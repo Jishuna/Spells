@@ -30,11 +30,11 @@ public class SpellCommand extends SimpleCommandHandler {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player player = (Player) sender;
         PlayerSpellData data = plugin.getPlayerManager().getData(player.getUniqueId());
-        
+
         if (data == null) {
             return true;
         }
-        
+
         PlayerSpellCaster caster = new PlayerSpellCaster(data);
         Spell.Builder builder = new Spell.Builder();
 
@@ -42,8 +42,7 @@ public class SpellCommand extends SimpleCommandHandler {
             plugin.getSpellPartRegistry().find(key).ifPresent(builder::part);
         }
 
-        RayTraceResult result = player.getWorld().rayTrace(player.getEyeLocation(),
-                player.getEyeLocation().getDirection(), 4, FluidCollisionMode.NEVER, true, 0, e -> e != player);
+        RayTraceResult result = player.getWorld().rayTrace(player.getEyeLocation(), player.getEyeLocation().getDirection(), 4, FluidCollisionMode.NEVER, true, 0, e -> e != player);
         SpellExecutor resolver = new SpellExecutor(this.plugin, caster, builder.build());
 
         if (result == null) {
@@ -67,8 +66,7 @@ public class SpellCommand extends SimpleCommandHandler {
         String arg = args[args.length - 1];
 
         for (NamespacedKey key : this.plugin.getSpellPartRegistry().getKeys()) {
-            if (StringUtil.startsWithIgnoreCase(key.toString(), arg)
-                    || StringUtil.startsWithIgnoreCase(key.getKey(), arg)) {
+            if (StringUtil.startsWithIgnoreCase(key.toString(), arg) || StringUtil.startsWithIgnoreCase(key.getKey(), arg)) {
                 options.add(key.toString());
             }
         }

@@ -35,7 +35,6 @@ public class ModifierData {
     }
 
     public static ModifierData fromSpell(Spell spell) {
-        return new ModifierData(spell.getParts().stream().filter(ModifierPart.class::isInstance)
-                .map(ModifierPart.class::cast).toList());
+        return new ModifierData(spell.getParts().stream().filter(ModifierPart.class::isInstance).map(ModifierPart.class::cast).toList());
     }
 }

@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 
-import me.jishuna.spells.api.spell.part.ShapePart;
 import me.jishuna.spells.api.spell.part.SpellPart;
 
 public class Spell {
@@ -14,16 +13,13 @@ public class Spell {
         this.parts = ImmutableList.copyOf(parts);
     }
 
-    public ShapePart getShape() {
-        if (this.parts.isEmpty()) {
-            return null;
+    public int getTotalManaCost() {
+        int cost = 0;
+        for (SpellPart part : this.parts) {
+            cost += part.getManaCost();
         }
 
-        if (this.parts.get(0) instanceof ShapePart part) {
-            return part;
-        }
-
-        return null;
+        return cost;
     }
 
     public int getPartCount() {

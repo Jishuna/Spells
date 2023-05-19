@@ -26,7 +26,7 @@ public class BlockTarget extends SpellTarget {
     public BlockTarget filter(Predicate<Entity> entityFilter, Predicate<Block> blockFilter) {
         Set<Entity> entities = this.entities.stream().filter(entityFilter).collect(Collectors.toSet());
         Set<Block> blocks = this.blocks.stream().filter(blockFilter).collect(Collectors.toSet());
-        
+
         return new BlockTarget(getOrigin(), this.hitFace, entities, blocks);
     }
 
@@ -38,8 +38,7 @@ public class BlockTarget extends SpellTarget {
         return create(block.getLocation().add(0.5, 0.5, 0.5), Set.of(block), face, 0, 0);
     }
 
-    public static BlockTarget create(Location location, Collection<Block> current, BlockFace face, double radius,
-            double height) {
+    public static BlockTarget create(Location location, Collection<Block> current, BlockFace face, double radius, double height) {
         Set<Block> blocks = new HashSet<>(current);
         BoundingBox bounds = BoundingBox.of(location, radius, height / 2, radius);
         Utils.outlineBoundingBox(location.getWorld(), bounds);

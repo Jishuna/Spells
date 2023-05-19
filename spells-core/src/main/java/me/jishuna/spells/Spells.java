@@ -1,6 +1,7 @@
 package me.jishuna.spells;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.jishuna.jishlib.config.ConfigurationManager;
@@ -27,13 +28,27 @@ public class Spells extends JavaPlugin {
         this.playerManager = new PlayerManager(this);
         this.inventoryManager = new CustomInventoryManager();
 
+        spellPartType = new SpellPartType(this.spellPartRegistry);
+
+        this.spellPartRegistry.initialize();
+
         Bukkit.getPluginManager().registerEvents(new CustomInventoryListener(this.inventoryManager), this);
         Bukkit.getPluginManager().registerEvents(new SpellListeners(this), this);
         Bukkit.getPluginManager().registerEvents(new ConnectionListener(this.playerManager), this);
 
         getCommand("cast").setExecutor(new SpellCommand(this));
 
-        spellPartType = new SpellPartType(this.spellPartRegistry);
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            this.playerManager.loadPlayer(player.getUniqueId());
+            this.playerManager.onJoin(player);
+        }
+    }
+
+    @Override
+    public void onDisable() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            this.playerManager.removePlayer(player.getUniqueId());
+        }
     }
 
     public SpellPartRegistry getSpellPartRegistry() {

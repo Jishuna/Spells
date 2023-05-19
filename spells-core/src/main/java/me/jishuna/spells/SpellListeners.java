@@ -39,8 +39,7 @@ public class SpellListeners implements Listener {
         Spell spell = Utils.getSpell(item);
 
         if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
-            SpellBuilderInventory inventory = new SpellBuilderInventory(item, this.plugin.getSpellPartRegistry(),
-                    spell == null ? new SpellBuilder(20) : SpellBuilder.modifySpell(spell));
+            SpellBuilderInventory inventory = new SpellBuilderInventory(item, this.plugin, spell == null ? new SpellBuilder(20) : SpellBuilder.modifySpell(spell));
             this.plugin.getInventoryManager().openInventory(player, inventory);
             event.setCancelled(true);
         } else {

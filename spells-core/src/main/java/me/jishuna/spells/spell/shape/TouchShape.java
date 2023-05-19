@@ -13,12 +13,16 @@ import me.jishuna.spells.api.spell.caster.SpellCaster;
 import me.jishuna.spells.api.spell.part.ShapePart;
 import me.jishuna.spells.api.spell.target.BlockTarget;
 import me.jishuna.spells.api.spell.target.EntityTarget;
+import net.md_5.bungee.api.ChatColor;
 
 public class TouchShape extends ShapePart {
     public static final TouchShape INSTANCE = new TouchShape();
 
     private TouchShape() {
-        super(NamespacedKey.fromString("shape:touch"));
+        super(NamespacedKey.fromString("shape:touch"), 15);
+
+        setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Touch");
+        setDefaultLore("Targets the block or entity you click on, has a short range.");
     }
 
     @Override
@@ -27,14 +31,12 @@ public class TouchShape extends ShapePart {
     }
 
     @Override
-    public void castOnEntity(Entity entity, World world, SpellCaster caster, SpellContext context, ModifierData data,
-            SpellExecutor resolver) {
+    public void castOnEntity(Entity entity, World world, SpellCaster caster, SpellContext context, ModifierData data, SpellExecutor resolver) {
         resolver.execute(EntityTarget.create(entity));
     }
 
     @Override
-    public void castOnBlock(Block block, BlockFace face, World world, SpellCaster caster, SpellContext context,
-            ModifierData data, SpellExecutor resolver) {
+    public void castOnBlock(Block block, BlockFace face, World world, SpellCaster caster, SpellContext context, ModifierData data, SpellExecutor resolver) {
         resolver.execute(BlockTarget.create(block, face));
     }
 }
