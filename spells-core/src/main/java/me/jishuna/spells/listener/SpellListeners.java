@@ -1,4 +1,4 @@
-package me.jishuna.spells;
+package me.jishuna.spells.listener;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -9,10 +9,13 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import me.jishuna.spells.Spells;
 import me.jishuna.spells.api.spell.Spell;
 import me.jishuna.spells.api.spell.SpellBuilder;
 import me.jishuna.spells.api.spell.SpellExecutor;
 import me.jishuna.spells.api.spell.caster.PlayerSpellCaster;
+import me.jishuna.spells.api.spell.util.SpellUtil;
+import me.jishuna.spells.inventory.SpellBuilderInventory;
 import me.jishuna.spells.playerdata.PlayerSpellData;
 
 public class SpellListeners implements Listener {
@@ -36,7 +39,7 @@ public class SpellListeners implements Listener {
 
         PlayerSpellCaster caster = new PlayerSpellCaster(data);
         ItemStack item = event.getItem();
-        Spell spell = Utils.getSpell(item);
+        Spell spell = SpellUtil.getSpell(item);
 
         if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
             SpellBuilderInventory inventory = new SpellBuilderInventory(item, this.plugin, spell == null ? new SpellBuilder(20) : SpellBuilder.modifySpell(spell));
@@ -68,7 +71,7 @@ public class SpellListeners implements Listener {
 
         PlayerSpellCaster caster = new PlayerSpellCaster(data);
         ItemStack item = player.getEquipment().getItem(event.getHand());
-        Spell spell = Utils.getSpell(item);
+        Spell spell = SpellUtil.getSpell(item);
         if (spell == null) {
             return;
         }

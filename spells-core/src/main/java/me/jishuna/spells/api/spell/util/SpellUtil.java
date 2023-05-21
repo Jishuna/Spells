@@ -1,28 +1,34 @@
-package me.jishuna.spells.api.spell;
+package me.jishuna.spells.api.spell.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 
-import com.google.common.collect.ImmutableList;
+import org.bukkit.NamespacedKey;
+import org.bukkit.inventory.ItemStack;
 
+import me.jishuna.spells.Spells;
+import me.jishuna.spells.api.spell.Spell;
+import me.jishuna.spells.api.spell.SpellBuilder;
 import me.jishuna.spells.api.spell.part.ModifierPart;
 import me.jishuna.spells.api.spell.part.ShapePart;
 import me.jishuna.spells.api.spell.part.SpellPart;
 
-public class PartFilter {
-    private final List<SpellPart> parts;
+public class SpellUtil {
+    public static Spell getSpell(ItemStack item) {
+        if (item == null || !item.hasItemMeta()) {
+            return null;
+        }
 
-    private PartFilter(Collection<SpellPart> parts) {
-        this.parts = ImmutableList.copyOf(parts);
+        return item.getItemMeta().getPersistentDataContainer().get(NamespacedKey.fromString("spells:spell"), Spells.SPELL_TYPE);
     }
 
-    public List<SpellPart> getParts() {
-        return parts;
+    public static boolean hasSpell(ItemStack item) {
+        return getSpell(item) != null;
     }
 
-    public static PartFilter create(Collection<SpellPart> parts, SpellBuilder builder) {
+    public static List<SpellPart> filterParts(Collection<SpellPart> parts, SpellBuilder builder) {
         List<SpellPart> filteredParts = new ArrayList<>(parts);
         if (builder.getTargetIndex() == 0) {
             filteredParts = filterParts(filteredParts, ShapePart.class::isInstance);
@@ -33,11 +39,10 @@ public class PartFilter {
         SpellPart lastPart = builder.getLastNonModifier();
         filteredParts = filterParts(filteredParts, part -> !(part instanceof ModifierPart modifierPart) || lastPart.isAllowedModifier(modifierPart));
 
-        return new PartFilter(filteredParts);
+        return filteredParts;
     }
 
     private static List<SpellPart> filterParts(Collection<SpellPart> parts, Predicate<SpellPart> filter) {
         return parts.stream().filter(filter).toList();
     }
-
 }

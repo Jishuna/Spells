@@ -36,7 +36,7 @@ public class SpellProjectile extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (length-- <= 0) {
+        if (this.length-- <= 0) {
             this.cancel();
         }
 

@@ -20,7 +20,7 @@ public class SpellContext {
 
     public Spell getNextSubspell() {
         List<SpellPart> parts = this.spell.getParts();
-        Spell.Builder builder = new Spell.Builder();
+        SpellBuilder builder = new SpellBuilder(20);
         int count = 0;
 
         while (hasPartsLeft()) {
@@ -30,12 +30,12 @@ public class SpellContext {
                 break;
             }
 
-            builder.part(part);
+            builder.addPart(part);
             count++;
             this.index++;
         }
 
-        return builder.build();
+        return builder.toSpell();
     }
 
     public Spell getRemaining() {

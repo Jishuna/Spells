@@ -21,7 +21,11 @@ public class ModifierData {
     public int getCount(ModifierPart part) {
         return this.counts.getOrDefault(part, 0);
     }
-
+    
+    public boolean hasModifier(ModifierPart part) {
+        return this.counts.containsKey(part);
+    }
+    
     public int getEmpowerAmount() {
         return getCount(EmpowerModifier.INSTANCE);
     }

@@ -9,7 +9,7 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EntityEquipment;
 
-import me.jishuna.spells.Utils;
+import me.jishuna.spells.api.spell.util.SpellUtil;
 import net.md_5.bungee.api.ChatColor;
 
 public class PlayerSpellData {
@@ -49,14 +49,14 @@ public class PlayerSpellData {
     public void tick() {
         EntityEquipment equipment = player.getEquipment();
         if (!this.manaBarDisplayed) {
-            if (Utils.hasSpell(equipment.getItemInMainHand()) || Utils.hasSpell(equipment.getItemInOffHand())) {
+            if (SpellUtil.hasSpell(equipment.getItemInMainHand()) || SpellUtil.hasSpell(equipment.getItemInOffHand())) {
                 bar.setProgress(this.mana / this.maxMana);
                 bar.setTitle(ChatColor.DARK_AQUA + MessageFormat.format("Mana: {0}/{1}", this.mana, this.maxMana));
                 bar.addPlayer(this.player);
                 this.manaBarDisplayed = true;
             }
         } else {
-            if (!Utils.hasSpell(equipment.getItemInMainHand()) && !Utils.hasSpell(equipment.getItemInOffHand())) {
+            if (!SpellUtil.hasSpell(equipment.getItemInMainHand()) && !SpellUtil.hasSpell(equipment.getItemInOffHand())) {
                 bar.removePlayer(this.player);
                 this.manaBarDisplayed = false;
                 return;

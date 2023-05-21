@@ -28,6 +28,7 @@ import me.jishuna.spells.spell.action.LightningAction;
 import me.jishuna.spells.spell.action.RecallAction;
 import me.jishuna.spells.spell.action.SlowfallAction;
 import me.jishuna.spells.spell.action.SmeltAction;
+import me.jishuna.spells.spell.action.TillAction;
 import me.jishuna.spells.spell.action.WarpAction;
 import me.jishuna.spells.spell.filter.block.BlockFilter;
 import me.jishuna.spells.spell.filter.block.LogFilter;
@@ -137,6 +138,7 @@ public class SpellPartRegistry {
         register(SmeltAction.INSTANCE);
         register(DelayAction.INSTANCE);
         register(SlowfallAction.INSTANCE);
+        register(TillAction.INSTANCE);
         
         // Block Filters
         register(BlockFilter.INSTANCE);

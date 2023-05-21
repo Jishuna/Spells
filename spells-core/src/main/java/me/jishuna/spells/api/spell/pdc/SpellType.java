@@ -9,6 +9,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 import me.jishuna.spells.Spells;
 import me.jishuna.spells.api.spell.Spell;
+import me.jishuna.spells.api.spell.SpellBuilder;
 import me.jishuna.spells.api.spell.part.SpellPart;
 
 public class SpellType implements PersistentDataType<PersistentDataContainer, Spell> {
@@ -38,7 +39,7 @@ public class SpellType implements PersistentDataType<PersistentDataContainer, Sp
 
     @Override
     public Spell fromPrimitive(PersistentDataContainer primitive, PersistentDataAdapterContext context) {
-        Spell.Builder builder = new Spell.Builder();
+        SpellBuilder builder = new SpellBuilder(20);
         int index = 0;
 
         while (true) {
@@ -48,8 +49,8 @@ public class SpellType implements PersistentDataType<PersistentDataContainer, Sp
             }
 
             SpellPart part = primitive.get(key, Spells.spellPartType);
-            builder.part(part);
+            builder.addPart(part);
         }
-        return builder.build();
+        return builder.toSpell();
     }
 }

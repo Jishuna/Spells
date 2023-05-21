@@ -33,17 +33,4 @@ public class Spell {
     public List<SpellPart> getParts() {
         return parts;
     }
-
-    public static class Builder {
-        private final ImmutableList.Builder<SpellPart> listBuilder = new ImmutableList.Builder<>();
-
-        public Builder part(SpellPart part) {
-            listBuilder.add(part);
-            return this;
-        }
-
-        public Spell build() {
-            return new Spell(listBuilder.build());
-        }
-    }
 }

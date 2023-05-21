@@ -1,4 +1,4 @@
-package me.jishuna.spells;
+package me.jishuna.spells.listener;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

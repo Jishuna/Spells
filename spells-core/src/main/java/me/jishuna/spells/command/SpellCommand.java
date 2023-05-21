@@ -1,4 +1,4 @@
-package me.jishuna.spells;
+package me.jishuna.spells.command;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,8 @@ import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.StringUtil;
 
 import me.jishuna.jishlib.commands.SimpleCommandHandler;
-import me.jishuna.spells.api.spell.Spell;
+import me.jishuna.spells.Spells;
+import me.jishuna.spells.api.spell.SpellBuilder;
 import me.jishuna.spells.api.spell.SpellExecutor;
 import me.jishuna.spells.api.spell.caster.PlayerSpellCaster;
 import me.jishuna.spells.playerdata.PlayerSpellData;
@@ -21,7 +22,7 @@ import me.jishuna.spells.playerdata.PlayerSpellData;
 public class SpellCommand extends SimpleCommandHandler {
     private final Spells plugin;
 
-    protected SpellCommand(Spells plugin) {
+    public SpellCommand(Spells plugin) {
         super("spells.cast");
         this.plugin = plugin;
     }
@@ -36,14 +37,14 @@ public class SpellCommand extends SimpleCommandHandler {
         }
 
         PlayerSpellCaster caster = new PlayerSpellCaster(data);
-        Spell.Builder builder = new Spell.Builder();
+        SpellBuilder builder = new SpellBuilder(20);
 
         for (String key : args) {
-            plugin.getSpellPartRegistry().find(key).ifPresent(builder::part);
+            plugin.getSpellPartRegistry().find(key).ifPresent(builder::addPart);
         }
 
         RayTraceResult result = player.getWorld().rayTrace(player.getEyeLocation(), player.getEyeLocation().getDirection(), 4, FluidCollisionMode.NEVER, true, 0, e -> e != player);
-        SpellExecutor resolver = new SpellExecutor(this.plugin, caster, builder.build());
+        SpellExecutor resolver = new SpellExecutor(this.plugin, caster, builder.toSpell());
 
         if (result == null) {
             resolver.handleCast(player.getWorld());

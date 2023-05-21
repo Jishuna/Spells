@@ -18,15 +18,15 @@ public class SpellBuilder {
         this.parts = parts.toArray(SpellPart[]::new);
     }
 
-    public int addPart(SpellPart newPart) {
+    public boolean addPart(SpellPart newPart) {
         for (int i = 0; i < parts.length; i++) {
             SpellPart part = parts[i];
             if (part == SpellPart.EMPTY) {
                 parts[i] = newPart;
-                return i;
+                return true;
             }
         }
-        return -1;
+        return false;
     }
 
     public void clearPart(int index) {

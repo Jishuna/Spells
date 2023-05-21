@@ -1,4 +1,4 @@
-package me.jishuna.spells;
+package me.jishuna.spells.inventory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,30 +15,35 @@ import org.bukkit.plugin.Plugin;
 import me.jishuna.jishlib.Utils;
 import me.jishuna.jishlib.inventory.CustomInventory;
 import me.jishuna.jishlib.items.ItemBuilder;
-import me.jishuna.spells.api.spell.PartFilter;
+import me.jishuna.spells.Spells;
 import me.jishuna.spells.api.spell.SpellBuilder;
 import me.jishuna.spells.api.spell.part.SpellPart;
+import me.jishuna.spells.api.spell.util.SpellUtil;
 import net.md_5.bungee.api.ChatColor;
 
 public class SpellBuilderInventory extends CustomInventory {
-    private static final ItemStack PREVIOUS = ItemBuilder.create(Material.PLAYER_HEAD).name(ChatColor.GOLD + "Previous Page")
+    // @formatter:off
+    private static final ItemStack PREVIOUS = ItemBuilder.create(Material.PLAYER_HEAD)
+            .name(ChatColor.GOLD + "Previous Page")
             .skullTexture("bd69e06e5dadfd84e5f3d1c21063f2553b2fa945ee1d4d7152fdc5425bc12a9")
             .build();
-    
-    private static final ItemStack NEXT = ItemBuilder.create(Material.PLAYER_HEAD).name(ChatColor.GOLD + "Next Page")
+
+    private static final ItemStack NEXT = ItemBuilder.create(Material.PLAYER_HEAD)
+            .name(ChatColor.GOLD + "Next Page")
             .skullTexture("19bf3292e126a105b54eba713aa1b152d541a1d8938829c56364d178ed22bf")
             .build();
-    
+
     private static final ItemStack FILLER = ItemBuilder.create(Material.ORANGE_STAINED_GLASS_PANE)
             .name(" ")
             .build();
 
+    // @formatter:on
     private final Plugin plugin;
     private final ItemStack targetItem;
     private final SpellBuilder builder;
     private final List<SpellPart> allParts;
 
-    private PartFilter filteredParts;
+    private List<SpellPart> filteredParts;
     private int spellStart;
     private int partStart;
 
@@ -51,13 +56,12 @@ public class SpellBuilderInventory extends CustomInventory {
         this.allParts.removeIf(part -> part == SpellPart.EMPTY || !part.isEnabled());
         this.builder = builder;
 
-        this.filteredParts = PartFilter.create(this.allParts, builder);
+        this.filteredParts = SpellUtil.filterParts(this.allParts, this.builder);
 
         addClickConsumer(event -> event.setCancelled(true));
         addCloseConsumer(this::finalizeSpell);
 
         populate();
-        refreshOptions();
         refreshSpell();
     }
 
@@ -83,11 +87,11 @@ public class SpellBuilderInventory extends CustomInventory {
     private void refreshOptions() {
         for (int i = 0; i < 27; i++) {
             int index = this.partStart + i;
-            if (index >= this.filteredParts.getParts().size()) {
+            if (index >= this.filteredParts.size()) {
                 setItem(i, null);
                 removeButton(i);
             } else {
-                SpellPart part = this.filteredParts.getParts().get(index);
+                SpellPart part = this.filteredParts.get(index);
                 addButton(i, part.getDisplayItem(), this::addPart);
             }
         }
@@ -106,7 +110,7 @@ public class SpellBuilderInventory extends CustomInventory {
             }
         }
 
-        this.filteredParts = PartFilter.create(this.allParts, this.builder);
+        this.filteredParts = SpellUtil.filterParts(this.allParts, this.builder);
         refreshOptions();
     }
 
@@ -126,7 +130,7 @@ public class SpellBuilderInventory extends CustomInventory {
     }
 
     private void changePartIndex(int amount) {
-        int maxPage = this.filteredParts.getParts().size() / 27;
+        int maxPage = this.filteredParts.size() / 27;
         this.partStart = Utils.clamp((this.partStart / 27) + amount, 0, maxPage) * 27;
 
         refreshOptions();

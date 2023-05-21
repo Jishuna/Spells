@@ -10,6 +10,9 @@ import me.jishuna.jishlib.inventory.CustomInventoryManager;
 import me.jishuna.spells.api.spell.part.SpellPartRegistry;
 import me.jishuna.spells.api.spell.pdc.SpellPartType;
 import me.jishuna.spells.api.spell.pdc.SpellType;
+import me.jishuna.spells.command.SpellCommand;
+import me.jishuna.spells.listener.ConnectionListener;
+import me.jishuna.spells.listener.SpellListeners;
 import me.jishuna.spells.playerdata.PlayerManager;
 
 public class Spells extends JavaPlugin {
