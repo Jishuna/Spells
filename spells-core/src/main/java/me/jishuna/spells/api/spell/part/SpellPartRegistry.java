@@ -20,6 +20,7 @@ import me.jishuna.spells.spell.action.BurnAction;
 import me.jishuna.spells.spell.action.CollectAction;
 import me.jishuna.spells.spell.action.DelayAction;
 import me.jishuna.spells.spell.action.ExplodeAction;
+import me.jishuna.spells.spell.action.FangAction;
 import me.jishuna.spells.spell.action.HarmAction;
 import me.jishuna.spells.spell.action.HealAction;
 import me.jishuna.spells.spell.action.LaunchAction;
@@ -139,6 +140,7 @@ public class SpellPartRegistry {
         register(DelayAction.INSTANCE);
         register(SlowfallAction.INSTANCE);
         register(TillAction.INSTANCE);
+        register(FangAction.INSTANCE);
         
         // Block Filters
         register(BlockFilter.INSTANCE);

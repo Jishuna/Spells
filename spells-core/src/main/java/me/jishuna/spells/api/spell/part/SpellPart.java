@@ -16,7 +16,7 @@ import me.jishuna.jishlib.items.ItemBuilder;
 import me.jishuna.spells.Spells;
 import net.md_5.bungee.api.ChatColor;
 
-public abstract class SpellPart {
+public abstract class SpellPart implements Comparable<SpellPart> {
     public static final SpellPart EMPTY = new SpellPart(NamespacedKey.fromString("part:empty"), 0) {
     };
 
@@ -84,12 +84,7 @@ public abstract class SpellPart {
 
     @PostLoad
     private void onLoad() {
-        this.displayItem = ItemBuilder.create(Material.PLAYER_HEAD)
-                .name(displayName)
-                .lore(lore)
-                .skullTexture("92228765df0e2ebd6c3a3fde070ddc8c551ceb4a43b959e1c44d349ce516560")
-                .persistentData(NamespacedKey.fromString("spells:part"), Spells.spellPartType, this)
-                .build();
+        this.displayItem = ItemBuilder.create(Material.PLAYER_HEAD).name(displayName).lore(lore).skullTexture("92228765df0e2ebd6c3a3fde070ddc8c551ceb4a43b959e1c44d349ce516560").persistentData(NamespacedKey.fromString("spells:part"), Spells.spellPartType, this).build();
     }
 
     @Override
@@ -103,6 +98,16 @@ public abstract class SpellPart {
             return Objects.equals(this.key, part.key);
         }
         return false;
+    }
+
+    @Override
+    public int compareTo(SpellPart other) {
+        int diff = Integer.compare(getPriority(this), getPriority(other));
+
+        if (diff != 0) {
+            return diff;
+        }
+        return ChatColor.stripColor(this.displayName).compareTo(ChatColor.stripColor(other.displayName));
     }
 
     protected void setDefaultLore(String lore) {
@@ -126,5 +131,18 @@ public abstract class SpellPart {
         }
 
         this.lore = defaultLore;
+    }
+
+    private int getPriority(SpellPart part) {
+        if (part instanceof ShapePart) {
+            return 1;
+        } else if (part instanceof SubshapePart) {
+            return 2;
+        } else if (part instanceof ModifierPart) {
+            return 3;
+        } else if (part instanceof ActionPart) {
+            return 4;
+        }
+        return 5;
     }
 }

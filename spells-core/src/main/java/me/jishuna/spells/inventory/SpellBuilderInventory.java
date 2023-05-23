@@ -6,6 +6,8 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
@@ -39,6 +41,7 @@ public class SpellBuilderInventory extends CustomInventory {
 
     // @formatter:on
     private final Plugin plugin;
+    private final Player player;
     private final ItemStack targetItem;
     private final SpellBuilder builder;
     private final List<SpellPart> allParts;
@@ -47,14 +50,17 @@ public class SpellBuilderInventory extends CustomInventory {
     private int spellStart;
     private int partStart;
 
-    public SpellBuilderInventory(ItemStack item, Spells plugin, SpellBuilder builder) {
+    public SpellBuilderInventory(Player player, ItemStack item, Spells plugin, SpellBuilder builder) {
         super(Bukkit.createInventory(null, 54, "Spell Builder"));
 
         this.plugin = plugin;
+        this.player = player;
         this.targetItem = item;
+        this.builder = builder;
+
         this.allParts = new ArrayList<>(plugin.getSpellPartRegistry().getAllParts());
         this.allParts.removeIf(part -> part == SpellPart.EMPTY || !part.isEnabled());
-        this.builder = builder;
+        this.allParts.sort(null);
 
         this.filteredParts = SpellUtil.filterParts(this.allParts, this.builder);
 
@@ -80,8 +86,8 @@ public class SpellBuilderInventory extends CustomInventory {
         addButton(45, PREVIOUS, e -> changeSpellIndex(-1));
         addButton(53, NEXT, e -> changeSpellIndex(1));
 
-        addButton(48, ItemBuilder.create(Material.RED_DYE).name(ChatColor.RED + ChatColor.BOLD.toString() + "Clear").lore(ChatColor.RED + "Hold shift to clear current spell").build(), this::clearParts);
-        addButton(50, ItemBuilder.create(Material.LIME_DYE).name(ChatColor.GREEN + ChatColor.BOLD.toString() + "Save").build(), event -> Bukkit.getScheduler().runTask(this.plugin, () -> event.getWhoClicked().closeInventory()));
+        addButton(48, ItemBuilder.create(Material.LIME_DYE).name(ChatColor.GREEN + ChatColor.BOLD.toString() + "Save").build(), event -> Bukkit.getScheduler().runTask(this.plugin, () -> event.getWhoClicked().closeInventory()));
+        addButton(50, ItemBuilder.create(Material.RED_DYE).name(ChatColor.RED + ChatColor.BOLD.toString() + "Clear").lore(ChatColor.RED + "Hold shift to clear current spell").build(), this::clearParts);
     }
 
     private void refreshOptions() {
@@ -124,13 +130,15 @@ public class SpellBuilderInventory extends CustomInventory {
     }
 
     private void changeSpellIndex(int amount) {
+        this.player.playSound(this.player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1f, 1f);
         this.spellStart = Utils.clamp(this.spellStart + amount, 0, this.builder.getSize() - 9);
         refreshSpell();
 
     }
 
     private void changePartIndex(int amount) {
-        int maxPage = this.filteredParts.size() / 27;
+        this.player.playSound(this.player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1f, 1f);
+        int maxPage = (this.filteredParts.size() - 1) / 27;
         this.partStart = Utils.clamp((this.partStart / 27) + amount, 0, maxPage) * 27;
 
         refreshOptions();
