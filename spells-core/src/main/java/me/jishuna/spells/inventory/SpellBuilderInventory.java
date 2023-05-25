@@ -4,15 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import me.jishuna.jishlib.Utils;
 import me.jishuna.jishlib.inventory.CustomInventory;
@@ -40,7 +42,7 @@ public class SpellBuilderInventory extends CustomInventory {
             .build();
 
     // @formatter:on
-    private final Plugin plugin;
+    private final Spells plugin;
     private final Player player;
     private final ItemStack targetItem;
     private final SpellBuilder builder;
@@ -71,6 +73,12 @@ public class SpellBuilderInventory extends CustomInventory {
         refreshSpell();
     }
 
+    public void setColor(Color color) {
+        this.builder.setColor(color);
+
+        setItem(49, createColorItem());
+    }
+
     private void populate() {
         for (int i = 28; i < 35; i++) {
             setItem(i, FILLER);
@@ -86,8 +94,9 @@ public class SpellBuilderInventory extends CustomInventory {
         addButton(45, PREVIOUS, e -> changeSpellIndex(-1));
         addButton(53, NEXT, e -> changeSpellIndex(1));
 
-        addButton(48, ItemBuilder.create(Material.LIME_DYE).name(ChatColor.GREEN + ChatColor.BOLD.toString() + "Save").build(), event -> Bukkit.getScheduler().runTask(this.plugin, () -> event.getWhoClicked().closeInventory()));
-        addButton(50, ItemBuilder.create(Material.RED_DYE).name(ChatColor.RED + ChatColor.BOLD.toString() + "Clear").lore(ChatColor.RED + "Hold shift to clear current spell").build(), this::clearParts);
+        addButton(47, ItemBuilder.create(Material.LIME_DYE).name(ChatColor.GREEN + ChatColor.BOLD.toString() + "Save").build(), event -> Bukkit.getScheduler().runTask(this.plugin, () -> event.getWhoClicked().closeInventory()));
+        addButton(49, createColorItem(), this::openColorSelector);
+        addButton(51, ItemBuilder.create(Material.RED_DYE).name(ChatColor.RED + ChatColor.BOLD.toString() + "Clear").lore(ChatColor.RED + "Hold shift to clear current spell").build(), this::clearParts);
     }
 
     private void refreshOptions() {
@@ -159,9 +168,22 @@ public class SpellBuilderInventory extends CustomInventory {
         refreshSpell();
     }
 
+    private void openColorSelector(InventoryClickEvent event) {
+        ColorSelectorInventory inventory = new ColorSelectorInventory(this.plugin, this, this.builder.getColor());
+        Bukkit.getScheduler().runTask(this.plugin, () -> this.plugin.getInventoryManager().openInventory(event.getWhoClicked(), inventory));
+    }
+
     private void finalizeSpell(InventoryCloseEvent event) {
         ItemMeta meta = this.targetItem.getItemMeta();
         meta.getPersistentDataContainer().set(NamespacedKey.fromString("spells:spell"), Spells.SPELL_TYPE, this.builder.toSpell());
         this.targetItem.setItemMeta(meta);
+    }
+
+    private ItemStack createColorItem() {
+        return ItemBuilder.create(Material.LEATHER_CHESTPLATE)
+                .name("Change Spell Color")
+                .modify(LeatherArmorMeta.class, meta -> meta.setColor(this.builder.getColor()))
+                .flags(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES)
+                .build();
     }
 }

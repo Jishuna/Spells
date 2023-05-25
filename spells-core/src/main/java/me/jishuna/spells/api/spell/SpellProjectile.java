@@ -22,15 +22,18 @@ public class SpellProjectile extends BukkitRunnable {
     private final Vector velocity;
     private final SpellExecutor resolver;
     private final double size;
+    private final Color color;
+    
     private int length;
     private volatile boolean running = false;
 
-    public SpellProjectile(SpellCaster caster, Location location, Vector velocity, SpellExecutor resolver, double size, int length) {
+    public SpellProjectile(SpellCaster caster, Location location, Vector velocity, SpellExecutor resolver, Color color, double size, int length) {
         this.caster = caster;
         this.location = location;
         this.velocity = velocity;
         this.resolver = resolver;
         this.size = size;
+        this.color = color;
         this.length = length;
     }
 
@@ -54,7 +57,7 @@ public class SpellProjectile extends BukkitRunnable {
         }
 
         this.location.add(this.velocity);
-        this.location.getWorld().spawnParticle(Particle.REDSTONE, location, 3, 0.05, 0.05, 0.05, new DustOptions(Color.ORANGE, 1));
+        this.location.getWorld().spawnParticle(Particle.REDSTONE, location, 3, 0.05, 0.05, 0.05, new DustOptions(this.color, 1));
     }
 
     @Override

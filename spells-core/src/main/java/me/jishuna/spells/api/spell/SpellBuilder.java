@@ -3,19 +3,23 @@ package me.jishuna.spells.api.spell;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.Color;
+
 import me.jishuna.spells.api.spell.part.ModifierPart;
 import me.jishuna.spells.api.spell.part.SpellPart;
 
 public class SpellBuilder {
     private final SpellPart[] parts;
+    private Color color = Color.WHITE;
 
     public SpellBuilder(int size) {
         this.parts = new SpellPart[size];
         Arrays.fill(this.parts, SpellPart.EMPTY);
     }
 
-    private SpellBuilder(List<SpellPart> parts) {
+    private SpellBuilder(List<SpellPart> parts, Color color) {
         this.parts = parts.toArray(SpellPart[]::new);
+        this.color = color;
     }
 
     public boolean addPart(SpellPart newPart) {
@@ -67,6 +71,14 @@ public class SpellBuilder {
         }
         return part;
     }
+    
+    public void setColor(Color color) {
+        this.color = color;
+    }
+    
+    public Color getColor() {
+        return this.color;
+    }
 
     public int getSize() {
         return parts.length;
@@ -74,10 +86,10 @@ public class SpellBuilder {
 
     public Spell toSpell() {
         List<SpellPart> partList = Arrays.asList(this.parts);
-        return new Spell(partList);
+        return new Spell(partList, this.color);
     }
 
     public static SpellBuilder modifySpell(Spell spell) {
-        return new SpellBuilder(spell.getParts());
+        return new SpellBuilder(spell.getParts(), spell.getColor());
     }
 }

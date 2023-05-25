@@ -1,0 +1,23 @@
+gui:
+  color:
+    title: '<black>Color Selector'
+
+    red: '<red>Red: {0}'
+    green: '<green>Green: {0}'
+    blue: '<blue>Blue: {0}'
+    current-color: '<gold>Current Color'
+    
+    increase: 
+      name: '<gold>Increase'
+      lore-1: '<red>Left Click: <gold>Add 1'
+      lore-2: '<red>Right Click: <gold>Add 5'
+      lore-3: '<red>Shift Left Click: <gold>Add 10'
+      lore-4: '<red>Shift Right Click: <gold>Add 50'
+      lore-5: '<red>Middle Click: <gold>Add 100'
+    decrease: 
+      name: '<gold>Decrease'
+      lore-1: '<red>Left Click: <gold>Remove 1'
+      lore-2: '<red>Right Click: <gold>Remove 5'
+      lore-3: '<red>Shift Left Click: <gold>Remove 10'
+      lore-4: '<red>Shift Right Click: <gold>Remove 50'
+      lore-5: '<red>Middle Click: <gold>Remove 100'

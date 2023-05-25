@@ -4,6 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.jishuna.jishlib.FileUtils;
+import me.jishuna.jishlib.Localization;
 import me.jishuna.jishlib.config.ConfigurationManager;
 import me.jishuna.jishlib.inventory.CustomInventoryListener;
 import me.jishuna.jishlib.inventory.CustomInventoryManager;
@@ -26,6 +28,8 @@ public class Spells extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        FileUtils.loadResource(this, "messages.yml").ifPresent(config -> Localization.getInstance().setConfig(config));
+
         this.configurationManager = new ConfigurationManager(this);
         this.spellPartRegistry = new SpellPartRegistry(this);
         this.playerManager = new PlayerManager(this);

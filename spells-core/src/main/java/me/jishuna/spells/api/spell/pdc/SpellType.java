@@ -2,6 +2,7 @@ package me.jishuna.spells.api.spell.pdc;
 
 import java.util.List;
 
+import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -11,6 +12,7 @@ import me.jishuna.spells.Spells;
 import me.jishuna.spells.api.spell.Spell;
 import me.jishuna.spells.api.spell.SpellBuilder;
 import me.jishuna.spells.api.spell.part.SpellPart;
+import me.jishuna.jishlib.pdc.PersistentTypes;
 
 public class SpellType implements PersistentDataType<PersistentDataContainer, Spell> {
 
@@ -34,6 +36,7 @@ public class SpellType implements PersistentDataType<PersistentDataContainer, Sp
 
             container.set(NamespacedKey.fromString("part:" + i), Spells.spellPartType, part);
         }
+        container.set(NamespacedKey.fromString("spell:color"), PersistentTypes.INTEGER, complex.getColor().asRGB());
         return container;
     }
 
@@ -51,6 +54,8 @@ public class SpellType implements PersistentDataType<PersistentDataContainer, Sp
             SpellPart part = primitive.get(key, Spells.spellPartType);
             builder.addPart(part);
         }
+
+        builder.setColor(Color.fromRGB(primitive.getOrDefault(NamespacedKey.fromString("spell:color"), PersistentTypes.INTEGER, 0xFFFFFF)));
         return builder.toSpell();
     }
 }

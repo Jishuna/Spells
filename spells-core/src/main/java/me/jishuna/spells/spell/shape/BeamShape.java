@@ -43,7 +43,7 @@ public class BeamShape extends ShapePart {
         int length = 5 + (BONUS_LENGTH * data.getEmpowerAmount());
         Location location = caster.getEntity().getEyeLocation();
 
-        SpellProjectile spellProjectile = new SpellProjectile(caster, location, location.getDirection().normalize(), resolver, BEAM_SIZE, length);
+        SpellProjectile spellProjectile = new SpellProjectile(caster, location, location.getDirection().normalize(), resolver, context.getSpellColor(), BEAM_SIZE, length);
 
         for (int i = 0; i < length; i++) {
             spellProjectile.run();

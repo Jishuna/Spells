@@ -23,14 +23,14 @@ public class ProjectileShape extends ShapePart {
     @Comment("The size of the projectile, higher numbers make the projectile more lenient when checking for collision.")
     @ConfigEntry("size")
     public static double PROJECTILE_SIZE = 0.1;
-    
+
     @Comment("The range of the projectile, if it fails to hit anything within this range the spell will fail.")
     @ConfigEntry("range")
     public static int PROJECTILE_RANGE = 50;
 
     private ProjectileShape() {
         super(NamespacedKey.fromString("shape:projectile"), 15);
-        
+
         setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Projectile");
         setDefaultLore("Launches a slow moving but long range projectile that targets whatever it hits.");
     }
@@ -38,7 +38,7 @@ public class ProjectileShape extends ShapePart {
     @Override
     public void cast(SpellCaster caster, World world, SpellContext context, ModifierData data, SpellExecutor resolver) {
         Location location = caster.getEntity().getEyeLocation();
-        SpellProjectile spellProjectile = new SpellProjectile(caster, location, location.getDirection().normalize(), resolver, PROJECTILE_SIZE, 50);
+        SpellProjectile spellProjectile = new SpellProjectile(caster, location, location.getDirection().normalize(), resolver, context.getSpellColor(), PROJECTILE_SIZE, 50);
         spellProjectile.runTask(resolver.getPlugin(), 0, 1);
     }
 

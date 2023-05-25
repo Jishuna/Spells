@@ -3,6 +3,8 @@ package me.jishuna.spells.api.spell;
 import java.util.Collections;
 import java.util.List;
 
+import org.bukkit.Color;
+
 import me.jishuna.spells.api.spell.part.ModifierPart;
 import me.jishuna.spells.api.spell.part.SpellPart;
 
@@ -37,13 +39,17 @@ public class SpellContext {
 
         return builder.toSpell();
     }
+    
+    public Color getSpellColor() {
+        return this.spell.getColor();
+    }
 
     public Spell getRemaining() {
         if (this.hasPartsLeft()) {
             List<SpellPart> parts = this.spell.getParts();
-            return new Spell(parts.subList(index, parts.size()));
+            return new Spell(parts.subList(index, parts.size()), this.spell.getColor());
         } else {
-            return new Spell(Collections.emptyList());
+            return new Spell(Collections.emptyList(), this.spell.getColor());
         }
     }
 }
