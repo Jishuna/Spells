@@ -1,6 +1,8 @@
 package me.jishuna.spells.api.spell.part;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,6 +24,9 @@ public abstract class SpellPart implements Comparable<SpellPart> {
 
     private final NamespacedKey key;
     private ItemStack displayItem;
+    
+    @ConfigEntry
+    private List<Material> recipe = new ArrayList<>();
 
     @ConfigEntry("lore")
     private List<String> lore = new ArrayList<>();
@@ -80,6 +85,14 @@ public abstract class SpellPart implements Comparable<SpellPart> {
 
     public void setLore(List<String> lore) {
         this.lore = lore;
+    }
+
+    public List<Material> getRecipe() {
+        return Collections.unmodifiableList(this.recipe);
+    }
+    
+    public void setRecipe(Material... ingredients) {
+        this.recipe = Arrays.asList(ingredients);
     }
 
     @PostLoad
