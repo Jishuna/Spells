@@ -1,4 +1,4 @@
-package me.jishuna.spells.playerdata;
+package me.jishuna.spells.api.spell.playerdata;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,27 +6,27 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import me.jishuna.jishlib.collections.TypedDistributionTask;
+import me.jishuna.spells.Spells;
 
 public class PlayerManager {
-
+    private final Spells plugin;
     private final Map<UUID, PlayerSpellData> playerData = new HashMap<>();
     private final TypedDistributionTask<PlayerSpellData> disributionTask;
 
-    public PlayerManager(Plugin plugin) {
+    public PlayerManager(Spells plugin) {
+        this.plugin = plugin;
         this.disributionTask = new TypedDistributionTask<>(this::tickPlayer, data -> false, 4);
         Bukkit.getScheduler().runTaskTimer(plugin, this.disributionTask, 0, 1);
     }
 
     public void loadPlayer(UUID id) {
-        this.playerData.put(id, new PlayerSpellData(100, 100));
-    }
+        PlayerSpellData data = new PlayerSpellData(100, 100, id, this.plugin.getStorageAdapter());
+        data.loadData();
 
-    public void onJoin(Player player) {
-        findData(player.getUniqueId()).ifPresent(data -> this.disributionTask.addValue(data.withPlayer(player)));
+        this.playerData.put(id, data);
+        this.disributionTask.addValue(data);
     }
 
     public void removePlayer(UUID id) {
@@ -42,7 +42,9 @@ public class PlayerManager {
     }
 
     private void tickPlayer(PlayerSpellData data) {
-        data.addMana(1);
-        data.tick();
+        if (data.isOnline()) {
+            data.addMana(1);
+            data.tick();
+        }
     }
 }

@@ -31,6 +31,7 @@ import me.jishuna.spells.spell.action.SlowfallAction;
 import me.jishuna.spells.spell.action.SmeltAction;
 import me.jishuna.spells.spell.action.TillAction;
 import me.jishuna.spells.spell.action.WarpAction;
+import me.jishuna.spells.spell.action.WorkbenchAction;
 import me.jishuna.spells.spell.filter.block.BlockFilter;
 import me.jishuna.spells.spell.filter.block.LogFilter;
 import me.jishuna.spells.spell.filter.entity.AnimalFilter;
@@ -69,7 +70,7 @@ public class SpellPartRegistry {
                 return;
             }
 
-            File configFile = new File(plugin.getDataFolder(), part.getConfigFolder() + part.getKey().getKey() + ".yml");
+            File configFile = new File(plugin.getDataFolder(), "config/" + part.getConfigFolder() + part.getKey().getKey() + ".yml");
 
             ReloadableObject<? extends SpellPart> reloadable = plugin.getConfigurationManager().createReloadable(configFile, part);
             reloadable.saveDefaults().load();
@@ -141,7 +142,8 @@ public class SpellPartRegistry {
         register(SlowfallAction.INSTANCE);
         register(TillAction.INSTANCE);
         register(FangAction.INSTANCE);
-        
+        register(WorkbenchAction.INSTANCE);
+
         // Block Filters
         register(BlockFilter.INSTANCE);
         register(LogFilter.INSTANCE);

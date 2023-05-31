@@ -12,10 +12,12 @@ import me.jishuna.jishlib.inventory.CustomInventoryManager;
 import me.jishuna.spells.api.spell.part.SpellPartRegistry;
 import me.jishuna.spells.api.spell.pdc.SpellPartType;
 import me.jishuna.spells.api.spell.pdc.SpellType;
+import me.jishuna.spells.api.spell.playerdata.PlayerManager;
 import me.jishuna.spells.command.SpellCommand;
 import me.jishuna.spells.listener.ConnectionListener;
 import me.jishuna.spells.listener.SpellListeners;
-import me.jishuna.spells.playerdata.PlayerManager;
+import me.jishuna.spells.storage.StorageAdapter;
+import me.jishuna.spells.storage.YamlStorageAdapter;
 
 public class Spells extends JavaPlugin {
     public static final SpellType SPELL_TYPE = new SpellType();
@@ -25,15 +27,17 @@ public class Spells extends JavaPlugin {
     private CustomInventoryManager inventoryManager;
     private ConfigurationManager configurationManager;
     private PlayerManager playerManager;
+    private StorageAdapter storageAdapter;
 
     @Override
     public void onEnable() {
-        FileUtils.loadResource(this, "messages.yml").ifPresent(config -> Localization.getInstance().setConfig(config));
+        FileUtils.loadResource(this, "config/messages.yml").ifPresent(config -> Localization.getInstance().setConfig(config));
 
         this.configurationManager = new ConfigurationManager(this);
         this.spellPartRegistry = new SpellPartRegistry(this);
         this.playerManager = new PlayerManager(this);
         this.inventoryManager = new CustomInventoryManager();
+        this.storageAdapter = YamlStorageAdapter.create(this);
 
         spellPartType = new SpellPartType(this.spellPartRegistry);
 
@@ -47,7 +51,6 @@ public class Spells extends JavaPlugin {
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             this.playerManager.loadPlayer(player.getUniqueId());
-            this.playerManager.onJoin(player);
         }
     }
 
@@ -72,5 +75,9 @@ public class Spells extends JavaPlugin {
 
     public ConfigurationManager getConfigurationManager() {
         return configurationManager;
+    }
+
+    public StorageAdapter getStorageAdapter() {
+        return storageAdapter;
     }
 }

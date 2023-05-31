@@ -16,12 +16,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
+import me.jishuna.jishlib.Localization;
 import me.jishuna.jishlib.Utils;
 import me.jishuna.jishlib.inventory.CustomInventory;
 import me.jishuna.jishlib.items.ItemBuilder;
 import me.jishuna.spells.Spells;
 import me.jishuna.spells.api.spell.SpellBuilder;
 import me.jishuna.spells.api.spell.part.SpellPart;
+import me.jishuna.spells.api.spell.playerdata.PlayerSpellData;
 import me.jishuna.spells.api.spell.util.SpellUtil;
 import net.md_5.bungee.api.ChatColor;
 
@@ -52,15 +54,15 @@ public class SpellBuilderInventory extends CustomInventory {
     private int spellStart;
     private int partStart;
 
-    public SpellBuilderInventory(Player player, ItemStack item, Spells plugin, SpellBuilder builder) {
-        super(Bukkit.createInventory(null, 54, "Spell Builder"));
+    public SpellBuilderInventory(Spells plugin, PlayerSpellData data, ItemStack item,SpellBuilder builder) {
+        super(Bukkit.createInventory(null, 54, Localization.getInstance().localize("gui.builder.title")));
 
         this.plugin = plugin;
-        this.player = player;
+        this.player = data.getPlayer();
         this.targetItem = item;
         this.builder = builder;
 
-        this.allParts = new ArrayList<>(plugin.getSpellPartRegistry().getAllParts());
+        this.allParts = new ArrayList<>(data.getUnlockedParts());
         this.allParts.removeIf(part -> part == SpellPart.EMPTY || !part.isEnabled());
         this.allParts.sort(null);
 
@@ -181,7 +183,7 @@ public class SpellBuilderInventory extends CustomInventory {
 
     private ItemStack createColorItem() {
         return ItemBuilder.create(Material.LEATHER_CHESTPLATE)
-                .name("Change Spell Color")
+                .name(Localization.getInstance().localize("gui.builder.change-color"))
                 .modify(LeatherArmorMeta.class, meta -> meta.setColor(this.builder.getColor()))
                 .flags(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES)
                 .build();

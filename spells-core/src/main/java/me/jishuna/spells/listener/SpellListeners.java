@@ -14,9 +14,9 @@ import me.jishuna.spells.api.spell.Spell;
 import me.jishuna.spells.api.spell.SpellBuilder;
 import me.jishuna.spells.api.spell.SpellExecutor;
 import me.jishuna.spells.api.spell.caster.PlayerSpellCaster;
+import me.jishuna.spells.api.spell.playerdata.PlayerSpellData;
 import me.jishuna.spells.api.spell.util.SpellUtil;
 import me.jishuna.spells.inventory.SpellBuilderInventory;
-import me.jishuna.spells.playerdata.PlayerSpellData;
 
 public class SpellListeners implements Listener {
     private final Spells plugin;
@@ -42,7 +42,8 @@ public class SpellListeners implements Listener {
         Spell spell = SpellUtil.getSpell(item);
 
         if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
-            SpellBuilderInventory inventory = new SpellBuilderInventory(player, item, this.plugin, spell == null ? new SpellBuilder(20) : SpellBuilder.modifySpell(spell));
+            SpellBuilder builder = spell == null ? new SpellBuilder(20) : SpellBuilder.modifySpell(spell);
+            SpellBuilderInventory inventory = new SpellBuilderInventory(this.plugin, data, item, builder);
             this.plugin.getInventoryManager().openInventory(player, inventory);
             event.setCancelled(true);
         } else {

@@ -1,4 +1,8 @@
 gui:
+  builder:
+    title: '<black>Spell Builder'
+
+    change-color: '<gold><bold>Change Spell Color'
   color:
     title: '<black>Color Selector'
 

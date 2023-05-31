@@ -5,10 +5,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 
-import me.jishuna.spells.playerdata.PlayerManager;
+import me.jishuna.spells.api.spell.playerdata.PlayerManager;
+
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class ConnectionListener implements Listener {
     private final PlayerManager playerManager;
@@ -24,12 +24,7 @@ public class ConnectionListener implements Listener {
         }
     }
 
-    @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-        this.playerManager.onJoin(event.getPlayer());
-    }
-
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onQuit(PlayerQuitEvent event) {
         this.playerManager.removePlayer(event.getPlayer().getUniqueId());
     }
