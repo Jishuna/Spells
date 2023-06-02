@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 
-import me.jishuna.spells.api.spell.playerdata.PlayerManager;
+import me.jishuna.spells.api.playerdata.PlayerManager;
 
 import org.bukkit.event.player.PlayerQuitEvent;
 

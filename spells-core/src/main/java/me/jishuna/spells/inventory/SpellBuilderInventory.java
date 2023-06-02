@@ -21,9 +21,9 @@ import me.jishuna.jishlib.Utils;
 import me.jishuna.jishlib.inventory.CustomInventory;
 import me.jishuna.jishlib.items.ItemBuilder;
 import me.jishuna.spells.Spells;
+import me.jishuna.spells.api.playerdata.PlayerSpellData;
 import me.jishuna.spells.api.spell.SpellBuilder;
 import me.jishuna.spells.api.spell.part.SpellPart;
-import me.jishuna.spells.api.spell.playerdata.PlayerSpellData;
 import me.jishuna.spells.api.spell.util.SpellUtil;
 import net.md_5.bungee.api.ChatColor;
 

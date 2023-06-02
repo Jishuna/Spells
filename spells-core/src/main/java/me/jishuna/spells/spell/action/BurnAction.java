@@ -24,7 +24,7 @@ public class BurnAction extends ActionPart {
     @ConfigEntry("bonus-duration")
     @Comment("The additional duration in ticks to burn entities per prolong modifier.")
     public static int BONUS_DURATION = 40;
-    
+
     @ConfigEntry("base-duration")
     @Comment("The base duration in ticks to burn entities for.")
     public static int BASE_DURATION = 60;
@@ -36,6 +36,8 @@ public class BurnAction extends ActionPart {
         setDefaultLore("Lights the target block or entity on fire. Prolong will increase the duration entities are set on fire.");
 
         addAllowedModifiers(ProlongModifier.INSTANCE);
+
+        setRecipe(Material.FLINT_AND_STEEL, Material.GUNPOWDER, Material.STONE);
     }
 
     @Override

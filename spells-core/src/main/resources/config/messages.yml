@@ -1,4 +1,6 @@
 gui:
+  altar:
+    title: '<black>Select Recipe'
   builder:
     title: '<black>Spell Builder'
 

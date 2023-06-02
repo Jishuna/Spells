@@ -3,7 +3,7 @@ package me.jishuna.spells.api.spell.caster;
 import org.bukkit.GameMode;
 import org.bukkit.entity.LivingEntity;
 
-import me.jishuna.spells.api.spell.playerdata.PlayerSpellData;
+import me.jishuna.spells.api.playerdata.PlayerSpellData;
 
 public class PlayerSpellCaster implements SpellCaster {
     private final PlayerSpellData data;

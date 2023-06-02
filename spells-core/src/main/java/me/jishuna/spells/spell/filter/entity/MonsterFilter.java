@@ -1,5 +1,6 @@
 package me.jishuna.spells.spell.filter.entity;
 
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Monster;
 
@@ -19,6 +20,8 @@ public class MonsterFilter extends FilterPart {
 
         setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Filter: Monster");
         setDefaultLore("Filters out all entities except monsters, does not effect blocks.");
+        
+        setRecipe(Material.ROTTEN_FLESH, Material.BONE, Material.STONE);
     }
 
     @Override

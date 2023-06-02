@@ -5,10 +5,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 
 import me.jishuna.jishlib.LocationUtils;
 import me.jishuna.spells.Spells;
-import me.jishuna.spells.api.spell.altar.AltarManager;
+import me.jishuna.spells.api.altar.AltarManager;
+import me.jishuna.spells.inventory.AltarRecipeInventory;
 
 public class AltarListener implements Listener {
     private final Spells plugin;
@@ -19,14 +21,13 @@ public class AltarListener implements Listener {
 
     @EventHandler
     public void onAltarInteract(PlayerInteractEvent event) {
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK || event.getHand() != EquipmentSlot.HAND) {
             return;
         }
 
         AltarManager manager = this.plugin.getAltarManager();
         Location center = LocationUtils.centerLocation(event.getClickedBlock().getLocation(), false);
         if (manager.isAltarInUse(center)) {
-            event.getPlayer().sendMessage("in use");
             return;
         }
 
@@ -34,7 +35,7 @@ public class AltarListener implements Listener {
             return;
         }
 
-        event.getPlayer().sendMessage("altar");
-        manager.startAltarTask(event.getPlayer(), center);
+        AltarRecipeInventory inventory = new AltarRecipeInventory(this.plugin, event.getPlayer(), center);
+        this.plugin.getInventoryManager().openInventory(event.getPlayer(), inventory);
     }
 }

@@ -1,6 +1,7 @@
 package me.jishuna.spells.spell.action;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.LivingEntity;
 
@@ -21,6 +22,8 @@ public class WarpAction extends ActionPart {
         
         setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Warp");
         setDefaultLore("Teleports the caster to the target location.");
+        
+        setRecipe(Material.ENDER_PEARL, Material.STONE);
     }
 
     @Override

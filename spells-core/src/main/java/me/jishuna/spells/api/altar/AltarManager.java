@@ -1,4 +1,4 @@
-package me.jishuna.spells.api.spell.altar;
+package me.jishuna.spells.api.altar;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.structure.Structure;
 import org.bukkit.util.Vector;
 
-import me.jishuna.spells.spell.action.BurnAction;
+import me.jishuna.spells.api.altar.recipe.AltarRecipe;
 
 public class AltarManager {
     private final Map<Location, AltarCraftingTask> tasks = new HashMap<>();
@@ -50,8 +50,8 @@ public class AltarManager {
         return !(task == null || task.isCancelled());
     }
     
-    public void startAltarTask(Player player, Location center) {
-        AltarCraftingTask task = new AltarCraftingTask(player, center, BurnAction.INSTANCE);
+    public void startAltarTask(Player player, Location center, AltarRecipe recipe) {
+        AltarCraftingTask task = new AltarCraftingTask(player, center, recipe);
         task.runTaskTimer(this.plugin, 0, 2);
         
         this.tasks.put(center, task);

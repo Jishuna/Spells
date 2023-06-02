@@ -1,5 +1,6 @@
 package me.jishuna.spells.spell.action;
 
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
@@ -36,6 +37,8 @@ public class HealAction extends ActionPart {
         setDefaultLore("Heals the target. Prolong will replace the instant healing with a regeneration effect, with additional prolong modifiers increasing the duration of the regeneration. Empower will increase the healing amount or the level of poison.");
     
         addAllowedModifiers(EmpowerModifier.INSTANCE, ProlongModifier.INSTANCE);
+        
+        setRecipe(Material.GLISTERING_MELON_SLICE, Material.GHAST_TEAR, Material.STONE);
     }
 
     @Override

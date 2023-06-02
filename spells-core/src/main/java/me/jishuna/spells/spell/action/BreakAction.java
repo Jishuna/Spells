@@ -1,5 +1,6 @@
 package me.jishuna.spells.spell.action;
 
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -16,9 +17,11 @@ public class BreakAction extends ActionPart {
 
     private BreakAction() {
         super(NamespacedKey.fromString("action:break"), 15);
-        
+
         setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Break");
         setDefaultLore("Breaks target blocks.");
+
+        setRecipe(Material.IRON_PICKAXE, Material.STONE);
     }
 
     @Override

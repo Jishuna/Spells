@@ -40,7 +40,7 @@ public class YamlStorageAdapter implements StorageAdapter {
 
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
             for (String part : config.getStringList("unlocked-parts")) {
-                this.plugin.getSpellPartRegistry().find(part).ifPresent(parts::add);
+                this.plugin.getRegistryHolder().getSpellPartRegistry().find(part).ifPresent(parts::add);
             }
 
             return parts;

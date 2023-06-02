@@ -1,5 +1,6 @@
 package me.jishuna.spells.spell.filter.entity;
 
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.AbstractVillager;
 
@@ -19,6 +20,8 @@ public class VillagerFilter extends FilterPart {
 
         setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Filter: Villager");
         setDefaultLore("Filters out all entities except villagers, does not effect blocks.");
+
+        setRecipe(Material.EMERALD, Material.STONE);
     }
 
     @Override

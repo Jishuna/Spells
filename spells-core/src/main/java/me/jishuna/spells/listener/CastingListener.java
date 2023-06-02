@@ -10,18 +10,18 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import me.jishuna.spells.Spells;
+import me.jishuna.spells.api.playerdata.PlayerSpellData;
 import me.jishuna.spells.api.spell.Spell;
 import me.jishuna.spells.api.spell.SpellBuilder;
 import me.jishuna.spells.api.spell.SpellExecutor;
 import me.jishuna.spells.api.spell.caster.PlayerSpellCaster;
-import me.jishuna.spells.api.spell.playerdata.PlayerSpellData;
 import me.jishuna.spells.api.spell.util.SpellUtil;
 import me.jishuna.spells.inventory.SpellBuilderInventory;
 
-public class SpellListeners implements Listener {
+public class CastingListener implements Listener {
     private final Spells plugin;
 
-    public SpellListeners(Spells plugin) {
+    public CastingListener(Spells plugin) {
         this.plugin = plugin;
     }
 

@@ -1,5 +1,6 @@
 package me.jishuna.spells.spell.action;
 
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 
@@ -19,6 +20,8 @@ public class WorkbenchAction extends ActionPart {
 
         setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Workbench");
         setDefaultLore("Opens a crafting table inventory for the caster.");
+        
+        setRecipe(Material.CRAFTING_TABLE, Material.STONE);
     }
 
     @Override

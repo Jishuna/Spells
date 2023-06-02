@@ -97,7 +97,12 @@ public abstract class SpellPart implements Comparable<SpellPart> {
 
     @PostLoad
     private void onLoad() {
-        this.displayItem = ItemBuilder.create(Material.PLAYER_HEAD).name(displayName).lore(lore).skullTexture("92228765df0e2ebd6c3a3fde070ddc8c551ceb4a43b959e1c44d349ce516560").persistentData(NamespacedKey.fromString("spells:part"), Spells.spellPartType, this).build();
+        this.displayItem = ItemBuilder.create(Material.PLAYER_HEAD)
+                .name(displayName)
+                .lore(lore)
+                .skullTexture("92228765df0e2ebd6c3a3fde070ddc8c551ceb4a43b959e1c44d349ce516560")
+                .persistentData(NamespacedKey.fromString("spells:part"), Spells.spellPartType, this)
+                .build();
     }
 
     @Override

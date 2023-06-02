@@ -1,4 +1,4 @@
-package me.jishuna.spells.api.spell.pdc;
+package me.jishuna.spells.api.pdc;
 
 import java.util.List;
 

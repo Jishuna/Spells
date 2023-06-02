@@ -21,6 +21,8 @@ public class TillAction extends ActionPart {
 
         setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Till");
         setDefaultLore("Tills grass and dirt into farmland.");
+        
+        setRecipe(Material.IRON_HOE, Material.STONE);
     }
 
     @Override

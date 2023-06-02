@@ -1,11 +1,11 @@
-package me.jishuna.spells.api.spell.pdc;
+package me.jishuna.spells.api.pdc;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataType;
 
+import me.jishuna.spells.api.registry.SpellPartRegistry;
 import me.jishuna.spells.api.spell.part.SpellPart;
-import me.jishuna.spells.api.spell.part.SpellPartRegistry;
 
 public class SpellPartType implements PersistentDataType<String, SpellPart> {
     private final SpellPartRegistry registry;

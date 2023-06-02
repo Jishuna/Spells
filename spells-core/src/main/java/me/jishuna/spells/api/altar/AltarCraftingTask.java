@@ -1,7 +1,9 @@
-package me.jishuna.spells.api.spell.altar;
+package me.jishuna.spells.api.altar;
 
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -9,23 +11,23 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Transformation;
 import org.joml.Quaternionf;
 
-import me.jishuna.spells.api.spell.part.SpellPart;
+import me.jishuna.spells.api.altar.recipe.AltarRecipe;
 
 public class AltarCraftingTask extends BukkitRunnable {
     private final Player player;
     private final Location center;
-    private final SpellPart part;
+    private final AltarRecipe recipe;
     private final ItemDisplay display;
 
     private int recipeIndex;
     private ItemStack currentIngredient;
 
-    public AltarCraftingTask(Player player, Location center, SpellPart part) {
+    public AltarCraftingTask(Player player, Location center, AltarRecipe recipe) {
         this.player = player;
         this.center = center;
-        this.part = part;
+        this.recipe = recipe;
 
-        this.currentIngredient = new ItemStack(part.getRecipe().get(0));
+        this.currentIngredient = new ItemStack(recipe.getIngredients().get(0));
 
         this.display = this.center.getWorld().spawn(this.center.clone().add(0, 4, 0), ItemDisplay.class);
         this.display.setItemStack(this.currentIngredient);
@@ -39,6 +41,7 @@ public class AltarCraftingTask extends BukkitRunnable {
             return;
         }
 
+        checkIngredients();
         rotateDisplay();
 
         Location origin = this.center.clone().add(0, 1, 0);
@@ -56,11 +59,26 @@ public class AltarCraftingTask extends BukkitRunnable {
     }
 
     private void checkIngredients() {
+        for (Entity entity : this.center.getWorld().getNearbyEntities(this.center, 2, 2, 2, Item.class::isInstance)) {
+            Item item = (Item) entity;
+            ItemStack itemstack = item.getItemStack();
 
+            if (itemstack.isSimilar(this.currentIngredient)) {
+                itemstack.setAmount(itemstack.getAmount() - 1);
+                item.setItemStack(itemstack);
+
+                if (this.recipeIndex < this.recipe.getIngredients().size() - 1) {
+                    nextIngredient();
+                } else {
+                    this.center.getWorld().dropItem(this.center.clone().add(0, 1, 0), this.recipe.getOutput());
+                    this.cancel();
+                }
+            }
+        }
     }
 
     private void nextIngredient() {
-        this.currentIngredient = new ItemStack(this.part.getRecipe().get(++recipeIndex));
+        this.currentIngredient = new ItemStack(this.recipe.getIngredients().get(++recipeIndex));
         this.display.setItemStack(this.currentIngredient);
     }
 

@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 
 import me.jishuna.jishlib.commands.SimpleCommandHandler;
 import me.jishuna.spells.Spells;
-import me.jishuna.spells.api.spell.playerdata.PlayerSpellData;
+import me.jishuna.spells.api.playerdata.PlayerSpellData;
 
 public class SpellCommand extends SimpleCommandHandler {
     private final Spells plugin;
@@ -25,7 +25,7 @@ public class SpellCommand extends SimpleCommandHandler {
             return true;
         }
 
-       this.plugin.getSpellPartRegistry().find(args[0]).ifPresent(data::unlockPart);
+       this.plugin.getRegistryHolder().getSpellPartRegistry().find(args[0]).ifPresent(data::unlockPart);
        return true;
     }
 }

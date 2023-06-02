@@ -1,6 +1,7 @@
 package me.jishuna.spells.spell.action;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -21,6 +22,8 @@ public class LightningAction extends ActionPart {
         
         setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Lightning");
         setDefaultLore("Strikes the target with lightning.");
+        
+        setRecipe(Material.LIGHTNING_ROD, Material.STONE);
     }
 
     @Override

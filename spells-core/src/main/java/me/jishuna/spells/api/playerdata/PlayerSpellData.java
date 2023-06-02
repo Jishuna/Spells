@@ -1,4 +1,4 @@
-package me.jishuna.spells.api.spell.playerdata;
+package me.jishuna.spells.api.playerdata;
 
 import java.text.MessageFormat;
 import java.util.Collections;

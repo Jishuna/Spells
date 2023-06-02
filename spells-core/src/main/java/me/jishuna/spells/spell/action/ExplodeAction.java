@@ -1,6 +1,7 @@
 package me.jishuna.spells.spell.action;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -19,11 +20,13 @@ public class ExplodeAction extends ActionPart {
 
     private ExplodeAction() {
         super(NamespacedKey.fromString("action:explode"), 15);
-        
+
         setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Explode");
         setDefaultLore("Causes an explosion at the target. Empower will increase the size of the explosion.");
-        
+
         addAllowedModifiers(EmpowerModifier.INSTANCE);
+
+        setRecipe(Material.TNT, Material.STONE);
     }
 
     @Override
