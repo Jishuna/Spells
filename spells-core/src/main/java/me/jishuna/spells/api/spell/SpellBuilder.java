@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.Color;
 
+import me.jishuna.spells.api.GlobalSettings;
 import me.jishuna.spells.api.spell.part.ModifierPart;
 import me.jishuna.spells.api.spell.part.SpellPart;
 
@@ -12,13 +13,13 @@ public class SpellBuilder {
     private final SpellPart[] parts;
     private Color color = Color.WHITE;
 
-    public SpellBuilder(int size) {
-        this.parts = new SpellPart[size];
+    public SpellBuilder() {
+        this.parts = new SpellPart[GlobalSettings.MAX_PARTS];
         Arrays.fill(this.parts, SpellPart.EMPTY);
     }
 
     private SpellBuilder(List<SpellPart> parts, Color color) {
-        this.parts = parts.toArray(SpellPart[]::new);
+        this.parts = createPartsArray(parts);
         this.color = color;
     }
 
@@ -71,11 +72,11 @@ public class SpellBuilder {
         }
         return part;
     }
-    
+
     public void setColor(Color color) {
         this.color = color;
     }
-    
+
     public Color getColor() {
         return this.color;
     }
@@ -87,6 +88,13 @@ public class SpellBuilder {
     public Spell toSpell() {
         List<SpellPart> partList = Arrays.asList(this.parts);
         return new Spell(partList, this.color);
+    }
+
+    private SpellPart[] createPartsArray(List<SpellPart> parts) {
+        if (parts.size() > GlobalSettings.MAX_PARTS) {
+            return parts.subList(0, GlobalSettings.MAX_PARTS).toArray(SpellPart[]::new);
+        }
+        return parts.toArray(SpellPart[]::new);
     }
 
     public static SpellBuilder modifySpell(Spell spell) {

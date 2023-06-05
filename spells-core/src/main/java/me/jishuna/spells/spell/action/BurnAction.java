@@ -37,7 +37,7 @@ public class BurnAction extends ActionPart {
 
         addAllowedModifiers(ProlongModifier.INSTANCE);
 
-        setRecipe(Material.FLINT_AND_STEEL, Material.GUNPOWDER, Material.STONE);
+        setRecipe(Material.FLINT_AND_STEEL, Material.COAL, Material.STONE);
     }
 
     @Override

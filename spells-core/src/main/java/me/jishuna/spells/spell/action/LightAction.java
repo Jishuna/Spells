@@ -39,6 +39,7 @@ public class LightAction extends ActionPart {
         setDefaultLore("Creates an invisible light at the target block or makes the target entity glow. Empower increases the light level of the light, Prolong increases the duration of the glowing effect.");
    
         addAllowedModifiers(EmpowerModifier.INSTANCE, ProlongModifier.INSTANCE);
+        setRecipe(Material.TORCH, Material.GLOW_BERRIES, Material.STONE);
     }
 
     @Override

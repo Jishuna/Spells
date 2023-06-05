@@ -1,7 +1,6 @@
 package me.jishuna.spells.api.spell.part;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -15,7 +14,9 @@ import me.jishuna.jishlib.config.annotation.Comment;
 import me.jishuna.jishlib.config.annotation.ConfigEntry;
 import me.jishuna.jishlib.config.annotation.PostLoad;
 import me.jishuna.jishlib.items.ItemBuilder;
-import me.jishuna.spells.Spells;
+import me.jishuna.spells.api.SpellsAPI;
+import me.jishuna.spells.api.altar.recipe.ingredient.AltarRecipeIngredient;
+import me.jishuna.spells.api.altar.recipe.ingredient.MaterialIngredient;
 import net.md_5.bungee.api.ChatColor;
 
 public abstract class SpellPart implements Comparable<SpellPart> {
@@ -24,18 +25,21 @@ public abstract class SpellPart implements Comparable<SpellPart> {
 
     private final NamespacedKey key;
     private ItemStack displayItem;
-    
+
     @ConfigEntry
-    private List<Material> recipe = new ArrayList<>();
+    @Comment("The items required to craft this spell part at an altar. In order from first to last.")
+    private List<AltarRecipeIngredient> recipe = new ArrayList<>();
 
     @ConfigEntry("lore")
+    @Comment("The lore of this spell part when in item form.")
     private List<String> lore = new ArrayList<>();
 
     @ConfigEntry("display-name")
+    @Comment("The display name of this spell part when in item form.")
     private String displayName = "unknown";
 
     @ConfigEntry("mana-cost")
-    @Comment("The mana cost of this spell part")
+    @Comment("The mana cost of this spell part.")
     private int manaCost;
 
     @ConfigEntry("enabled")
@@ -87,22 +91,21 @@ public abstract class SpellPart implements Comparable<SpellPart> {
         this.lore = lore;
     }
 
-    public List<Material> getRecipe() {
+    public List<AltarRecipeIngredient> getRecipe() {
         return Collections.unmodifiableList(this.recipe);
     }
-    
+
     public void setRecipe(Material... ingredients) {
-        this.recipe = Arrays.asList(ingredients);
+        List<AltarRecipeIngredient> ingredientList = new ArrayList<>();
+        for (Material material : ingredients) {
+            ingredientList.add(new MaterialIngredient(material));
+        }
+        this.recipe = ingredientList;
     }
 
     @PostLoad
     private void onLoad() {
-        this.displayItem = ItemBuilder.create(Material.PLAYER_HEAD)
-                .name(displayName)
-                .lore(lore)
-                .skullTexture("92228765df0e2ebd6c3a3fde070ddc8c551ceb4a43b959e1c44d349ce516560")
-                .persistentData(NamespacedKey.fromString("spells:part"), Spells.spellPartType, this)
-                .build();
+        this.displayItem = ItemBuilder.create(Material.PLAYER_HEAD).name(displayName).lore(lore).skullTexture("92228765df0e2ebd6c3a3fde070ddc8c551ceb4a43b959e1c44d349ce516560").persistentData(NamespacedKey.fromString("spells:part"), SpellsAPI.SPELL_PART_TYPE, this).build();
     }
 
     @Override

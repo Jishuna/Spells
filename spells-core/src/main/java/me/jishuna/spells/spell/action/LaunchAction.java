@@ -27,6 +27,7 @@ public class LaunchAction extends ActionPart {
         setDefaultLore("Launches target blocks and entities into the air. Empower will increase the height of the launch.");
         
         addAllowedModifiers(EmpowerModifier.INSTANCE);
+        setRecipe(Material.SLIME_BALL, Material.FIREWORK_ROCKET, Material.STONE);
     }
 
     @Override

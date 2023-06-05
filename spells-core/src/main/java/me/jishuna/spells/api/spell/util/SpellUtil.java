@@ -8,7 +8,7 @@ import java.util.function.Predicate;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 
-import me.jishuna.spells.Spells;
+import me.jishuna.spells.api.SpellsAPI;
 import me.jishuna.spells.api.spell.Spell;
 import me.jishuna.spells.api.spell.SpellBuilder;
 import me.jishuna.spells.api.spell.part.ModifierPart;
@@ -21,7 +21,7 @@ public class SpellUtil {
             return null;
         }
 
-        return item.getItemMeta().getPersistentDataContainer().get(NamespacedKey.fromString("spells:spell"), Spells.SPELL_TYPE);
+        return item.getItemMeta().getPersistentDataContainer().get(NamespacedKey.fromString("spells:spell"), SpellsAPI.SPELL_TYPE);
     }
 
     public static boolean hasSpell(ItemStack item) {

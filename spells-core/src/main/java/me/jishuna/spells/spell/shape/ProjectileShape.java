@@ -1,6 +1,7 @@
 package me.jishuna.spells.spell.shape;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -33,6 +34,8 @@ public class ProjectileShape extends ShapePart {
 
         setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Projectile");
         setDefaultLore("Launches a slow moving but long range projectile that targets whatever it hits.");
+        
+        setRecipe(Material.BOW, Material.ARROW, Material.STONE);
     }
 
     @Override

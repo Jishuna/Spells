@@ -42,7 +42,7 @@ public class CastingListener implements Listener {
         Spell spell = SpellUtil.getSpell(item);
 
         if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
-            SpellBuilder builder = spell == null ? new SpellBuilder(20) : SpellBuilder.modifySpell(spell);
+            SpellBuilder builder = spell == null ? new SpellBuilder() : SpellBuilder.modifySpell(spell);
             SpellBuilderInventory inventory = new SpellBuilderInventory(this.plugin, data, item, builder);
             this.plugin.getInventoryManager().openInventory(player, inventory);
             event.setCancelled(true);

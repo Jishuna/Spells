@@ -7,7 +7,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import me.jishuna.spells.Spells;
+import me.jishuna.spells.api.SpellsAPI;
 import me.jishuna.spells.api.playerdata.PlayerManager;
 import me.jishuna.spells.api.spell.part.SpellPart;
 
@@ -31,13 +31,14 @@ public class PartUnlockListener implements Listener {
                 return;
             }
 
-            SpellPart part = item.getItemMeta().getPersistentDataContainer().get(NamespacedKey.fromString("spells:part"), Spells.spellPartType);
+            SpellPart part = item.getItemMeta().getPersistentDataContainer().get(NamespacedKey.fromString("spells:part"), SpellsAPI.SPELL_PART_TYPE);
             if (part == null) {
                 return;
             }
 
-            data.unlockPart(part);
-            item.setAmount(item.getAmount() - 1);
+            if (data.unlockPart(part)) {
+                item.setAmount(item.getAmount() - 1);
+            }
         });
     }
 }

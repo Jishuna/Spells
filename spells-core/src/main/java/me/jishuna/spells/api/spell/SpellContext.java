@@ -22,7 +22,7 @@ public class SpellContext {
 
     public Spell getNextSubspell() {
         List<SpellPart> parts = this.spell.getParts();
-        SpellBuilder builder = new SpellBuilder(20);
+        SpellBuilder builder = new SpellBuilder();
         int count = 0;
 
         while (hasPartsLeft()) {

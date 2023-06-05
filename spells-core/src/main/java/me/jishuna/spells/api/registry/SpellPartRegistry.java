@@ -13,7 +13,7 @@ import com.google.common.collect.ImmutableSet;
 
 import me.jishuna.jishlib.config.ConfigReloadable;
 import me.jishuna.spells.Spells;
-import me.jishuna.spells.api.altar.recipe.AltarRecipe;
+import me.jishuna.spells.api.altar.recipe.SpellPartRecipe;
 import me.jishuna.spells.api.spell.part.SpellPart;
 import me.jishuna.spells.spell.action.BreakAction;
 import me.jishuna.spells.spell.action.BurnAction;
@@ -74,7 +74,7 @@ public class SpellPartRegistry {
             reloadable.saveDefaults().load();
 
             if (!part.getRecipe().isEmpty()) {
-                this.plugin.getRegistryHolder().getAltarRecipeRegistry().register(part.getKey(), new AltarRecipe(part.getDisplayItem(), part.getRecipe()));
+                this.plugin.getRegistryHolder().getAltarRecipeRegistry().register(part.getKey(), new SpellPartRecipe(part));
             }
         }
     }

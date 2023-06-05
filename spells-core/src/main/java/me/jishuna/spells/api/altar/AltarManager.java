@@ -20,7 +20,7 @@ public class AltarManager {
     private final Plugin plugin;
     private final Structure altarStructure;
 
-    public AltarManager(Plugin plugin) throws IOException {
+    public AltarManager(Plugin plugin) {
         this.plugin = plugin;
         this.altarStructure = loadAltarStrcture(plugin);
     }
@@ -43,26 +43,30 @@ public class AltarManager {
 
         return true;
     }
-    
+
     public boolean isAltarInUse(Location center) {
         AltarCraftingTask task = this.tasks.get(center);
-        
         return !(task == null || task.isCancelled());
     }
-    
+
     public void startAltarTask(Player player, Location center, AltarRecipe recipe) {
         AltarCraftingTask task = new AltarCraftingTask(player, center, recipe);
         task.runTaskTimer(this.plugin, 0, 2);
-        
+
         this.tasks.put(center, task);
     }
-    
+
     public Structure getAltarStructure() {
         return this.altarStructure;
     }
 
-    private Structure loadAltarStrcture(Plugin plugin) throws IOException {
-        return Bukkit.getStructureManager().loadStructure(plugin.getResource("data/altar.nbt"));
+    private Structure loadAltarStrcture(Plugin plugin) {
+        try {
+            return Bukkit.getStructureManager().loadStructure(plugin.getResource("data/altar.nbt"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }

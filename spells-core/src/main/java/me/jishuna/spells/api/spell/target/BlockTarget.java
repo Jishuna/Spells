@@ -12,8 +12,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.BoundingBox;
 
-import me.jishuna.spells.Utils;
-
 public class BlockTarget extends SpellTarget {
     private final BlockFace hitFace;
 
@@ -41,7 +39,6 @@ public class BlockTarget extends SpellTarget {
     public static BlockTarget create(Location location, Collection<Block> current, BlockFace face, double radius, double height) {
         Set<Block> blocks = new HashSet<>(current);
         BoundingBox bounds = BoundingBox.of(location, radius, height / 2, radius);
-        Utils.outlineBoundingBox(location.getWorld(), bounds);
 
         blocks.addAll(SpellTarget.getBlocks(location.getWorld(), bounds));
 

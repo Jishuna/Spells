@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -17,6 +16,8 @@ import me.jishuna.jishlib.inventory.CustomInventory;
 import me.jishuna.jishlib.items.ItemBuilder;
 import me.jishuna.spells.Spells;
 import me.jishuna.spells.api.altar.recipe.AltarRecipe;
+import me.jishuna.spells.api.altar.recipe.SpellPartRecipe;
+import me.jishuna.spells.api.playerdata.PlayerSpellData;
 import net.md_5.bungee.api.ChatColor;
 
 public class AltarRecipeInventory extends CustomInventory {
@@ -33,17 +34,17 @@ public class AltarRecipeInventory extends CustomInventory {
 
     // @formatter:on
     private final Spells plugin;
-    private final Player player;
+    private final PlayerSpellData spellData;
     private final Location location;
     private final List<AltarRecipe> recipes;
 
     private int startIndex;
 
-    public AltarRecipeInventory(Spells plugin, Player player, Location location) {
+    public AltarRecipeInventory(Spells plugin, PlayerSpellData spellData, Location location) {
         super(Bukkit.createInventory(null, 54, Localization.getInstance().localize("gui.altar.title")));
 
         this.plugin = plugin;
-        this.player = player;
+        this.spellData = spellData;
         this.location = location;
         this.recipes = new ArrayList<>(plugin.getRegistryHolder().getAltarRecipeRegistry().getRecipes());
 
@@ -68,22 +69,28 @@ public class AltarRecipeInventory extends CustomInventory {
                 removeButton(i);
             } else {
                 AltarRecipe recipe = this.recipes.get(index);
-                addButton(i, recipe.getIcon(), this::craftPart);
+
+                ItemStack item = recipe.getIcon();
+                if (recipe instanceof SpellPartRecipe partRecipe) {
+                    boolean unlocked = this.spellData.hasUnlockedPart(partRecipe.getPart());
+                    item = ItemBuilder.modifyItem(item).name(Localization.getInstance().localize(unlocked ? "unlocked" : "locked"), true).build();
+                }
+                addButton(i, item, this::craftPart);
             }
         }
     }
 
     private void craftPart(InventoryClickEvent event) {
-       AltarRecipe recipe = this.recipes.get(this.startIndex + event.getSlot());
+        AltarRecipe recipe = this.recipes.get(this.startIndex + event.getSlot());
 
         Bukkit.getScheduler().runTask(this.plugin, () -> {
-            this.plugin.getAltarManager().startAltarTask(this.player, this.location, recipe);
+            this.plugin.getAltarManager().startAltarTask(this.spellData.getPlayer(), this.location, recipe);
             event.getWhoClicked().closeInventory();
         });
     }
 
     private void changePage(int amount) {
-        this.player.playSound(this.player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1f, 1f);
+        this.spellData.getPlayer().playSound(this.spellData.getPlayer().getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1f, 1f);
         int maxPage = (this.recipes.size() - 1) / 45;
         this.startIndex = Utils.clamp((this.startIndex / 45) + amount, 0, maxPage) * 27;
 

@@ -1,5 +1,6 @@
 package me.jishuna.spells.spell.action;
 
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ExperienceOrb;
@@ -19,9 +20,11 @@ public class CollectAction extends ActionPart {
 
     private CollectAction() {
         super(NamespacedKey.fromString("action:collect"), 15);
-        
+
         setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Collect");
         setDefaultLore("Collects target items and experience orbs, best used with the Area Subshape.");
+
+        setRecipe(Material.CHEST, Material.HOPPER, Material.STONE);
     }
 
     @Override

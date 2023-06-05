@@ -30,9 +30,11 @@ public class SmeltAction extends ActionPart {
 
     private SmeltAction() {
         super(NamespacedKey.fromString("action:smelt"), 15);
-        
+
         setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Smelt");
         setDefaultLore("Smelts target blocks or items as if they were placed in a furnace.");
+
+        setRecipe(Material.SMOKER, Material.BLAST_FURNACE, Material.STONE);
     }
 
     @Override

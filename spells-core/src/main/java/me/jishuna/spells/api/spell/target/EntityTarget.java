@@ -11,8 +11,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.BoundingBox;
 
-import me.jishuna.spells.Utils;
-
 public class EntityTarget extends SpellTarget {
     private EntityTarget(Location location, Collection<Entity> entities, Collection<Block> blocks) {
         super(location, entities, blocks);
@@ -33,7 +31,6 @@ public class EntityTarget extends SpellTarget {
     public static EntityTarget create(Location location, Collection<Entity> current, double radius, double height) {
         Set<Entity> entities = new HashSet<>(current);
         BoundingBox bounds = BoundingBox.of(location, radius, height / 2, radius);
-        Utils.outlineBoundingBox(location.getWorld(), bounds);
 
         entities.addAll(location.getWorld().getNearbyEntities(bounds));
 

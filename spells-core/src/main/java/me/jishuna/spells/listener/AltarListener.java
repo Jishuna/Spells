@@ -35,7 +35,9 @@ public class AltarListener implements Listener {
             return;
         }
 
-        AltarRecipeInventory inventory = new AltarRecipeInventory(this.plugin, event.getPlayer(), center);
-        this.plugin.getInventoryManager().openInventory(event.getPlayer(), inventory);
+        this.plugin.getPlayerManager().findData(event.getPlayer().getUniqueId()).ifPresent(data -> {
+            AltarRecipeInventory inventory = new AltarRecipeInventory(this.plugin, data, center);
+            this.plugin.getInventoryManager().openInventory(event.getPlayer(), inventory);
+        });
     }
 }

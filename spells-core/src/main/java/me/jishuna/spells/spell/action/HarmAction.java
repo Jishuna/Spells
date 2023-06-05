@@ -1,5 +1,6 @@
 package me.jishuna.spells.spell.action;
 
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -35,6 +36,7 @@ public class HarmAction extends ActionPart {
         setDefaultLore("Deals damage to the target. Prolong will replace the instant damage with a poison effect, with additional prolong modifiers increasing the duration of the poison. Empower will increase the damage dealt or the level of poison.");
 
         addAllowedModifiers(EmpowerModifier.INSTANCE, ProlongModifier.INSTANCE);
+        setRecipe(Material.IRON_SWORD, Material.STONE);
     }
 
     @Override

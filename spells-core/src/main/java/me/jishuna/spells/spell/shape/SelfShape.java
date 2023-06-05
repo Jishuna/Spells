@@ -1,5 +1,6 @@
 package me.jishuna.spells.spell.shape;
 
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -22,6 +23,8 @@ public class SelfShape extends ShapePart {
 
         setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Self");
         setDefaultLore("Targets the entity casting the spell.");
+        
+        setRecipe(Material.IRON_INGOT, Material.BREAD, Material.STONE);
     }
 
     @Override

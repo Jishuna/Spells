@@ -8,11 +8,11 @@ import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import me.jishuna.spells.Spells;
+import me.jishuna.jishlib.pdc.PersistentTypes;
+import me.jishuna.spells.api.SpellsAPI;
 import me.jishuna.spells.api.spell.Spell;
 import me.jishuna.spells.api.spell.SpellBuilder;
 import me.jishuna.spells.api.spell.part.SpellPart;
-import me.jishuna.jishlib.pdc.PersistentTypes;
 
 public class SpellType implements PersistentDataType<PersistentDataContainer, Spell> {
 
@@ -34,7 +34,7 @@ public class SpellType implements PersistentDataType<PersistentDataContainer, Sp
         for (int i = 0; i < parts.size(); i++) {
             SpellPart part = parts.get(i);
 
-            container.set(NamespacedKey.fromString("part:" + i), Spells.spellPartType, part);
+            container.set(NamespacedKey.fromString("part:" + i), SpellsAPI.SPELL_PART_TYPE, part);
         }
         container.set(NamespacedKey.fromString("spell:color"), PersistentTypes.INTEGER, complex.getColor().asRGB());
         return container;
@@ -42,16 +42,16 @@ public class SpellType implements PersistentDataType<PersistentDataContainer, Sp
 
     @Override
     public Spell fromPrimitive(PersistentDataContainer primitive, PersistentDataAdapterContext context) {
-        SpellBuilder builder = new SpellBuilder(20);
+        SpellBuilder builder = new SpellBuilder();
         int index = 0;
 
         while (true) {
             NamespacedKey key = NamespacedKey.fromString("part:" + index++);
-            if (!primitive.has(key, Spells.spellPartType)) {
+            if (!primitive.has(key, SpellsAPI.SPELL_PART_TYPE)) {
                 break;
             }
 
-            SpellPart part = primitive.get(key, Spells.spellPartType);
+            SpellPart part = primitive.get(key, SpellsAPI.SPELL_PART_TYPE);
             builder.addPart(part);
         }
 

@@ -1,6 +1,7 @@
 package me.jishuna.spells.spell.shape;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -36,6 +37,7 @@ public class BeamShape extends ShapePart {
         setDefaultLore("Launches a short range beam that instantly targets whatever it hits. Empower will increase the range of the beam.");
         
         addAllowedModifiers(EmpowerModifier.INSTANCE);
+        setRecipe(Material.PRISMARINE_SHARD, Material.PRISMARINE_CRYSTALS, Material.STONE);
     }
 
     @Override

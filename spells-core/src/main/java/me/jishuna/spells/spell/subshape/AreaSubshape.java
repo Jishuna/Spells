@@ -1,5 +1,6 @@
 package me.jishuna.spells.spell.subshape;
 
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
@@ -22,11 +23,12 @@ public class AreaSubshape extends SubshapePart {
 
     private AreaSubshape() {
         super(NamespacedKey.fromString("subshape:area"), 15);
-        
+
         setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Area");
         setDefaultLore("Causes the rest of the spell to target all entities in an area. Alternate will target blocks instead. Empower will increase the radius and Pierce will increase the height of the target area.");
-    
+
         addAllowedModifiers(AltModifier.INSTANCE, EmpowerModifier.INSTANCE, PierceModifier.INSTANCE);
+        setRecipe(Material.SPLASH_POTION, Material.STONE);
     }
 
     @Override

@@ -21,6 +21,7 @@ import me.jishuna.jishlib.Utils;
 import me.jishuna.jishlib.inventory.CustomInventory;
 import me.jishuna.jishlib.items.ItemBuilder;
 import me.jishuna.spells.Spells;
+import me.jishuna.spells.api.SpellsAPI;
 import me.jishuna.spells.api.playerdata.PlayerSpellData;
 import me.jishuna.spells.api.spell.SpellBuilder;
 import me.jishuna.spells.api.spell.part.SpellPart;
@@ -133,7 +134,7 @@ public class SpellBuilderInventory extends CustomInventory {
 
     private void addPart(InventoryClickEvent event) {
         ItemStack item = event.getCurrentItem();
-        SpellPart part = item.getItemMeta().getPersistentDataContainer().get(NamespacedKey.fromString("spells:part"), Spells.spellPartType);
+        SpellPart part = item.getItemMeta().getPersistentDataContainer().get(NamespacedKey.fromString("spells:part"), SpellsAPI.SPELL_PART_TYPE);
 
         this.builder.addPart(part);
 
@@ -177,7 +178,7 @@ public class SpellBuilderInventory extends CustomInventory {
 
     private void finalizeSpell(InventoryCloseEvent event) {
         ItemMeta meta = this.targetItem.getItemMeta();
-        meta.getPersistentDataContainer().set(NamespacedKey.fromString("spells:spell"), Spells.SPELL_TYPE, this.builder.toSpell());
+        meta.getPersistentDataContainer().set(NamespacedKey.fromString("spells:spell"), SpellsAPI.SPELL_TYPE, this.builder.toSpell());
         this.targetItem.setItemMeta(meta);
     }
 

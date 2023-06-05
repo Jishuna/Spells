@@ -1,5 +1,6 @@
 package me.jishuna.spells.spell.action;
 
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -35,6 +36,7 @@ public class SlowfallAction extends ActionPart {
         setDefaultLore("Gives the target entity the slowfalling effect. Empower will increase the level of the effect, Prolong will increase the duration of the effect.");
         
         addAllowedModifiers(EmpowerModifier.INSTANCE, ProlongModifier.INSTANCE);
+        setRecipe(Material.FEATHER, Material.PHANTOM_MEMBRANE, Material.STONE);
     }
 
     @Override

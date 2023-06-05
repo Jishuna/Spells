@@ -92,13 +92,14 @@ public class PlayerSpellData {
         return maxMana;
     }
 
-    public void unlockPart(SpellPart part) {
-        if (this.unlockedParts.contains(part)) {
-            return;
+    public boolean unlockPart(SpellPart part) {
+        if (this.getUnlockedParts().contains(part)) {
+            return false;
         }
 
         this.unlockedParts.add(part);
         this.adapter.unlockPart(this.id, part);
+        return true;
     }
 
     public Set<SpellPart> getUnlockedParts() {
@@ -106,6 +107,10 @@ public class PlayerSpellData {
             return Collections.emptySet();
         }
         return Collections.unmodifiableSet(this.unlockedParts);
+    }
+
+    public boolean hasUnlockedPart(SpellPart part) {
+        return getUnlockedParts().contains(part);
     }
 
     public void loadData() {

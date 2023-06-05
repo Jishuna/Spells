@@ -18,6 +18,7 @@ public class PlayerManager {
     public PlayerManager(Spells plugin) {
         this.plugin = plugin;
         this.disributionTask = new TypedDistributionTask<>(this::tickPlayer, data -> false, 4);
+        
         Bukkit.getScheduler().runTaskTimer(plugin, this.disributionTask, 0, 1);
     }
 

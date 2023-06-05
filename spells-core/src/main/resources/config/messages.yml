@@ -1,3 +1,6 @@
+unlocked: '<green><bold> Unlocked'
+locked: '<red><bold> Locked'
+
 gui:
   altar:
     title: '<black>Select Recipe'
