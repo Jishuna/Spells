@@ -16,27 +16,27 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
-import me.jishuna.jishlib.Localization;
+import me.jishuna.jishlib.MessageHandler;
 import me.jishuna.jishlib.Utils;
 import me.jishuna.jishlib.inventory.CustomInventory;
 import me.jishuna.jishlib.items.ItemBuilder;
 import me.jishuna.spells.Spells;
+import me.jishuna.spells.api.MessageKeys;
 import me.jishuna.spells.api.SpellsAPI;
 import me.jishuna.spells.api.playerdata.PlayerSpellData;
 import me.jishuna.spells.api.spell.SpellBuilder;
 import me.jishuna.spells.api.spell.part.SpellPart;
 import me.jishuna.spells.api.spell.util.SpellUtil;
-import net.md_5.bungee.api.ChatColor;
 
 public class SpellBuilderInventory extends CustomInventory {
     // @formatter:off
-    private static final ItemStack PREVIOUS = ItemBuilder.create(Material.PLAYER_HEAD)
-            .name(ChatColor.GOLD + "Previous Page")
+    private final ItemStack PREVIOUS = ItemBuilder.create(Material.PLAYER_HEAD)
+            .name(MessageHandler.get(MessageKeys.PREVIOUS_PAGE))
             .skullTexture("bd69e06e5dadfd84e5f3d1c21063f2553b2fa945ee1d4d7152fdc5425bc12a9")
             .build();
 
-    private static final ItemStack NEXT = ItemBuilder.create(Material.PLAYER_HEAD)
-            .name(ChatColor.GOLD + "Next Page")
+    private final ItemStack NEXT = ItemBuilder.create(Material.PLAYER_HEAD)
+            .name(MessageHandler.get(MessageKeys.NEXT_PAGE))
             .skullTexture("19bf3292e126a105b54eba713aa1b152d541a1d8938829c56364d178ed22bf")
             .build();
 
@@ -55,8 +55,8 @@ public class SpellBuilderInventory extends CustomInventory {
     private int spellStart;
     private int partStart;
 
-    public SpellBuilderInventory(Spells plugin, PlayerSpellData data, ItemStack item,SpellBuilder builder) {
-        super(Bukkit.createInventory(null, 54, Localization.getInstance().localize("gui.builder.title")));
+    public SpellBuilderInventory(Spells plugin, PlayerSpellData data, ItemStack item, SpellBuilder builder) {
+        super(Bukkit.createInventory(null, 54, MessageHandler.get(MessageKeys.SPELL_BUILDER_GUI_TITLE)));
 
         this.plugin = plugin;
         this.player = data.getPlayer();
@@ -97,9 +97,9 @@ public class SpellBuilderInventory extends CustomInventory {
         addButton(45, PREVIOUS, e -> changeSpellIndex(-1));
         addButton(53, NEXT, e -> changeSpellIndex(1));
 
-        addButton(47, ItemBuilder.create(Material.LIME_DYE).name(ChatColor.GREEN + ChatColor.BOLD.toString() + "Save").build(), event -> Bukkit.getScheduler().runTask(this.plugin, () -> event.getWhoClicked().closeInventory()));
+        addButton(47, ItemBuilder.create(Material.LIME_DYE).name(MessageHandler.get(MessageKeys.SAVE)).build(), event -> Bukkit.getScheduler().runTask(this.plugin, () -> event.getWhoClicked().closeInventory()));
         addButton(49, createColorItem(), this::openColorSelector);
-        addButton(51, ItemBuilder.create(Material.RED_DYE).name(ChatColor.RED + ChatColor.BOLD.toString() + "Clear").lore(ChatColor.RED + "Hold shift to clear current spell").build(), this::clearParts);
+        addButton(51, ItemBuilder.create(Material.RED_DYE).name(MessageHandler.get(MessageKeys.CLEAR_NAME)).lore(MessageHandler.getList(MessageKeys.CLEAR_LORE)).build(), this::clearParts);
     }
 
     private void refreshOptions() {
@@ -183,10 +183,6 @@ public class SpellBuilderInventory extends CustomInventory {
     }
 
     private ItemStack createColorItem() {
-        return ItemBuilder.create(Material.LEATHER_CHESTPLATE)
-                .name(Localization.getInstance().localize("gui.builder.change-color"))
-                .modify(LeatherArmorMeta.class, meta -> meta.setColor(this.builder.getColor()))
-                .flags(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES)
-                .build();
+        return ItemBuilder.create(Material.LEATHER_CHESTPLATE).name(MessageHandler.get(MessageKeys.CHANGE_COLOR)).modify(LeatherArmorMeta.class, meta -> meta.setColor(this.builder.getColor())).flags(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES).build();
     }
 }

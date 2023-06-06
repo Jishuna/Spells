@@ -1,13 +1,20 @@
-unlocked: '<green><bold> Unlocked'
-locked: '<red><bold> Locked'
-
 gui:
+  cancel: '<red><bold>Cancel'
+  next-page: '<gold>Next Page'
+  previous-page: '<gold>Previous Page'
+  unlocked: '<green><bold> Unlocked'
+  locked: '<red><bold> Locked'
+
   altar:
     title: '<black>Select Recipe'
   builder:
     title: '<black>Spell Builder'
 
     change-color: '<gold><bold>Change Spell Color'
+    save: '<green><bold>Save'
+    clear-name: '<red><bold>Clear'
+    clear-lore:
+    - '<red>Shift Click to clear current spell.'
   color:
     title: '<black>Color Selector'
 
@@ -18,15 +25,17 @@ gui:
     
     increase: 
       name: '<gold>Increase'
-      lore-1: '<red>Left Click: <gold>Add 1'
-      lore-2: '<red>Right Click: <gold>Add 5'
-      lore-3: '<red>Shift Left Click: <gold>Add 10'
-      lore-4: '<red>Shift Right Click: <gold>Add 50'
-      lore-5: '<red>Middle Click: <gold>Add 100'
-    decrease: 
+      lore: 
+        - '<red>Left Click: <gold>Add 1'
+        - '<red>Right Click: <gold>Add 5'
+        - '<red>Shift Left Click: <gold>Add 10'
+        - '<red>Shift Right Click: <gold>Add 50'
+        - '<red>Middle Click: <gold>Add 100'
+    decrease:
       name: '<gold>Decrease'
-      lore-1: '<red>Left Click: <gold>Remove 1'
-      lore-2: '<red>Right Click: <gold>Remove 5'
-      lore-3: '<red>Shift Left Click: <gold>Remove 10'
-      lore-4: '<red>Shift Right Click: <gold>Remove 50'
-      lore-5: '<red>Middle Click: <gold>Remove 100'
+      lore:
+        - '<red>Left Click: <gold>Remove 1'
+        - '<red>Right Click: <gold>Remove 5'
+        - '<red>Shift Left Click: <gold>Remove 10'
+        - '<red>Shift Right Click: <gold>Remove 50'
+        - '<red>Middle Click: <gold>Remove 100'

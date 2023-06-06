@@ -13,25 +13,26 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
-import me.jishuna.jishlib.Localization;
+import me.jishuna.jishlib.MessageHandler;
 import me.jishuna.jishlib.Utils;
 import me.jishuna.jishlib.inventory.CustomInventory;
 import me.jishuna.jishlib.items.ItemBuilder;
 import me.jishuna.jishlib.pdc.PersistentTypes;
 import me.jishuna.spells.Spells;
+import me.jishuna.spells.api.MessageKeys;
 
 public class ColorSelectorInventory extends CustomInventory {
     private static final NamespacedKey DUMMY = NamespacedKey.fromString("spells:dummy");
     // @formatter:off
     private final ItemStack decrease = ItemBuilder.create(Material.PLAYER_HEAD)
-            .name(Localization.getInstance().localize("gui.color.decrease.name"))
-            .lore(Localization.getInstance().localizeAll("gui.color.decrease.lore"))
+            .name(MessageHandler.get(MessageKeys.DECREASE_NAME))
+            .lore(MessageHandler.getList(MessageKeys.DECREASE_LORE))
             .skullTexture("7437346d8bda78d525d19f540a95e4e79daeda795cbc5a13256236312cf")
             .build();
 
     private final ItemStack increase = ItemBuilder.create(Material.PLAYER_HEAD)
-            .name(Localization.getInstance().localize("gui.color.increase.name"))
-            .lore(Localization.getInstance().localizeAll("gui.color.increase.lore"))
+            .name(MessageHandler.get(MessageKeys.INCREASE_NAME))
+            .lore(MessageHandler.getList(MessageKeys.INCREASE_LORE))
             .skullTexture("3040fe836a6c2fbd2c7a9c8ec6be5174fddf1ac20f55e366156fa5f712e10")
             .build();
 
@@ -48,7 +49,7 @@ public class ColorSelectorInventory extends CustomInventory {
     private int green;
 
     public ColorSelectorInventory(Spells plugin, SpellBuilderInventory parent, Color color) {
-        super(Bukkit.createInventory(null, 27,Localization.getInstance().localize("gui.color.title")));
+        super(Bukkit.createInventory(null, 27, MessageHandler.get(MessageKeys.COLOR_GUI_TITLE)));
 
         this.plugin = plugin;
         this.parent = parent;
@@ -97,25 +98,25 @@ public class ColorSelectorInventory extends CustomInventory {
         Color color = Color.fromRGB(this.red, this.green, this.blue);
         
         setItem(10, ItemBuilder.create(Material.LEATHER_CHESTPLATE)
-                .name(Localization.getInstance().localize("gui.color.red", this.red))
+                .name(MessageHandler.get(MessageKeys.RED, this.red))
                 .modify(LeatherArmorMeta.class, meta -> meta.setColor(Color.fromRGB(this.red, 0, 0)))
                 .flags(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES)
                 .build());
         
         setItem(12, ItemBuilder.create(Material.LEATHER_CHESTPLATE)
-                .name(Localization.getInstance().localize("gui.color.green", this.green))
+                .name(MessageHandler.get(MessageKeys.GREEN, this.green))
                 .modify(LeatherArmorMeta.class, meta -> meta.setColor(Color.fromRGB(0, this.green, 0)))
                 .flags(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES)
                 .build());
         
         setItem(14, ItemBuilder.create(Material.LEATHER_CHESTPLATE)
-                .name(Localization.getInstance().localize("gui.color.blue", this.blue))
+                .name(MessageHandler.get(MessageKeys.BLUE, this.blue))
                 .modify(LeatherArmorMeta.class, meta -> meta.setColor(Color.fromRGB(0, 0, this.blue)))
                 .flags(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES)
                 .build());
         
         setItem(16, ItemBuilder.create(Material.LEATHER_CHESTPLATE)
-                .name(Localization.getInstance().localize("gui.color.current-color"))
+                .name(MessageHandler.get(MessageKeys.CURRENT_COLOR))
                 .modify(LeatherArmorMeta.class, meta -> meta.setColor(color))
                 .flags(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES)
                 .build());

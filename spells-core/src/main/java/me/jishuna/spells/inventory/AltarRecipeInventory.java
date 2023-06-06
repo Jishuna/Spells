@@ -10,25 +10,25 @@ import org.bukkit.Sound;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-import me.jishuna.jishlib.Localization;
+import me.jishuna.jishlib.MessageHandler;
 import me.jishuna.jishlib.Utils;
 import me.jishuna.jishlib.inventory.CustomInventory;
 import me.jishuna.jishlib.items.ItemBuilder;
 import me.jishuna.spells.Spells;
+import me.jishuna.spells.api.MessageKeys;
 import me.jishuna.spells.api.altar.recipe.AltarRecipe;
 import me.jishuna.spells.api.altar.recipe.SpellPartRecipe;
 import me.jishuna.spells.api.playerdata.PlayerSpellData;
-import net.md_5.bungee.api.ChatColor;
 
 public class AltarRecipeInventory extends CustomInventory {
     // @formatter:off
-    private static final ItemStack PREVIOUS = ItemBuilder.create(Material.PLAYER_HEAD)
-            .name(ChatColor.GOLD + "Previous Page")
+    private final ItemStack PREVIOUS = ItemBuilder.create(Material.PLAYER_HEAD)
+            .name(MessageHandler.get(MessageKeys.PREVIOUS_PAGE))
             .skullTexture("bd69e06e5dadfd84e5f3d1c21063f2553b2fa945ee1d4d7152fdc5425bc12a9")
             .build();
 
-    private static final ItemStack NEXT = ItemBuilder.create(Material.PLAYER_HEAD)
-            .name(ChatColor.GOLD + "Next Page")
+    private final ItemStack NEXT = ItemBuilder.create(Material.PLAYER_HEAD)
+            .name(MessageHandler.get(MessageKeys.NEXT_PAGE))
             .skullTexture("19bf3292e126a105b54eba713aa1b152d541a1d8938829c56364d178ed22bf")
             .build();
 
@@ -41,7 +41,7 @@ public class AltarRecipeInventory extends CustomInventory {
     private int startIndex;
 
     public AltarRecipeInventory(Spells plugin, PlayerSpellData spellData, Location location) {
-        super(Bukkit.createInventory(null, 54, Localization.getInstance().localize("gui.altar.title")));
+        super(Bukkit.createInventory(null, 54, MessageHandler.get(MessageKeys.ALTAR_GUI_TITLE)));
 
         this.plugin = plugin;
         this.spellData = spellData;
@@ -58,7 +58,7 @@ public class AltarRecipeInventory extends CustomInventory {
         addButton(45, PREVIOUS, e -> changePage(-1));
         addButton(53, NEXT, e -> changePage(1));
 
-        addButton(49, ItemBuilder.create(Material.BARRIER).name(ChatColor.RED + ChatColor.BOLD.toString() + "Cancel").build(), event -> Bukkit.getScheduler().runTask(this.plugin, () -> event.getWhoClicked().closeInventory()));
+        addButton(49, ItemBuilder.create(Material.BARRIER).name(MessageHandler.get(MessageKeys.CANCEL)).build(), event -> Bukkit.getScheduler().runTask(this.plugin, () -> event.getWhoClicked().closeInventory()));
     }
 
     private void refreshOptions() {
@@ -73,7 +73,7 @@ public class AltarRecipeInventory extends CustomInventory {
                 ItemStack item = recipe.getIcon();
                 if (recipe instanceof SpellPartRecipe partRecipe) {
                     boolean unlocked = this.spellData.hasUnlockedPart(partRecipe.getPart());
-                    item = ItemBuilder.modifyItem(item).name(Localization.getInstance().localize(unlocked ? "unlocked" : "locked"), true).build();
+                    item = ItemBuilder.modifyItem(item).name(unlocked ? MessageHandler.get(MessageKeys.UNLOCKED) : MessageHandler.get(MessageKeys.LOCKED), true).build();
                 }
                 addButton(i, item, this::craftPart);
             }

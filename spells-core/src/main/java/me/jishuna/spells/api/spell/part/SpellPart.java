@@ -26,7 +26,7 @@ public abstract class SpellPart implements Comparable<SpellPart> {
     private final NamespacedKey key;
     private ItemStack displayItem;
 
-    @ConfigEntry
+    @ConfigEntry("recipe")
     @Comment("The items required to craft this spell part at an altar. In order from first to last.")
     private List<AltarRecipeIngredient> recipe = new ArrayList<>();
 

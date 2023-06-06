@@ -7,8 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.jishuna.jishlib.FileUtils;
-import me.jishuna.jishlib.Localization;
+import me.jishuna.jishlib.MessageHandler;
 import me.jishuna.jishlib.config.ConfigReloadable;
 import me.jishuna.jishlib.config.ConfigurationManager;
 import me.jishuna.jishlib.inventory.CustomInventoryListener;
@@ -67,13 +66,13 @@ public class Spells extends JavaPlugin {
     }
 
     private void loadConfigs() {
-        FileUtils.loadResource(this, "config/messages.yml").ifPresent(config -> Localization.getInstance().setConfig(config));
-
         this.configurationManager = new ConfigurationManager(this);
         this.configurationManager.registerTypeAdapter(AltarRecipeIngredient.class, new RecipeIngredientAdapter());
 
-        ConfigReloadable<GlobalSettings> reloadable = this.configurationManager.createStaticReloadable(new File(getDataFolder(), "config/general.yml"), GlobalSettings.class);
-        reloadable.saveDefaults().load();
+        ConfigReloadable<GlobalSettings> globalSettings = this.configurationManager.createStaticReloadable(new File(getDataFolder(), "config/general.yml"), GlobalSettings.class);
+        globalSettings.saveDefaults().load();
+
+        MessageHandler.initalize(this.configurationManager, new File(getDataFolder(), "config/messages.yml"), this.getResource("config/messages.yml"));
     }
 
     private void registerEvents() {
