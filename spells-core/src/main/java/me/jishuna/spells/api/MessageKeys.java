@@ -5,8 +5,8 @@ public class MessageKeys {
     public static final String CANCEL = "gui.cancel";
     public static final String NEXT_PAGE = "gui.next-page";
     public static final String PREVIOUS_PAGE = "gui.previous-page";
-    public static final String UNLOCKED = "unlocked";
-    public static final String LOCKED = "locked";
+    public static final String UNLOCKED = "gui.unlocked";
+    public static final String LOCKED = "gui.locked";
 
     // Spell builder GUI
     public static final String SPELL_BUILDER_GUI_TITLE = "gui.builder.title";
