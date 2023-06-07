@@ -18,7 +18,7 @@ public class RegistryHolder {
     public AltarRecipeRegistry getAltarRecipeRegistry() {
         return altarRecipeRegistry;
     }
-    
+
     public void initialize() {
         this.partRegistry.initialize();
     }

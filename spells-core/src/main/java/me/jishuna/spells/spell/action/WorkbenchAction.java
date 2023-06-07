@@ -20,7 +20,7 @@ public class WorkbenchAction extends ActionPart {
 
         setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Workbench");
         setDefaultLore("Opens a crafting table inventory for the caster.");
-        
+
         setRecipe(Material.CRAFTING_TABLE, Material.STONE);
     }
 

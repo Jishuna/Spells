@@ -19,10 +19,10 @@ public class LightningAction extends ActionPart {
 
     private LightningAction() {
         super(NamespacedKey.fromString("action:lightning"), 15);
-        
+
         setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Lightning");
         setDefaultLore("Strikes the target with lightning.");
-        
+
         setRecipe(Material.LIGHTNING_ROD, Material.STONE);
     }
 

@@ -83,11 +83,11 @@ public class ColorSelectorInventory extends CustomInventory {
         int value = supplier.getAsInt();
 
         switch (type) {
-            case RIGHT -> value += amount * 5;
-            case SHIFT_LEFT -> value += amount * 10;
-            case SHIFT_RIGHT -> value += amount * 50;
-            case MIDDLE -> value += amount * 100;
-            default -> value += amount;
+        case RIGHT -> value += amount * 5;
+        case SHIFT_LEFT -> value += amount * 10;
+        case SHIFT_RIGHT -> value += amount * 50;
+        case MIDDLE -> value += amount * 100;
+        default -> value += amount;
         }
 
         consumer.accept(Utils.clamp(value, 0, 255));
@@ -96,30 +96,14 @@ public class ColorSelectorInventory extends CustomInventory {
 
     private void refreshDisplayItems() {
         Color color = Color.fromRGB(this.red, this.green, this.blue);
-        
-        setItem(10, ItemBuilder.create(Material.LEATHER_CHESTPLATE)
-                .name(MessageHandler.get(MessageKeys.RED, this.red))
-                .modify(LeatherArmorMeta.class, meta -> meta.setColor(Color.fromRGB(this.red, 0, 0)))
-                .flags(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES)
-                .build());
-        
-        setItem(12, ItemBuilder.create(Material.LEATHER_CHESTPLATE)
-                .name(MessageHandler.get(MessageKeys.GREEN, this.green))
-                .modify(LeatherArmorMeta.class, meta -> meta.setColor(Color.fromRGB(0, this.green, 0)))
-                .flags(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES)
-                .build());
-        
-        setItem(14, ItemBuilder.create(Material.LEATHER_CHESTPLATE)
-                .name(MessageHandler.get(MessageKeys.BLUE, this.blue))
-                .modify(LeatherArmorMeta.class, meta -> meta.setColor(Color.fromRGB(0, 0, this.blue)))
-                .flags(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES)
-                .build());
-        
-        setItem(16, ItemBuilder.create(Material.LEATHER_CHESTPLATE)
-                .name(MessageHandler.get(MessageKeys.CURRENT_COLOR))
-                .modify(LeatherArmorMeta.class, meta -> meta.setColor(color))
-                .flags(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES)
-                .build());
+
+        setItem(10, ItemBuilder.create(Material.LEATHER_CHESTPLATE).name(MessageHandler.get(MessageKeys.RED, this.red)).modify(LeatherArmorMeta.class, meta -> meta.setColor(Color.fromRGB(this.red, 0, 0))).flags(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES).build());
+
+        setItem(12, ItemBuilder.create(Material.LEATHER_CHESTPLATE).name(MessageHandler.get(MessageKeys.GREEN, this.green)).modify(LeatherArmorMeta.class, meta -> meta.setColor(Color.fromRGB(0, this.green, 0))).flags(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES).build());
+
+        setItem(14, ItemBuilder.create(Material.LEATHER_CHESTPLATE).name(MessageHandler.get(MessageKeys.BLUE, this.blue)).modify(LeatherArmorMeta.class, meta -> meta.setColor(Color.fromRGB(0, 0, this.blue))).flags(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES).build());
+
+        setItem(16, ItemBuilder.create(Material.LEATHER_CHESTPLATE).name(MessageHandler.get(MessageKeys.CURRENT_COLOR)).modify(LeatherArmorMeta.class, meta -> meta.setColor(color)).flags(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES).build());
     }
 
     private void setColor(InventoryCloseEvent event) {

@@ -23,7 +23,7 @@ public class SpellProjectile extends BukkitRunnable {
     private final SpellExecutor resolver;
     private final double size;
     private final Color color;
-    
+
     private int length;
     private volatile boolean running = false;
 

@@ -21,7 +21,7 @@ import net.md_5.bungee.api.ChatColor;
 
 public class HealAction extends ActionPart {
     public static final HealAction INSTANCE = new HealAction();
-    
+
     @Comment("The additional duration in ticks for the regeneration effect per prolong modifier.")
     @ConfigEntry("bonus-duration")
     public static int BONUS_DURATION = 40;
@@ -35,9 +35,9 @@ public class HealAction extends ActionPart {
 
         setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Heal");
         setDefaultLore("Heals the target. Prolong will replace the instant healing with a regeneration effect, with additional prolong modifiers increasing the duration of the regeneration. Empower will increase the healing amount or the level of poison.");
-    
+
         addAllowedModifiers(EmpowerModifier.INSTANCE, ProlongModifier.INSTANCE);
-        
+
         setRecipe(Material.GLISTERING_MELON_SLICE, Material.GHAST_TEAR, Material.STONE);
     }
 

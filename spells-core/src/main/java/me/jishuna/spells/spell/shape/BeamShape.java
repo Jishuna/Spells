@@ -32,10 +32,10 @@ public class BeamShape extends ShapePart {
 
     private BeamShape() {
         super(NamespacedKey.fromString("shape:beam"), 15);
-        
+
         setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Beam");
         setDefaultLore("Launches a short range beam that instantly targets whatever it hits. Empower will increase the range of the beam.");
-        
+
         addAllowedModifiers(EmpowerModifier.INSTANCE);
         setRecipe(Material.PRISMARINE_SHARD, Material.PRISMARINE_CRYSTALS, Material.STONE);
     }

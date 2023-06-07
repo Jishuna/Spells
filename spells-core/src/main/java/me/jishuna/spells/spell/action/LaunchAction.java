@@ -22,10 +22,10 @@ public class LaunchAction extends ActionPart {
 
     private LaunchAction() {
         super(NamespacedKey.fromString("action:launch"), 15);
-        
+
         setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Launch");
         setDefaultLore("Launches target blocks and entities into the air. Empower will increase the height of the launch.");
-        
+
         addAllowedModifiers(EmpowerModifier.INSTANCE);
         setRecipe(Material.SLIME_BALL, Material.FIREWORK_ROCKET, Material.STONE);
     }

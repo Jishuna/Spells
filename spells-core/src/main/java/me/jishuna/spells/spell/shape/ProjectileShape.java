@@ -34,7 +34,7 @@ public class ProjectileShape extends ShapePart {
 
         setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Projectile");
         setDefaultLore("Launches a slow moving but long range projectile that targets whatever it hits.");
-        
+
         setRecipe(Material.BOW, Material.ARROW, Material.STONE);
     }
 

@@ -19,10 +19,10 @@ public class WarpAction extends ActionPart {
 
     private WarpAction() {
         super(NamespacedKey.fromString("action:warp"), 15);
-        
+
         setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Warp");
         setDefaultLore("Teleports the caster to the target location.");
-        
+
         setRecipe(Material.ENDER_PEARL, Material.STONE);
     }
 

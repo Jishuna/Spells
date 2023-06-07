@@ -33,7 +33,7 @@ public class SpellArrayType implements PersistentDataType<PersistentDataContaine
             } else {
                 container = SpellsAPI.SPELL_TYPE.toPrimitive(spell, context);
             }
-            
+
             containers[index++] = container;
         }
         return containers;

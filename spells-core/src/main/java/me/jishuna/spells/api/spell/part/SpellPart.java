@@ -82,7 +82,7 @@ public abstract class SpellPart implements Comparable<SpellPart> {
     public ItemStack getDisplayItem() {
         return displayItem.clone();
     }
-    
+
     public String getDisplayName() {
         return this.displayName;
     }

@@ -25,7 +25,7 @@ public class SpellCommand extends SimpleCommandHandler {
             return true;
         }
 
-       this.plugin.getRegistryHolder().getSpellPartRegistry().find(args[0]).ifPresent(data::unlockPart);
-       return true;
+        this.plugin.getRegistryHolder().getSpellPartRegistry().find(args[0]).ifPresent(data::unlockPart);
+        return true;
     }
 }

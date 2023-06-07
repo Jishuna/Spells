@@ -24,7 +24,7 @@ public class SlowfallAction extends ActionPart {
     @Comment("The additional duration in ticks for the slowfalling effect per prolong modifier.")
     @ConfigEntry("bonus-duration")
     public static int BONUS_DURATION = 40;
-    
+
     @Comment("The base duration in ticks for the slowfalling effect.")
     @ConfigEntry("base-duration")
     public static int BASE_DURATION = 100;
@@ -34,7 +34,7 @@ public class SlowfallAction extends ActionPart {
 
         setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Slowfall");
         setDefaultLore("Gives the target entity the slowfalling effect. Empower will increase the level of the effect, Prolong will increase the duration of the effect.");
-        
+
         addAllowedModifiers(EmpowerModifier.INSTANCE, ProlongModifier.INSTANCE);
         setRecipe(Material.FEATHER, Material.PHANTOM_MEMBRANE, Material.STONE);
     }

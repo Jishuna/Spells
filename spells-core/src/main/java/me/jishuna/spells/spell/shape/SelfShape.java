@@ -23,7 +23,7 @@ public class SelfShape extends ShapePart {
 
         setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "Self");
         setDefaultLore("Targets the entity casting the spell.");
-        
+
         setRecipe(Material.IRON_INGOT, Material.BREAD, Material.STONE);
     }
 
