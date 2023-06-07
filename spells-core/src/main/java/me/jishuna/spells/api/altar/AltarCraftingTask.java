@@ -67,7 +67,11 @@ public class AltarCraftingTask extends BukkitRunnable {
 
             if (this.currentIngredient.matches(itemstack)) {
                 itemstack.setAmount(itemstack.getAmount() - 1);
-                item.setItemStack(itemstack);
+                if (itemstack.getAmount() > 0) {
+                    item.setItemStack(itemstack);
+                } else {
+                    item.remove();
+                }
 
                 if (this.recipeIndex < this.recipe.getIngredients().size() - 1) {
                     nextIngredient();

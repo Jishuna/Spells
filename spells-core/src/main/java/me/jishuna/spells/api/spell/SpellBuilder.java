@@ -11,6 +11,7 @@ import me.jishuna.spells.api.spell.part.SpellPart;
 
 public class SpellBuilder {
     private final SpellPart[] parts;
+    private String name = "Spell";
     private Color color = Color.WHITE;
 
     public SpellBuilder() {
@@ -18,8 +19,9 @@ public class SpellBuilder {
         Arrays.fill(this.parts, SpellPart.EMPTY);
     }
 
-    private SpellBuilder(List<SpellPart> parts, Color color) {
+    private SpellBuilder(List<SpellPart> parts, String name, Color color) {
         this.parts = createPartsArray(parts);
+        this.name = name;
         this.color = color;
     }
 
@@ -73,6 +75,14 @@ public class SpellBuilder {
         return part;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void setColor(Color color) {
         this.color = color;
     }
@@ -87,17 +97,27 @@ public class SpellBuilder {
 
     public Spell toSpell() {
         List<SpellPart> partList = Arrays.asList(this.parts);
-        return new Spell(partList, this.color);
+        return new Spell(partList, this.name, this.color);
     }
 
     private SpellPart[] createPartsArray(List<SpellPart> parts) {
-        if (parts.size() > GlobalSettings.MAX_PARTS) {
-            return parts.subList(0, GlobalSettings.MAX_PARTS).toArray(SpellPart[]::new);
+        SpellPart[] partArray = new SpellPart[GlobalSettings.MAX_PARTS];
+        Arrays.fill(partArray, SpellPart.EMPTY);
+        int index = 0;
+
+        for (SpellPart part : parts) {
+            if (index >= partArray.length) {
+                break;
+            }
+            partArray[index++] = part;
         }
-        return parts.toArray(SpellPart[]::new);
+        return partArray;
     }
 
     public static SpellBuilder modifySpell(Spell spell) {
-        return new SpellBuilder(spell.getParts(), spell.getColor());
+        if (spell == null) {
+            return new SpellBuilder();
+        }
+        return new SpellBuilder(spell.getParts(), spell.getName(), spell.getColor());
     }
 }

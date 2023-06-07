@@ -8,6 +8,8 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
+import org.bukkit.conversations.Conversation;
+import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -20,10 +22,12 @@ import me.jishuna.jishlib.MessageHandler;
 import me.jishuna.jishlib.Utils;
 import me.jishuna.jishlib.inventory.CustomInventory;
 import me.jishuna.jishlib.items.ItemBuilder;
+import me.jishuna.spells.ArbitraryStringPrompt;
 import me.jishuna.spells.Spells;
 import me.jishuna.spells.api.MessageKeys;
 import me.jishuna.spells.api.SpellsAPI;
 import me.jishuna.spells.api.playerdata.PlayerSpellData;
+import me.jishuna.spells.api.spell.Spell;
 import me.jishuna.spells.api.spell.SpellBuilder;
 import me.jishuna.spells.api.spell.part.SpellPart;
 import me.jishuna.spells.api.spell.util.SpellUtil;
@@ -48,6 +52,8 @@ public class SpellBuilderInventory extends CustomInventory {
     private final Spells plugin;
     private final Player player;
     private final ItemStack targetItem;
+    private final Spell[] spells;
+    private final int spellIndex;
     private final SpellBuilder builder;
     private final List<SpellPart> allParts;
 
@@ -55,13 +61,15 @@ public class SpellBuilderInventory extends CustomInventory {
     private int spellStart;
     private int partStart;
 
-    public SpellBuilderInventory(Spells plugin, PlayerSpellData data, ItemStack item, SpellBuilder builder) {
+    public SpellBuilderInventory(Spells plugin, PlayerSpellData data, ItemStack item, Spell[] spells, int index) {
         super(Bukkit.createInventory(null, 54, MessageHandler.get(MessageKeys.SPELL_BUILDER_GUI_TITLE)));
 
         this.plugin = plugin;
         this.player = data.getPlayer();
         this.targetItem = item;
-        this.builder = builder;
+        this.spells = spells;
+        this.spellIndex = index;
+        this.builder = SpellBuilder.modifySpell(spells[index]);
 
         this.allParts = new ArrayList<>(data.getUnlockedParts());
         this.allParts.removeIf(part -> part == SpellPart.EMPTY || !part.isEnabled());
@@ -79,7 +87,7 @@ public class SpellBuilderInventory extends CustomInventory {
     public void setColor(Color color) {
         this.builder.setColor(color);
 
-        setItem(49, createColorItem());
+        setItem(48, createColorItem());
     }
 
     private void populate() {
@@ -97,9 +105,11 @@ public class SpellBuilderInventory extends CustomInventory {
         addButton(45, PREVIOUS, e -> changeSpellIndex(-1));
         addButton(53, NEXT, e -> changeSpellIndex(1));
 
-        addButton(47, ItemBuilder.create(Material.LIME_DYE).name(MessageHandler.get(MessageKeys.SAVE)).build(), event -> Bukkit.getScheduler().runTask(this.plugin, () -> event.getWhoClicked().closeInventory()));
-        addButton(49, createColorItem(), this::openColorSelector);
-        addButton(51, ItemBuilder.create(Material.RED_DYE).name(MessageHandler.get(MessageKeys.CLEAR_NAME)).lore(MessageHandler.getList(MessageKeys.CLEAR_LORE)).build(), this::clearParts);
+        addButton(47, createRenameItem(), this::renameSpell);
+        addButton(48, createColorItem(), this::openColorSelector);
+
+        addButton(50, ItemBuilder.create(Material.LIME_DYE).name(MessageHandler.get(MessageKeys.SAVE)).build(), event -> Bukkit.getScheduler().runTask(this.plugin, () -> event.getWhoClicked().closeInventory()));
+        addButton(51, ItemBuilder.create(Material.RED_DYE).name(MessageHandler.get(MessageKeys.CLEAR_BUTTON_NAME)).lore(MessageHandler.getList(MessageKeys.CLEAR_BUTTON_LORE)).build(), this::clearParts);
     }
 
     private void refreshOptions() {
@@ -171,18 +181,46 @@ public class SpellBuilderInventory extends CustomInventory {
         refreshSpell();
     }
 
+    private void renameSpell(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+        ConversationFactory factory = new ConversationFactory(this.plugin);
+
+        Conversation conversation = factory.withFirstPrompt(new ArbitraryStringPrompt()).withEscapeSequence("exit").buildConversation(player);
+        conversation.addConversationAbandonedListener(abandonEvent -> {
+            String message = (String) abandonEvent.getContext().getSessionData("message");
+            if (message != null && !message.isBlank()) {
+                this.builder.setName(message);
+            }
+            Bukkit.getScheduler().runTask(this.plugin, () -> {
+                setItem(47, createRenameItem());
+                this.plugin.getInventoryManager().openInventory(player, this);
+            });
+        });
+
+        Bukkit.getScheduler().runTask(this.plugin, () -> {
+            player.closeInventory();
+            conversation.begin();
+        });
+    }
+
     private void openColorSelector(InventoryClickEvent event) {
         ColorSelectorInventory inventory = new ColorSelectorInventory(this.plugin, this, this.builder.getColor());
         Bukkit.getScheduler().runTask(this.plugin, () -> this.plugin.getInventoryManager().openInventory(event.getWhoClicked(), inventory));
     }
 
     private void finalizeSpell(InventoryCloseEvent event) {
+        this.spells[this.spellIndex] = this.builder.toSpell();
+
         ItemMeta meta = this.targetItem.getItemMeta();
-        meta.getPersistentDataContainer().set(NamespacedKey.fromString("spells:spell"), SpellsAPI.SPELL_TYPE, this.builder.toSpell());
+        meta.getPersistentDataContainer().set(NamespacedKey.fromString("spells:spells"), SpellsAPI.SPELL_ARRAY_TYPE, this.spells);
         this.targetItem.setItemMeta(meta);
     }
 
     private ItemStack createColorItem() {
         return ItemBuilder.create(Material.LEATHER_CHESTPLATE).name(MessageHandler.get(MessageKeys.CHANGE_COLOR)).modify(LeatherArmorMeta.class, meta -> meta.setColor(this.builder.getColor())).flags(ItemFlag.HIDE_DYE, ItemFlag.HIDE_ATTRIBUTES).build();
+    }
+
+    private ItemStack createRenameItem() {
+        return ItemBuilder.create(Material.ANVIL).name(MessageHandler.get(MessageKeys.RENAME_BUTTON_NAME)).lore(MessageHandler.getList(MessageKeys.RENAME_BUTTON_LORE, this.builder.getName())).build();
     }
 }

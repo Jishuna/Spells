@@ -12,8 +12,10 @@ public class MessageKeys {
     public static final String SPELL_BUILDER_GUI_TITLE = "gui.builder.title";
     public static final String CHANGE_COLOR = "gui.builder.change-color";
     public static final String SAVE = "gui.builder.save";
-    public static final String CLEAR_NAME = "gui.builder.clear-name";
-    public static final String CLEAR_LORE = "gui.builder.clear-lore";
+    public static final String CLEAR_BUTTON_NAME = "gui.builder.clear-button.name";
+    public static final String CLEAR_BUTTON_LORE = "gui.builder.clear-button.lore";
+    public static final String RENAME_BUTTON_NAME = "gui.builder.rename-button.name";
+    public static final String RENAME_BUTTON_LORE = "gui.builder.rename-button.lore";
 
     // Altar GUI
     public static final String ALTAR_GUI_TITLE = "gui.altar.title";

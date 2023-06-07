@@ -31,12 +31,25 @@ public class SpellType implements PersistentDataType<PersistentDataContainer, Sp
         PersistentDataContainer container = context.newPersistentDataContainer();
 
         List<SpellPart> parts = complex.getParts();
-        for (int i = 0; i < parts.size(); i++) {
-            SpellPart part = parts.get(i);
+        int index = 0;
+        for (SpellPart part : parts) {
+            if (part == SpellPart.EMPTY) {
+                continue;
+            }
 
-            container.set(NamespacedKey.fromString("part:" + i), SpellsAPI.SPELL_PART_TYPE, part);
+            container.set(NamespacedKey.fromString("part:" + index++), SpellsAPI.SPELL_PART_TYPE, part);
         }
-        container.set(NamespacedKey.fromString("spell:color"), PersistentTypes.INTEGER, complex.getColor().asRGB());
+
+        int color = complex.getColor() == null ? 0xFFFFFF : complex.getColor().asRGB();
+        if (color != 0xFFFFFF) {
+            container.set(NamespacedKey.fromString("spell:color"), PersistentTypes.INTEGER, color);
+        }
+
+        String name = complex.getName();
+        if (!name.equals("Spell")) {
+            container.set(NamespacedKey.fromString("spell:name"), PersistentTypes.STRING, name);
+        }
+
         return container;
     }
 
@@ -56,6 +69,7 @@ public class SpellType implements PersistentDataType<PersistentDataContainer, Sp
         }
 
         builder.setColor(Color.fromRGB(primitive.getOrDefault(NamespacedKey.fromString("spell:color"), PersistentTypes.INTEGER, 0xFFFFFF)));
+        builder.setName(primitive.getOrDefault(NamespacedKey.fromString("spell:name"), PersistentTypes.STRING, "Spell"));
         return builder.toSpell();
     }
 }

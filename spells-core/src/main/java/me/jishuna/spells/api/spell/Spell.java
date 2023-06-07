@@ -11,9 +11,11 @@ import me.jishuna.spells.api.spell.part.SpellPart;
 public class Spell {
     private final List<SpellPart> parts;
     private final Color color;
+    private final String name;
 
-    public Spell(List<SpellPart> parts, Color color) {
+    public Spell(List<SpellPart> parts, String name, Color color) {
         this.parts = ImmutableList.copyOf(parts);
+        this.name = name;
         this.color = color;
     }
 
@@ -36,6 +38,10 @@ public class Spell {
 
     public List<SpellPart> getParts() {
         return parts;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Color getColor() {

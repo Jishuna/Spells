@@ -39,7 +39,7 @@ public class SpellContext {
 
         return builder.toSpell();
     }
-    
+
     public Color getSpellColor() {
         return this.spell.getColor();
     }
@@ -47,9 +47,9 @@ public class SpellContext {
     public Spell getRemaining() {
         if (this.hasPartsLeft()) {
             List<SpellPart> parts = this.spell.getParts();
-            return new Spell(parts.subList(index, parts.size()), this.spell.getColor());
+            return new Spell(parts.subList(index, parts.size()), this.spell.getName(), this.spell.getColor());
         } else {
-            return new Spell(Collections.emptyList(), this.spell.getColor());
+            return new Spell(Collections.emptyList(), this.spell.getName(), this.spell.getColor());
         }
     }
 }

@@ -5,9 +5,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 
-import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
 
+import me.jishuna.jishlib.pdc.PersistentTypes;
+import me.jishuna.spells.api.NamespacedKeys;
 import me.jishuna.spells.api.SpellsAPI;
 import me.jishuna.spells.api.spell.Spell;
 import me.jishuna.spells.api.spell.SpellBuilder;
@@ -21,7 +23,14 @@ public class SpellUtil {
             return null;
         }
 
-        return item.getItemMeta().getPersistentDataContainer().get(NamespacedKey.fromString("spells:spell"), SpellsAPI.SPELL_TYPE);
+        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+        Spell[] spells = container.get(NamespacedKeys.ITEM_SPELLS, SpellsAPI.SPELL_ARRAY_TYPE);
+        if (spells == null) {
+            return null;
+        }
+
+        int slot = container.getOrDefault(NamespacedKeys.ACTIVE_SPELL_SLOT, PersistentTypes.INTEGER, 0);
+        return spells[slot];
     }
 
     public static boolean hasSpell(ItemStack item) {

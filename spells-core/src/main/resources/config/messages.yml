@@ -12,9 +12,14 @@ gui:
 
     change-color: '<gold><bold>Change Spell Color'
     save: '<green><bold>Save'
-    clear-name: '<red><bold>Clear'
-    clear-lore:
-    - '<red>Shift Click to clear current spell.'
+    clear-button:
+      name: '<red><bold>Clear'
+      lore:
+        - '<red>Shift Click to clear current spell.'
+    rename-button:
+      name: '<gold><bold>Rename Spell'
+      lore:
+        - '<gold>Current Name: {0}'
   color:
     title: '<black>Color Selector'
 
