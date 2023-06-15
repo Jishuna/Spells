@@ -1,6 +1,8 @@
 package me.jishuna.spells.listener;
 
 import org.bukkit.Location;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Lectern;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -25,13 +27,19 @@ public class AltarListener implements Listener {
             return;
         }
 
-        AltarManager manager = this.plugin.getAltarManager();
         Location center = LocationUtils.centerLocation(event.getClickedBlock().getLocation(), false);
+        BlockData blockData = center.getBlock().getBlockData();
+
+        if (!(blockData instanceof Lectern lectern)) {
+            return;
+        }
+
+        AltarManager manager = this.plugin.getAltarManager();
         if (manager.isAltarInUse(center)) {
             return;
         }
 
-        if (!manager.isValidStructure(center)) {
+        if (!manager.isValidStructure(center, lectern.getFacing())) {
             return;
         }
 

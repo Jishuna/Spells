@@ -53,6 +53,10 @@ public class WandInventory extends CustomInventory {
     }
 
     private ItemStack createSpellIcon(Spell spell) {
+        if (spell == null) {
+            return ItemBuilder.create(Material.PAPER).name(ChatColor.GOLD + "Spell").build();
+        }
+
         List<String> lore = new ArrayList<>();
 
         for (SpellPart part : spell.getParts()) {

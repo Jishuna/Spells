@@ -1,7 +1,15 @@
 package me.jishuna.spells.api.altar;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.World;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Lectern;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemDisplay;
@@ -10,7 +18,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
+import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import me.jishuna.spells.api.altar.recipe.AltarRecipe;
 import me.jishuna.spells.api.altar.recipe.ingredient.AltarRecipeIngredient;
@@ -20,19 +30,23 @@ public class AltarCraftingTask extends BukkitRunnable {
     private final Location center;
     private final AltarRecipe recipe;
     private final ItemDisplay display;
+    private final List<BlockFace> faces = new ArrayList<>(Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST));
 
     private int recipeIndex;
     private AltarRecipeIngredient currentIngredient;
 
     public AltarCraftingTask(Player player, Location center, AltarRecipe recipe) {
         this.player = player;
-        this.center = center;
+        this.center = center.clone().add(0, 1, 0);
         this.recipe = recipe;
 
         this.currentIngredient = recipe.getIngredients().get(0);
 
-        this.display = this.center.getWorld().spawn(this.center.clone().add(0, 4, 0), ItemDisplay.class);
+        this.display = this.center.getWorld().spawn(this.center.clone().add(0, 0.5, 0), ItemDisplay.class);
         this.display.setItemStack(this.currentIngredient.asItemStack());
+        this.display.setTransformation(new Transformation(new Vector3f(), new AxisAngle4f(), new Vector3f(0.5f), new AxisAngle4f()));
+
+        detectFaces();
     }
 
     @Override
@@ -46,8 +60,11 @@ public class AltarCraftingTask extends BukkitRunnable {
         checkIngredients();
         rotateDisplay();
 
-        Location origin = this.center.clone().add(0, 1, 0);
-        origin.getWorld().spawnParticle(Particle.SPELL_WITCH, origin, 1, 0, 0, 0, 0);
+        World world = this.center.getWorld();
+
+        for (BlockFace face : this.faces) {
+            world.spawnParticle(Particle.SPELL_WITCH, this.center.clone().add(face.getModX(), 1.1, face.getModZ()), 1, 0, 0, 0, 0);
+        }
     }
 
     private void rotateDisplay() {
@@ -61,7 +78,7 @@ public class AltarCraftingTask extends BukkitRunnable {
     }
 
     private void checkIngredients() {
-        for (Entity entity : this.center.getWorld().getNearbyEntities(this.center, 2, 2, 2, Item.class::isInstance)) {
+        for (Entity entity : this.center.getWorld().getNearbyEntities(this.center, 2.5, 2.5, 2.5, Item.class::isInstance)) {
             Item item = (Item) entity;
             ItemStack itemstack = item.getItemStack();
 
@@ -83,7 +100,7 @@ public class AltarCraftingTask extends BukkitRunnable {
     }
 
     private void finishCrafting() {
-        Item item = this.center.getWorld().dropItem(this.center.clone().add(0, 1, 0), this.recipe.getOutput());
+        Item item = this.center.getWorld().dropItem(this.center, this.recipe.getOutput());
         item.setVelocity(new Vector());
 
         this.cancel();
@@ -92,6 +109,16 @@ public class AltarCraftingTask extends BukkitRunnable {
     private void nextIngredient() {
         this.currentIngredient = this.recipe.getIngredients().get(++recipeIndex);
         this.display.setItemStack(this.currentIngredient.asItemStack());
+    }
+
+    private void detectFaces() {
+        BlockData data = this.center.getBlock().getRelative(BlockFace.DOWN).getBlockData();
+        if (!(data instanceof Lectern lectern)) {
+            return;
+        }
+
+        this.faces.remove(lectern.getFacing());
+        this.faces.remove(lectern.getFacing().getOppositeFace());
     }
 
     @Override

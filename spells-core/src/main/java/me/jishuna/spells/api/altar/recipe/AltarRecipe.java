@@ -34,7 +34,7 @@ public class AltarRecipe {
 
     private ItemStack createIcon() {
         ItemBuilder builder = ItemBuilder.modifyItem(getOutput());
-        builder.lore(ChatColor.GRAY + "Ingredients:");
+        builder.lore(" ", ChatColor.GRAY + "Ingredients:");
 
         for (AltarRecipeIngredient ingredient : this.ingredients) {
             if (ingredient == null) {
